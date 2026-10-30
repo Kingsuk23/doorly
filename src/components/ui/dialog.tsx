@@ -1,10 +1,11 @@
-'use clint';
+'use client';
 
 import * as React from 'react';
 import { cn } from 'cn';
 import { XIcon } from 'lucide-react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
-import { Button } from './button';
+
+import { Button } from '@/components/ui/button';
 
 const Dialog = ({
     ...props
@@ -82,7 +83,8 @@ const DialogContent = ({
         </DialogPortal>
     );
 };
-function DialogHeader({ className, ...props }: React.ComponentProps<'div'>) {
+
+const DialogHeader = ({ className, ...props }: React.ComponentProps<'div'>) => {
     return (
         <div
             data-slot="dialog-header"
@@ -90,15 +92,16 @@ function DialogHeader({ className, ...props }: React.ComponentProps<'div'>) {
             {...props}
         />
     );
-}
-function DialogFooter({
+};
+
+const DialogFooter = ({
     className,
     showCloseButton = false,
     children,
     ...props
 }: React.ComponentProps<'div'> & {
     showCloseButton?: boolean;
-}) {
+}) => {
     return (
         <div
             data-slot="dialog-footer"
@@ -116,11 +119,12 @@ function DialogFooter({
             )}
         </div>
     );
-}
-function DialogTitle({
+};
+
+const DialogTitle = ({
     className,
     ...props
-}: React.ComponentProps<typeof DialogPrimitive.Title>) {
+}: React.ComponentProps<typeof DialogPrimitive.Title>) => {
     return (
         <DialogPrimitive.Title
             data-slot="dialog-title"
@@ -131,11 +135,12 @@ function DialogTitle({
             {...props}
         />
     );
-}
-function DialogDescription({
+};
+
+const DialogDescription = ({
     className,
     ...props
-}: React.ComponentProps<typeof DialogPrimitive.Description>) {
+}: React.ComponentProps<typeof DialogPrimitive.Description>) => {
     return (
         <DialogPrimitive.Description
             data-slot="dialog-description"
@@ -146,7 +151,8 @@ function DialogDescription({
             {...props}
         />
     );
-}
+};
+
 export {
     Dialog,
     DialogClose,

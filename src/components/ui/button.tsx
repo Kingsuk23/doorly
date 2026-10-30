@@ -8,15 +8,16 @@ const buttonVariants = cva(
     {
         variants: {
             variant: {
-                default: 'bg-neutral-950 text-white hover:bg-neutral-950/80',
+                default:
+                    'bg-primary text-primary-foreground hover:bg-primary/80',
                 outline:
-                    'border-neutral-300 bg-white hover:bg-neutral-100 hover:text-black aria-expanded:bg-neutral-100 aria-expanded:text-black',
+                    'border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground',
                 secondary:
-                    'bg-neutral-100 text-black hover:bg-neutral-200 aria-expanded:bg-neutral-100 aria-expanded:text-black',
-                ghost: 'hover:bg-neutral-100 hover:text-black aria-expanded:bg-neutral-100 aria-expanded:text-black',
+                    'bg-secondary text-secondary-foreground hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)] aria-expanded:bg-secondary aria-expanded:text-secondary-foreground',
+                ghost: 'hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground',
                 destructive:
-                    'bg-red-600/10 text-red-600 hover:bg-red-600/20 focus-visible:border-red-600/40 focus-visible:ring-red-600/20',
-                link: 'text-black underline-offset-4 hover:underline',
+                    'bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20',
+                link: 'text-primary underline-offset-4 hover:underline',
             },
             size: {
                 default:
@@ -39,7 +40,7 @@ const buttonVariants = cva(
     },
 );
 
-function Button({
+const Button = ({
     className,
     variant = 'default',
     size = 'default',
@@ -48,7 +49,7 @@ function Button({
 }: React.ComponentProps<'button'> &
     VariantProps<typeof buttonVariants> & {
         asChild?: boolean;
-    }) {
+    }) => {
     const Comp = asChild ? Slot.Root : 'button';
 
     return (
@@ -60,6 +61,6 @@ function Button({
             {...props}
         />
     );
-}
+};
 
 export { Button, buttonVariants };
