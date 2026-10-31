@@ -58,8 +58,6 @@ const LoginForm: React.FC<LoginFormProps> = ({
                             Email
                         </Label>
                         <Input
-                            id="email"
-                            type="email"
                             placeholder="Email address"
                             aria-invalid={errors.email ? 'true' : 'false'}
                             {...register('email')}
@@ -71,7 +69,6 @@ const LoginForm: React.FC<LoginFormProps> = ({
                         </Label>
                         <div className="relative w-full">
                             <Input
-                                id="password"
                                 type={show ? 'text' : 'password'}
                                 placeholder="Password"
                                 aria-invalid={
@@ -127,6 +124,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
                 <div className="flex items-center gap-0.5">
                     <p className="text-sm">New to Doorly?</p>
                     <button
+                        type="button"
                         className="underline text-sm cursor-pointer"
                         onClick={() => onSwitchToSignup()}
                     >

@@ -13,6 +13,7 @@ import {
 import LoginForm from './LoginForm';
 import AuthLegalLinks from './AuthLegalLinks';
 import { useState } from 'react';
+import SignUpForm from './SignUpForm';
 
 type AuthView = 'sign-in' | 'sign-up' | 'forgot';
 
@@ -32,11 +33,17 @@ const VIEW_TEXT: Record<AuthView, { title: string; description: string }> = {
 };
 
 const AuthModal = () => {
+    const [open, setOpen] = useState<boolean>(false);
     const [modalView, setModalView] = useState<AuthView>('sign-in');
 
     const { title, description } = VIEW_TEXT[modalView];
+
+    const handleOpenChange = (nextOpen: boolean) => {
+        setOpen(nextOpen);
+        if (!nextOpen) setModalView('sign-in');
+    };
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={handleOpenChange}>
             <DialogTrigger asChild>
                 <Button>Join/Sign in</Button>
             </DialogTrigger>
@@ -58,6 +65,12 @@ const AuthModal = () => {
                     />
                 )}
 
+                {modalView === 'sign-up' && (
+                    <SignUpForm
+                        onSwitchToSignin={() => setModalView('sign-in')}
+                        onClose={() => handleOpenChange(false)}
+                    />
+                )}
                 <AuthLegalLinks />
             </DialogContent>
         </Dialog>
