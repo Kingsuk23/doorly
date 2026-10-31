@@ -8,14 +8,12 @@ import {
     DialogDescription,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
 } from '@/components/ui/dialog';
 import LoginForm from './LoginForm';
 import AuthLegalLinks from './AuthLegalLinks';
-import { useState } from 'react';
 import SignUpForm from './SignUpForm';
-
-type AuthView = 'sign-in' | 'sign-up' | 'forgot';
+import ForgotPasswordForm from './ForgotPasswordForm';
+import { AuthView, useAuthModal } from '../store/authModal';
 
 const VIEW_TEXT: Record<AuthView, { title: string; description: string }> = {
     'sign-in': {
@@ -33,47 +31,50 @@ const VIEW_TEXT: Record<AuthView, { title: string; description: string }> = {
 };
 
 const AuthModal = () => {
-    const [open, setOpen] = useState<boolean>(false);
-    const [modalView, setModalView] = useState<AuthView>('sign-in');
+    const isOpen = useAuthModal((state) => state.isOpen);
+    const view = useAuthModal((state) => state.view);
+    const setView = useAuthModal((state) => state.setView);
+    const open = useAuthModal((state) => state.open);
+    const close = useAuthModal((state) => state.close);
 
-    const { title, description } = VIEW_TEXT[modalView];
+    const { title, description } = VIEW_TEXT[view];
 
-    const handleOpenChange = (nextOpen: boolean) => {
-        setOpen(nextOpen);
-        if (!nextOpen) setModalView('sign-in');
-    };
     return (
-        <Dialog open={open} onOpenChange={handleOpenChange}>
-            <DialogTrigger asChild>
-                <Button>Join/Sign in</Button>
-            </DialogTrigger>
-            <DialogContent>
-                <DialogHeader>
-                    <div className="rounded-lg bg-muted size-14 flex justify-center items-center">
-                        <LogoType width={32} height={32} />
-                    </div>
-                    <DialogTitle className="mt-2 text-2xl font-bold">
-                        {title}
-                    </DialogTitle>
-                    <DialogDescription>{description}</DialogDescription>
-                </DialogHeader>
+        <>
+            <Button onClick={() => open()}>Join/Sign in</Button>
+            <Dialog open={isOpen} onOpenChange={(open) => !open && close()}>
+                <DialogContent>
+                    <DialogHeader>
+                        <div className="rounded-lg bg-muted size-14 flex justify-center items-center">
+                            <LogoType width={32} height={32} />
+                        </div>
+                        <DialogTitle className="mt-2 text-2xl font-bold">
+                            {title}
+                        </DialogTitle>
+                        <DialogDescription>{description}</DialogDescription>
+                    </DialogHeader>
 
-                {modalView === 'sign-in' && (
-                    <LoginForm
-                        onForgotPassword={() => setModalView('forgot')}
-                        onSwitchToSignup={() => setModalView('sign-up')}
-                    />
-                )}
+                    {view === 'sign-in' && (
+                        <LoginForm
+                            onForgotPassword={() => setView('forgot')}
+                            onSwitchToSignup={() => setView('sign-up')}
+                        />
+                    )}
 
-                {modalView === 'sign-up' && (
-                    <SignUpForm
-                        onSwitchToSignin={() => setModalView('sign-in')}
-                        onClose={() => handleOpenChange(false)}
-                    />
-                )}
-                <AuthLegalLinks />
-            </DialogContent>
-        </Dialog>
+                    {view === 'sign-up' && (
+                        <SignUpForm
+                            onSwitchToSignin={() => setView('sign-in')}
+                            onClose={close}
+                        />
+                    )}
+
+                    {view === 'forgot' && (
+                        <ForgotPasswordForm onClose={close} />
+                    )}
+                    <AuthLegalLinks />
+                </DialogContent>
+            </Dialog>
+        </>
     );
 };
 

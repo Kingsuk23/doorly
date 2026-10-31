@@ -13,6 +13,15 @@ export const auth = betterAuth({
     emailAndPassword: {
         enabled: true,
         requireEmailVerification: true,
+        resetPasswordTokenExpiresIn: 60 * 10,
+        revokeSessionsOnPasswordReset: true,
+        sendResetPassword: async ({ user, url }) => {
+            await sendEmail({
+                to: user.email,
+                subject: 'Reset your password',
+                html: `<p>Click to reset your password:</p><a href="${url}">Reset password</a>`,
+            });
+        },
     },
     emailVerification: {
         sendVerificationEmail: async ({ user, url }) => {
@@ -35,6 +44,13 @@ export const auth = betterAuth({
         google: {
             clientId: process.env.GOOGLE_CLIENT_ID as string,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+        },
+    },
+
+    account: {
+        accountLinking: {
+            enabled: true,
+            trustedProviders: ['google', 'facebook'],
         },
     },
     plugins: [
