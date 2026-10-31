@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { navLinks } from './nav-links';
 import { Button } from '@/components/ui/button';
+import AuthModal from '@/features/auth/components/AuthModal';
 
 const DesktopNav = () => {
     return (
@@ -18,7 +19,7 @@ const DesktopNav = () => {
                 ))}
             </ul>
 
-            <Button>Join/Sign in</Button>
+            <AuthModal />
         </div>
     );
 };

@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { cn } from 'cn';
 
 import { navLinks } from './nav-links';
-import Logo from '@/components/brand/Logo';
+import Logo from '@/components/svg/brand/Logo';
 
 const MENU_ID = 'mobile-menu';
 
