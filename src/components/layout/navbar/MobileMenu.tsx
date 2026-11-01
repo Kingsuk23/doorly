@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { cn } from 'cn';
 
 import { navLinks } from './nav-links';
-import Logo from '@/components/svg/brand/Logo';
+import MobileUserMenu from './mobile-menu/MobileUserMenu';
 
 const MENU_ID = 'mobile-menu';
 
@@ -74,28 +74,10 @@ const MobileMenu = () => {
                 )}
                 id={MENU_ID}
             >
-                <div className="flex justify-between items-center">
-                    <Link href="/" aria-label="Home" className="shrink-0">
-                        <Logo height={42} />
-                    </Link>
-
-                    <Button
-                        variant="ghost"
-                        size="icon-lg"
-                        aria-label="Close menu"
-                        onClick={() => setOpen(false)}
-                    >
-                        <X className="text-neutral-950" size={24} />
-                    </Button>
-                </div>
-
-                <Button className="my-6 w-full" size="lg">
-                    Join/Sign in
-                </Button>
-
+                <MobileUserMenu setOpen={setOpen} />
                 <hr className="border-neutral-200" />
 
-                <ul className="flex flex-col mt-5">
+                <ul className="flex flex-col mt-4">
                     {navLinks.map(({ label, href }) => (
                         <li
                             key={href}

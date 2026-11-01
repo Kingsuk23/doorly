@@ -7,6 +7,9 @@ import * as schema from '../db/schema/auth';
 import { ac, admin, agent, user } from '@/auth/permissions';
 import { sendEmail } from './email';
 
+const DEFAULT_AVATAR =
+    'https://ui-avatars.com/api/?background=random&length=1&name=';
+
 export const auth = betterAuth({
     database: drizzleAdapter(db, { provider: 'pg', schema }),
     baseURL: process.env.BETTER_AUTH_URL as string,
@@ -51,6 +54,23 @@ export const auth = betterAuth({
         accountLinking: {
             enabled: true,
             trustedProviders: ['google', 'facebook'],
+        },
+    },
+
+    databaseHooks: {
+        user: {
+            create: {
+                before: async (user) => {
+                    return {
+                        data: {
+                            ...user,
+                            image:
+                                user.image ??
+                                `${DEFAULT_AVATAR}${encodeURIComponent(user.name)}`,
+                        },
+                    };
+                },
+            },
         },
     },
     plugins: [

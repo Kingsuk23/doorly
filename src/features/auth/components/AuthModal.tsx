@@ -30,7 +30,13 @@ const VIEW_TEXT: Record<AuthView, { title: string; description: string }> = {
     },
 };
 
-const AuthModal = () => {
+interface AuthModalProps {
+    onAbort?: () => void;
+    className?: string;
+    size?: 'default' | 'xs' | 'sm' | 'lg';
+}
+
+const AuthModal: React.FC<AuthModalProps> = ({ onAbort, className, size }) => {
     const isOpen = useAuthModal((state) => state.isOpen);
     const view = useAuthModal((state) => state.view);
     const setView = useAuthModal((state) => state.setView);
@@ -41,7 +47,16 @@ const AuthModal = () => {
 
     return (
         <>
-            <Button onClick={() => open()}>Join/Sign in</Button>
+            <Button
+                onClick={() => {
+                    open();
+                    onAbort?.();
+                }}
+                className={className}
+                size={size}
+            >
+                Join/Sign in
+            </Button>
             <Dialog open={isOpen} onOpenChange={(open) => !open && close()}>
                 <DialogContent>
                     <DialogHeader>
