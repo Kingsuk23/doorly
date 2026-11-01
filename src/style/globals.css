@@ -41,6 +41,19 @@
     --radius-4xl: calc(var(--radius) * 2.6);
 
     --font-sans: var(--font-geist-sans);
+
+    --animate-float: float 6s ease-in-out infinite;
+    --animate-float-delayed: float 8s ease-in-out 2s infinite;
+
+    @keyframes float {
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-15px);
+        }
+    }
 }
 
 :root {
