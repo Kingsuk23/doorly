@@ -3,6 +3,7 @@ import { Geist } from 'next/font/google';
 import '../style/globals.css';
 import Navbar from '@/components/layout/navbar/Navbar';
 import { Toaster } from '@/components/ui/sonner';
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -53,7 +54,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
             <body className="min-h-screen overflow-x-hidden bg-white text-neutral-950 text-base font-sans">
                 <Toaster />
                 <Navbar />
-                {children}
+                <NuqsAdapter>{children}</NuqsAdapter>
             </body>
         </html>
     );

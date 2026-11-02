@@ -1,7 +1,11 @@
-import React from 'react';
+import Hero from '@/components/home/hero/Hero';
 
 const Home = () => {
-    return <div>Home</div>;
+    return (
+        <main className="max-w-7xl mx-auto flex flex-col justify-between">
+            <Hero />
+        </main>
+    );
 };
 
 export default Home;
