@@ -73,6 +73,13 @@ export const auth = betterAuth({
             },
         },
     },
+
+    advanced: {
+        database: {
+            generateId: 'uuid',
+        },
+    },
+
     plugins: [
         adminPlugin({
             ac,
