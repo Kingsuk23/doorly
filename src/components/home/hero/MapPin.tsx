@@ -1,4 +1,4 @@
-import { HeroPin } from '@/constants/heroPin';
+import { HeroPin } from '@/mock/heroPin';
 import Image from 'next/image';
 
 interface MapPinProps {

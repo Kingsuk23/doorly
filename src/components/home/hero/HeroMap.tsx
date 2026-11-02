@@ -4,10 +4,9 @@ import Map, { Marker } from 'react-map-gl/maplibre';
 import { setWorkerUrl } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
-import { HERO_PINS } from '@/constants/heroPin';
+import { HERO_PINS } from '@/mock/heroPin';
 import MapPin from './MapPin';
-import { useEffect, useState } from 'react';
-import PropertyPopupCard from './PropertyPopupCard';
+import PropertyPopupCard from '../../shared/PropertyPopupCard';
 
 setWorkerUrl(
     new URL(

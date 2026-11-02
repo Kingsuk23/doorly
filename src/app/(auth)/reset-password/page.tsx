@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 
-import LogoType from '@/components/svg/brand/LogoType';
+import LogoType from '@/components/icons/brand/LogoType';
 import ResetPasswordForm from '@/features/auth/components/ResetPasswordForm';
 import ResetPasswordSkeleton from '@/features/auth/components/skeleton/ResetPasswordSkeleton';
 

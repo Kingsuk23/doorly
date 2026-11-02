@@ -1,9 +1,9 @@
-import Logo from '@/components/svg/brand/Logo';
+import Logo from '@/components/icons/brand/Logo';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Session } from '@/features/auth/types';
 import { getInitials } from '@/lib/getInitials';
-import { Session } from '@/types/auth';
 import { X } from 'lucide-react';
 import Link from 'next/link';
 

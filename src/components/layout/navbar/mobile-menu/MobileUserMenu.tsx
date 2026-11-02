@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { LogOut, X } from 'lucide-react';
 
-import Logo from '@/components/svg/brand/Logo';
+import Logo from '@/components/icons/brand/Logo';
 import { Button } from '@/components/ui/button';
 import { authClient } from '@/lib/auth-client';
 import AuthModal from '../../../../features/auth/components/AuthModal';

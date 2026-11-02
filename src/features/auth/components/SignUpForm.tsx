@@ -4,13 +4,13 @@ import { useState } from 'react';
 
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import OrDivider from '@/components/ui/OrDivider';
 import SocialButtons from './SocialButtons';
 import { Button } from '@/components/ui/button';
 import { useForm } from 'react-hook-form';
 import { type signup, signupSchema } from '../schemas/signupSchema';
 import { authClient } from '@/lib/auth-client';
 import { toast } from 'sonner';
+import OrDivider from './OrDivider';
 
 interface SignUpFormProps {
     onSwitchToSignin: () => void;

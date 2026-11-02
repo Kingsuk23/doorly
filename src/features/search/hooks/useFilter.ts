@@ -1,4 +1,4 @@
-import { searchParams } from '@/lib/search-params';
+import { searchParams } from '@/features/search/search-params';
 import { useQueryStates } from 'nuqs';
 import { useCallback } from 'react';
 

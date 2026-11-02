@@ -3,11 +3,11 @@ import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import OrDivider from '@/components/ui/OrDivider';
 import SocialButtons from './SocialButtons';
 import { Label } from '@/components/ui/label';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { authClient } from '@/lib/auth-client';
+import OrDivider from './OrDivider';
 
 type FormValues = {
     email: string;

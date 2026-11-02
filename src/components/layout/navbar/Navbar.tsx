@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import Logo from '../../svg/brand/Logo';
+import Logo from '../../icons/brand/Logo';
 import DesktopNav from './DesktopNav';
 import MobileMenu from './MobileMenu';
 

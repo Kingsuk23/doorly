@@ -2,10 +2,10 @@ import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { admin as adminPlugin } from 'better-auth/plugins';
 
-import { db } from './db';
 import * as schema from '../db/schema/auth';
-import { ac, admin, agent, user } from '@/auth/permissions';
 import { sendEmail } from './email';
+import { admin, agent, user, ac } from '@/features/auth/permissions';
+import { db } from '@/db';
 
 const DEFAULT_AVATAR =
     'https://ui-avatars.com/api/?background=random&length=1&name=';

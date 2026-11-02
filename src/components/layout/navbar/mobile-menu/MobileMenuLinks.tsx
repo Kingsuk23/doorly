@@ -4,7 +4,7 @@ import { AUTH_VISIBLE_LINKS } from '@/constants/navigation';
 import Link from 'next/link';
 import { authClient } from '@/lib/auth-client';
 import { LogOut } from 'lucide-react';
-import { Session } from '@/types/auth';
+import { Session } from '@/features/auth/types';
 
 interface MobileMenuLinksProps {
     isPending: boolean;

@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Home, Mail } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import LogoType from '@/components/svg/brand/LogoType';
+import LogoType from '@/components/icons/brand/LogoType';
 
 export const metadata = { title: 'Page not found' };
 

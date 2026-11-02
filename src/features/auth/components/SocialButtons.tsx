@@ -1,7 +1,7 @@
 'use client';
 
-import Facebook from '@/components/svg/social/Facebook';
-import Google from '@/components/svg/social/Google';
+import Facebook from '@/components/icons/social/Facebook';
+import Google from '@/components/icons/social/Google';
 import { Button } from '@/components/ui/button';
 import { authClient } from '@/lib/auth-client';
 

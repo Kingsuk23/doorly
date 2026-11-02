@@ -1,6 +1,6 @@
 import HeroHeader from './HeroHeader';
 import HeroMap from './HeroMap';
-import HeroSearchBar from './HeroSearchBar';
+import HeroSearchBar from '../../../features/search/components/HeroSearchBar';
 
 const Hero = () => {
     return (

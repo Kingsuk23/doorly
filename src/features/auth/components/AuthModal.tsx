@@ -1,6 +1,6 @@
 'use client';
 
-import LogoType from '@/components/svg/brand/LogoType';
+import LogoType from '@/components/icons/brand/LogoType';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,

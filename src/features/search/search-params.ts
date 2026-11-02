@@ -1,4 +1,4 @@
-import { PROPERTY_TYPE_FILTER_OPTIONS } from '@/constants/propertyTypes';
+import { PROPERTY_TYPE_FILTER_OPTIONS } from '@/features/search/constants/propertyTypes';
 import {
     createLoader,
     parseAsInteger,

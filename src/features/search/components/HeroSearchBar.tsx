@@ -1,6 +1,6 @@
 'use client';
 
-import FilterSelect from '@/components/common/FilterSelect';
+import FilterSelect from './FilterSelect';
 import { Button } from '@/components/ui/button';
 import Divider from '@/components/ui/divider';
 
@@ -10,9 +10,9 @@ import {
     getPriceRange,
     SALE_PRICE_FILTER_OPTIONS,
     SALE_PRICE_RANGES,
-} from '@/constants/priceRanges';
-import { PROPERTY_TYPE_FILTER_OPTIONS } from '@/constants/propertyTypes';
-import { SearchFilters, serialize } from '@/lib/search-params';
+} from '@/features/search/constants/priceRanges';
+import { PROPERTY_TYPE_FILTER_OPTIONS } from '@/features/search/constants/propertyTypes';
+import { SearchFilters, serialize } from '@/features/search/search-params';
 import { LoaderCircle, Search } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';

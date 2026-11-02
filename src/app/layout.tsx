@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { Geist } from 'next/font/google';
-import '../style/globals.css';
+import '../styles/globals.css';
 import Navbar from '@/components/layout/navbar/Navbar';
 import { Toaster } from '@/components/ui/sonner';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
