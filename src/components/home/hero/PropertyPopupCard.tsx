@@ -9,7 +9,7 @@ interface PropertyPopupCardProps {
 
 const PropertyPopupCard: React.FC<PropertyPopupCardProps> = ({ pin }) => {
     return (
-        <Card className="p-2 gap-2">
+        <Card className="p-2 gap-2 shrink-0">
             <CardHeader className="relative aspect-video w-50 overflow-hidden rounded-lg">
                 <Image
                     src={pin.image}
