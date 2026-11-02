@@ -4,7 +4,7 @@ import Map, { Marker } from 'react-map-gl/maplibre';
 import { setWorkerUrl } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
-import { HERO_PINS } from '@/mock/heroPin';
+import { HERO_PINS } from '@/mocks/heroPin';
 import MapPin from './MapPin';
 import PropertyPopupCard from '../../shared/PropertyPopupCard';
 

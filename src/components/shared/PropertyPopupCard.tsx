@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { HeroPin } from '@/mock/heroPin';
+import { HeroPin } from '@/mocks/heroPin';
 import { MapPin } from 'lucide-react';
 import Image from 'next/image';
 
