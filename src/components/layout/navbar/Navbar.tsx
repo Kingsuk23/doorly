@@ -1,12 +1,23 @@
+'use client';
+
 import Link from 'next/link';
 
 import Logo from '../../icons/brand/Logo';
 import DesktopNav from './DesktopNav';
 import MobileMenu from './MobileMenu';
+import { usePathname } from 'next/navigation';
+import { cn } from 'cn';
 
 const Navbar = () => {
+    const pathname = usePathname();
+
     return (
-        <header className="sticky top-0 z-40 shadow-sm bg-white/90 backdrop-blur supports-backdrop-filter:bg-white/75">
+        <header
+            className={cn(
+                'sticky top-0 z-40 shadow-sm bg-white/90 backdrop-blur supports-backdrop-filter:bg-white/75',
+                pathname === '/join-agent' && 'hidden',
+            )}
+        >
             <nav
                 aria-label="Main"
                 className="max-w-7xl mx-auto py-2 flex justify-between items-center md:px-4 px-2"

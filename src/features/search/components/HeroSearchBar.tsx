@@ -1,6 +1,5 @@
 'use client';
 
-import FilterSelect from './FilterSelect';
 import { Button } from '@/components/ui/button';
 import Divider from '@/components/ui/divider';
 
@@ -16,6 +15,7 @@ import { SearchFilters, serialize } from '@/features/search/search-params';
 import { LoaderCircle, Search } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import SelectField from '../../../components/shared/SelectField';
 
 interface HeroSearchValues {
     location: string;
@@ -77,7 +77,7 @@ const HeroSearchBar = () => {
                     control={control}
                     name="property_type"
                     render={({ field }) => (
-                        <FilterSelect
+                        <SelectField
                             options={PROPERTY_TYPE_FILTER_OPTIONS}
                             value={field.value}
                             onValueChange={field.onChange}
@@ -97,7 +97,7 @@ const HeroSearchBar = () => {
                     control={control}
                     name="budget"
                     render={({ field }) => (
-                        <FilterSelect
+                        <SelectField
                             options={SALE_PRICE_FILTER_OPTIONS}
                             value={field.value}
                             onValueChange={field.onChange}

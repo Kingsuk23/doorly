@@ -22,12 +22,10 @@ const MobileMenuLinks: React.FC<MobileMenuLinksProps> = ({
     }
 
     if (!session) {
-        return (
-            <AuthModal onAbort={onClose} className="w-full my-6" size="lg" />
-        );
+        return <AuthModal onAbort={onClose} className="w-full" size="lg" />;
     }
     return (
-        <div className="grid grid-cols-2 gap-4 w-full my-6 px-3">
+        <div className="grid grid-cols-2 gap-4 w-full px-3">
             {AUTH_VISIBLE_LINKS.map(({ label, href, icon: Icon }) => (
                 <Link
                     href={href}

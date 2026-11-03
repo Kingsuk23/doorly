@@ -78,8 +78,10 @@ const AuthModal: React.FC<AuthModalProps> = ({ onAbort, className, size }) => {
 
                     {view === 'sign-up' && (
                         <SignUpForm
+                            redirectUrl="/"
                             onSwitchToSignin={() => setView('sign-in')}
                             onClose={close}
+                            visibleSignin
                         />
                     )}
 

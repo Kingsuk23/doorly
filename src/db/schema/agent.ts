@@ -8,17 +8,12 @@ import {
     uniqueIndex,
     uuid,
 } from 'drizzle-orm/pg-core';
-import { user } from './auth';
-import { agency } from './agency';
 import { sql } from 'drizzle-orm';
 
-export const agencyRole = pgEnum('agency_role', [
-    'agent',
-    'owner',
-    'president',
-    'vice president',
-    'manger',
-]);
+import { user } from './auth';
+import { agency } from './agency';
+
+export const agencyRole = pgEnum('agency_role', ['agent', 'owner']);
 
 export const agent = pgTable(
     'agent',

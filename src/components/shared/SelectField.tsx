@@ -9,7 +9,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 
-export interface FilterOption {
+export interface SelectOption {
     label: string;
     value: string;
 }
@@ -18,7 +18,7 @@ interface FilterSelectProps extends Omit<
     ComponentProps<typeof Select>,
     'children'
 > {
-    options: readonly FilterOption[];
+    options: readonly SelectOption[];
     placeholder?: string;
     className?: string;
     ariaLabel?: string;
@@ -28,7 +28,7 @@ interface FilterSelectProps extends Omit<
     >;
 }
 
-export default function FilterSelect({
+const SelectField = ({
     options,
     placeholder = 'All',
     className,
@@ -37,7 +37,7 @@ export default function FilterSelect({
     value,
     defaultValue = 'all',
     ...selectProps
-}: FilterSelectProps) {
+}: FilterSelectProps) => {
     return (
         <Select
             value={value}
@@ -45,9 +45,9 @@ export default function FilterSelect({
             {...selectProps}
         >
             <SelectTrigger
-                className={className}
                 aria-label={ariaLabel}
                 {...triggerProps}
+                className={className}
             >
                 <SelectValue placeholder={placeholder} />
             </SelectTrigger>
@@ -62,4 +62,6 @@ export default function FilterSelect({
             </SelectContent>
         </Select>
     );
-}
+};
+
+export default SelectField;

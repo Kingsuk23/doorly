@@ -27,11 +27,16 @@ const MobileUserMenu: React.FC<MobileUserMenuProps> = ({ setOpen }) => {
                 onClose={() => setOpen(false)}
             />
 
-            <MobileMenuLinks
-                isPending={isPending}
-                session={session}
-                onClose={() => setOpen(false)}
-            />
+            <div className="flex flex-col gap-4 my-6">
+                <MobileMenuLinks
+                    isPending={isPending}
+                    session={session}
+                    onClose={() => setOpen(false)}
+                />
+                <Button variant="outline" asChild className="w-full">
+                    <Link href="/join-agent">Join as agent</Link>
+                </Button>
+            </div>
         </>
     );
 };

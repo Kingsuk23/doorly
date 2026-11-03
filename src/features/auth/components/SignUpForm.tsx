@@ -11,15 +11,22 @@ import { type signup, signupSchema } from '../schemas/signupSchema';
 import { authClient } from '@/lib/auth-client';
 import { toast } from 'sonner';
 import OrDivider from './OrDivider';
+import { cn } from 'cn';
 
 interface SignUpFormProps {
-    onSwitchToSignin: () => void;
-    onClose: () => void;
+    onSwitchToSignin?: () => void;
+    onClose?: () => void;
+    redirectUrl: string;
+    className?: string;
+    visibleSignin?: boolean;
 }
 
 const SignUpForm: React.FC<SignUpFormProps> = ({
     onSwitchToSignin,
     onClose,
+    redirectUrl,
+    className,
+    visibleSignin,
 }) => {
     const [show, setShow] = useState<boolean>(false);
 
@@ -35,7 +42,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
             name: data.name,
             email: data.email,
             password: data.password,
-            callbackURL: '/',
+            callbackURL: redirectUrl,
         });
 
         if (error) {
@@ -48,10 +55,13 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
         });
 
         reset();
-        onClose();
+        onClose?.();
     };
     return (
-        <form className="mt-2" onSubmit={handleSubmit(onSubmit)}>
+        <form
+            className={cn('mt-2', className)}
+            onSubmit={handleSubmit(onSubmit)}
+        >
             <div className="flex flex-col gap-4">
                 <div className="flex flex-col gap-4">
                     <div className="flex flex-col gap-2">
@@ -122,16 +132,18 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
                 </div>
                 <OrDivider label="or" />
                 <SocialButtons />
-                <div className="flex items-center gap-0.5">
-                    <p className="text-sm">Already have an account?</p>
-                    <button
-                        type="button"
-                        className="underline text-sm cursor-pointer"
-                        onClick={() => onSwitchToSignin()}
-                    >
-                        Sign in
-                    </button>
-                </div>
+                {visibleSignin && (
+                    <div className="flex items-center gap-0.5">
+                        <p className="text-sm">Already have an account?</p>
+                        <button
+                            type="button"
+                            className="underline text-sm cursor-pointer"
+                            onClick={() => onSwitchToSignin?.()}
+                        >
+                            Sign in
+                        </button>
+                    </div>
+                )}
             </div>
         </form>
     );

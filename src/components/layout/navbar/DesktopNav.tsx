@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { navLinks } from './nav-links';
 import UserMenu from './UserMenu';
+import { Button } from '@/components/ui/button';
 
 const DesktopNav = () => {
     return (
@@ -18,7 +19,12 @@ const DesktopNav = () => {
                 ))}
             </ul>
 
-            <UserMenu />
+            <div className="flex items-center gap-4">
+                <Button variant="outline" asChild>
+                    <Link href="/join-agent">Join as agent</Link>
+                </Button>
+                <UserMenu />
+            </div>
         </div>
     );
 };
