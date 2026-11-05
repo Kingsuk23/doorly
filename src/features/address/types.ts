@@ -1,4 +1,4 @@
-export type GeoapifyResultType =
+type GeoapifyResultType =
     | 'unknown'
     | 'amenity'
     | 'building'
@@ -11,21 +11,21 @@ export type GeoapifyResultType =
     | 'state'
     | 'country';
 
-export interface GeoapifyDatasource {
+interface GeoapifyDatasource {
     sourcename: string;
     attribution: string;
     license: string;
     url: string;
 }
 
-export interface GeoapifyBbox {
+interface GeoapifyBbox {
     lon1: number;
     lat1: number;
     lon2: number;
     lat2: number;
 }
 
-export interface GeoapifyRank {
+interface GeoapifyRank {
     importance?: number;
     popularity?: number;
     confidence: number;
@@ -35,7 +35,7 @@ export interface GeoapifyRank {
     match_type: string;
 }
 
-export interface GeoapifyTimezone {
+interface GeoapifyTimezone {
     name: string;
     name_alt?: string;
     offset_STD: string;
@@ -46,7 +46,7 @@ export interface GeoapifyTimezone {
     abbreviation_DST?: string;
 }
 
-export interface GeoapifyPlace {
+interface GeoapifyPlace {
     place_id: string;
     formatted: string;
     address_line1: string;

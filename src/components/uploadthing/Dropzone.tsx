@@ -1,4 +1,4 @@
-import { useUploadThing } from '@/lib/uploadthing/uploadthing';
+import { useUploadThing } from '@/lib/uploadthing/client';
 import { useDropzone } from 'react-dropzone';
 import { cn } from 'cn';
 import { Loader2, Upload } from 'lucide-react';
@@ -7,9 +7,9 @@ import {
     generateClientDropzoneAccept,
     generatePermittedFileTypes,
 } from 'uploadthing/client';
-import { Button } from '../../components/ui/button';
+import { Button } from '../ui/button';
 import { toast } from 'sonner';
-import { getFileKey } from '@/lib/uploadthing/uploadThingUtils';
+import { getFileKey } from '@/lib/uploadthing/utils';
 import { deleteUpload } from './actions/deleteUpload';
 
 interface DropzoneProps {

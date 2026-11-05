@@ -19,7 +19,6 @@
         "@radix-ui/react-slot": "^1.5.0",
         "@tanstack/react-query": "^5.105.3",
         "@uploadthing/react": "^7.3.3",
-        "axios": "^1.21.0",
         "better-auth": "^1.7.15",
         "class-variance-authority": "^0.7.1",
         "cn": "^0.5.1",
@@ -54,7 +53,6 @@
         "eslint": "^10",
         "eslint-config-next": "16.4.3",
         "tailwindcss": "^4",
-        "tsx": "^4.23.15",
         "typescript": "^7"
     },
     "packageManager": "pnpm@12.16.1"

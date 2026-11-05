@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { ApplyAgentInput, applyAgentSchema } from '../schema/agentApplySchema';
+import { ApplyAgentInput, applyAgentSchema } from '../schemas/agentApplySchema';
 import { cn } from 'cn';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -10,16 +10,16 @@ import { LoaderCircle } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 import SelectField from '@/components/shared/SelectField';
 import { agentPosition } from '@/features/search/constants/agentOwner';
-import AgencyCombobox from '@/features/agent/components/AgencyCombobox';
 import AgencyModal from '@/features/agency/components/AgencyModal';
-import { getFileKey } from '@/lib/uploadthing/uploadThingUtils';
-import { deleteUpload } from '@/features/agency/actions/deleteUpload';
+import { getFileKey } from '@/lib/uploadthing/utils';
+import { deleteUpload } from '@/components/uploadthing/actions/deleteUpload';
+import AgencyCombobox from '@/features/agency/components/AgencyCombobox';
 
 interface AgentApplyFormProps {
     className?: string;
 }
 
-export const agencies = [
+const agencies = [
     {
         value: '1',
         label: 'Sunrise Realty',

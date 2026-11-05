@@ -9,11 +9,11 @@ import {
 } from '../schemas/agencySchema';
 import { Label } from '@/components/ui/label';
 import Image from 'next/image';
-import Dropzone from '@/features/uploadthing/Dropzone';
-import UploadButton from '@/features/uploadthing/UploadButton';
-import { getFileKey } from '@/lib/uploadthing/uploadThingUtils';
-import { deleteUpload } from '../actions/deleteUpload';
-import { useAddAgency } from '../queries/query';
+import Dropzone from '@/components/uploadthing/Dropzone';
+import UploadButton from '@/components/uploadthing/UploadButton';
+import { getFileKey } from '@/lib/uploadthing/utils';
+import { useAddAgency } from '../queries/agencyQueries';
+import { deleteUpload } from '@/components/uploadthing/actions/deleteUpload';
 
 interface agencyAddressFormProps {
     defaultValues: agencyProfileImageInput;

@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/popover';
 import { Input } from '../../../components/ui/input';
 
-export interface ComboboxOption {
+interface ComboboxOption {
     label: string;
     value: string;
 }

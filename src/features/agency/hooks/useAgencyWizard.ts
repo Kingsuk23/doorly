@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { AgencyFormValues, emptyAgencyForm } from '../schemas/agencySchema';
 
-export const steps = ['basic', 'contact', 'address', 'logo'] as const;
+const steps = ['basic', 'contact', 'address', 'logo'] as const;
 
 export const useAgencyWizard = () => {
     const [stepIndex, setStepIndex] = useState(0);

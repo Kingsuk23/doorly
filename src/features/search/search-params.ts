@@ -15,7 +15,7 @@ export const searchParams = {
     mix_price: parseAsInteger.withDefault(1000000),
 };
 
-export const loadSearchParams = createLoader(searchParams);
+const loadSearchParams = createLoader(searchParams);
 export const serialize = createSerializer(searchParams, {
     clearOnDefault: true,
 });

@@ -29,21 +29,9 @@ export const SALE_PRICE_RANGES = [
     { label: '$1M+', value: '1000000-0', min: 1000000, max: 0 },
 ] as const satisfies readonly PriceRange[];
 
-export const RENT_PRICE_RANGES = [
-    { label: 'Under $1,000', value: '0-1000', min: 0, max: 1000 },
-    { label: '$1,000 - $2,000', value: '1000-2000', min: 1000, max: 2000 },
-    { label: '$2,000 - $3,500', value: '2000-3500', min: 2000, max: 3500 },
-    { label: '$3,500+', value: '3500-0', min: 3500, max: 0 },
-] as const satisfies readonly PriceRange[];
-
 export const SALE_PRICE_FILTER_OPTIONS = [
     { label: 'Any price', value: 'all' },
     ...SALE_PRICE_RANGES,
-] as const;
-
-export const RENT_PRICE_FILTER_OPTIONS = [
-    { label: 'Any price', value: 'all' },
-    ...RENT_PRICE_RANGES,
 ] as const;
 
 export function getPriceRange(

@@ -6,7 +6,7 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 
 import { HERO_PINS } from '@/mocks/heroPin';
 import MapPin from './MapPin';
-import PropertyPopupCard from '../../shared/PropertyPopupCard';
+import PropertyPopupCard from '../../../../components/shared/PropertyPopupCard';
 
 setWorkerUrl(
     new URL(

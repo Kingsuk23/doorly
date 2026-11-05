@@ -2,14 +2,14 @@
 
 import { AgencyFormValues } from '../schemas/agencySchema';
 import { db } from '@/db';
-import { address, country, state } from '@/db/schema/address';
+import { address } from '@/db/schema/address';
 import { agency } from '@/db/schema/agency';
 import {
     findOrCreateCity,
     findOrCreateCountry,
     findOrCreatePostcode,
     findOrCreateState,
-} from '@/features/address/actions/address';
+} from '@/features/address/actions/addressActions';
 import { textSlugify } from '@/lib/slugify';
 
 export const addAgency = async (inputs: AgencyFormValues) => {

@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { addAgency } from '../actions/agency';
+import { addAgency } from '../actions/agencyActions';
 import { toast } from 'sonner';
 
 export const useAddAgency = (onDone?: () => void) => {

@@ -1,7 +1,7 @@
 import { createAccessControl } from 'better-auth/plugins/access';
 import { defaultStatements, adminAc } from 'better-auth/plugins/admin/access';
 
-export const statement = {
+const statement = {
     ...defaultStatements,
 
     listing: ['create', 'update', 'delete', 'publish'],

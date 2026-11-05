@@ -1,5 +1,5 @@
 import { db } from '@/db';
-import { city, country, postalCode, state } from '@/db/schema/address';
+import { city, country, postalCode, state } from '@/db/schema/location';
 import { textSlugify } from '@/lib/slugify';
 import { and, eq } from 'drizzle-orm';
 

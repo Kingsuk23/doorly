@@ -1,9 +1,9 @@
-export interface OptionType {
+interface OptionType {
     label: string;
     value: string | number;
 }
 
-export const PROPERTY_TYPES = [
+const PROPERTY_TYPES = [
     { label: 'House', value: 'house' },
     { label: 'Condo', value: 'condo' },
     { label: 'Townhouse', value: 'townhouse' },
@@ -12,8 +12,6 @@ export const PROPERTY_TYPES = [
     { label: 'Land', value: 'land' },
     { label: 'Commercial', value: 'commercial' },
 ] as const satisfies readonly OptionType[];
-
-export type PropertyTypeValue = (typeof PROPERTY_TYPES)[number]['value'];
 
 export const PROPERTY_TYPE_FILTER_OPTIONS = [
     { label: 'All', value: 'all' },
