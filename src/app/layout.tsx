@@ -4,6 +4,7 @@ import '../styles/globals.css';
 import Navbar from '@/components/layout/navbar/Navbar';
 import { Toaster } from '@/components/ui/sonner';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
+import ReactQueryProvider from '@/providers/ReactQueryProvider';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -53,8 +54,10 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
         <html lang="en" className={`${geistSans.variable} antialiased`}>
             <body className="min-h-screen overflow-x-hidden bg-white text-neutral-950 text-base font-sans">
                 <Toaster />
-                <Navbar />
-                <NuqsAdapter>{children}</NuqsAdapter>
+                <ReactQueryProvider>
+                    <Navbar />
+                    <NuqsAdapter>{children}</NuqsAdapter>
+                </ReactQueryProvider>
             </body>
         </html>
     );

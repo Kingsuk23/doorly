@@ -39,15 +39,11 @@ export const relations = defineRelations(schema, (r) => ({
             from: r.agency.id,
             to: r.agent.agencyId,
         }),
-        city: r.one.city({
-            from: r.agency.cityId,
-            to: r.city.id,
+        address: r.one.address({
+            from: r.agency.addressId,
+            to: r.address.id,
         }),
-        postalCode: r.one.postalCode({
-            from: r.agency.postalCodeId,
-            to: r.postalCode.id,
-            optional: true,
-        }),
+
         verifier: r.one.user({
             from: r.agency.verifiedBy,
             to: r.user.id,
@@ -85,7 +81,6 @@ export const relations = defineRelations(schema, (r) => ({
         postalCode: r.one.postalCode({
             from: r.address.postalCodeId,
             to: r.postalCode.id,
-            optional: true,
         }),
     },
 }));

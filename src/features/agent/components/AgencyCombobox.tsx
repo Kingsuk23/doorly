@@ -10,14 +10,14 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from '@/components/ui/popover';
-import { Input } from '../ui/input';
+import { Input } from '../../../components/ui/input';
 
 export interface ComboboxOption {
     label: string;
     value: string;
 }
 
-interface ComboboxProps {
+interface AgencyComboboxProps {
     options: readonly ComboboxOption[];
     value?: string;
     onValueChange?: (value: string) => void;
@@ -29,7 +29,7 @@ interface ComboboxProps {
     id?: string;
 }
 
-const Combobox = ({
+const AgencyCombobox = ({
     options,
     value,
     onValueChange,
@@ -39,7 +39,7 @@ const Combobox = ({
     className,
     disabled,
     id,
-}: ComboboxProps) => {
+}: AgencyComboboxProps) => {
     const [open, setOpen] = useState(false);
     const [query, setQuery] = useState('');
     const [activeIndex, setActiveIndex] = useState(0);
@@ -155,4 +155,4 @@ const Combobox = ({
     );
 };
 
-export default Combobox;
+export default AgencyCombobox;

@@ -1,7 +1,5 @@
 import {
     boolean,
-    doublePrecision,
-    index,
     pgTable,
     text,
     timestamp,
@@ -9,8 +7,7 @@ import {
     uuid,
 } from 'drizzle-orm/pg-core';
 import { user } from './auth';
-import { agent } from './agent';
-import { city, postalCode } from './address';
+import { address } from './address';
 
 export const agency = pgTable(
     'agency',
@@ -19,7 +16,7 @@ export const agency = pgTable(
 
         name: text('name').notNull(),
         slug: text('slug').notNull(),
-        license: text('license').notNull(),
+        license: text('license').notNull().unique(),
         description: text('description'),
 
         email: text('email').notNull(),
@@ -31,14 +28,9 @@ export const agency = pgTable(
         verifiedBy: uuid('verified_by').references(() => user.id),
         verifiedAt: timestamp('verified_at', { withTimezone: true }),
 
-        streetLine1: text('street_line1').notNull(),
-        streetLine2: text('street_line2'),
-        cityId: uuid('city_id')
-            .references(() => city.id)
+        addressId: uuid('address')
+            .references(() => address.id)
             .notNull(),
-        postalCodeId: uuid('postal_code_id').references(() => postalCode.id),
-        latitude: doublePrecision('latitude'),
-        longitude: doublePrecision('longitude'),
 
         createdAt: timestamp('created_at', { withTimezone: true })
             .notNull()
@@ -50,6 +42,5 @@ export const agency = pgTable(
     (table) => [
         uniqueIndex('agencies_slug_unique').on(table.slug),
         uniqueIndex('agencies_license_unique').on(table.license),
-        index('agencies_city_idx').on(table.cityId),
     ],
 );

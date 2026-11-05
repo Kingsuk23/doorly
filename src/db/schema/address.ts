@@ -50,7 +50,7 @@ export const city = pgTable(
         id: uuid('id').primaryKey().defaultRandom(),
 
         stateId: uuid('state_id')
-            .references(() => country.id)
+            .references(() => state.id)
             .notNull(),
 
         name: text('name').notNull(),

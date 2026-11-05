@@ -26,6 +26,10 @@ const nextConfig: NextConfig = {
                 protocol: 'https',
                 hostname: 'plus.unsplash.com',
             },
+            {
+                protocol: 'https',
+                hostname: 'm19aol5xcy.ufs.sh',
+            },
         ],
     },
     allowedDevOrigins: ['192.168.1.7'],
