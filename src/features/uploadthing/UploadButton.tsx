@@ -1,11 +1,11 @@
-import { useUploadThing } from '@/lib/uploadthing';
+import { useUploadThing } from '@/lib/uploadthing/uploadthing';
 
 import { Loader2 } from 'lucide-react';
 import { useRef } from 'react';
 
-import { Button } from '../ui/button';
+import { Button } from '../../components/ui/button';
 import { toast } from 'sonner';
-import { getFileKey } from '@/lib/uploadThingUtils';
+import { getFileKey } from '@/lib/uploadthing/uploadThingUtils';
 import { deleteUpload } from '@/features/agency/actions/deleteUpload';
 
 interface UploadButtonProps {

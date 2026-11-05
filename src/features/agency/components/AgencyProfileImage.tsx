@@ -6,14 +6,14 @@ import {
     AgencyFormValues,
     agencyProfileImageInput,
     agencyProfileImageSchema,
-} from '../schema/agencySchema';
+} from '../schemas/agencySchema';
 import { Label } from '@/components/ui/label';
 import Image from 'next/image';
-import Dropzone from '@/components/shared/Dropzone';
-import UploadButton from '@/components/shared/UploadButton';
-import { getFileKey } from '@/lib/uploadThingUtils';
+import Dropzone from '@/features/uploadthing/Dropzone';
+import UploadButton from '@/features/uploadthing/UploadButton';
+import { getFileKey } from '@/lib/uploadthing/uploadThingUtils';
 import { deleteUpload } from '../actions/deleteUpload';
-import { useAddAgency } from '../query/query';
+import { useAddAgency } from '../queries/query';
 
 interface agencyAddressFormProps {
     defaultValues: agencyProfileImageInput;

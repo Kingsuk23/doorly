@@ -1,10 +1,10 @@
 'use client';
 
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { Button } from '../ui/button';
+import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useNav } from '@/hooks/useNav';
-import PropertyPopupCard from '../home/hero/PropertyPopupCard';
+import PropertyPopupCard from '@/components/shared/PropertyPopupCard';
 
 // add real data
 const FeaturedProperties = () => {

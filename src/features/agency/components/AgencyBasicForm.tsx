@@ -6,8 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { agencyBasicInput, agencyBasicSchema } from '../schema/agencySchema';
-import { useAgencyWizard } from '../hook/useAgencyWizard';
+import { agencyBasicInput, agencyBasicSchema } from '../schemas/agencySchema';
+import { useAgencyWizard } from '../hooks/useAgencyWizard';
 
 interface AgencyBasicFormProps {
     defaultValues: agencyBasicInput;

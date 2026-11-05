@@ -1,4 +1,4 @@
-import { GeoapifyAutocompleteJSON } from '@/features/address/type/address';
+import { GeoapifyAutocompleteJSON } from '@/features/address/types';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest) {

@@ -11,7 +11,7 @@ import {
     DialogTitle,
 } from '@/components/ui/dialog';
 import AgencyBasicForm from './AgencyBasicForm';
-import { useAgencyWizard } from '../hook/useAgencyWizard';
+import { useAgencyWizard } from '../hooks/useAgencyWizard';
 import AgencyContactForm from './AgencyContactForm';
 import AgencyAddressForm from './AgencyAddressForm';
 import AgencyProfileImage from './AgencyProfileImage';

@@ -12,9 +12,9 @@ import {
     PopoverTrigger,
 } from '@/components/ui/popover';
 import { Skeleton } from '@/components/ui/skeleton';
-import type { GeoapifyFormattedAutocompleteJSON } from '@/features/address/type/address';
+import type { GeoapifyFormattedAutocompleteJSON } from '@/features/address/types';
 import { UseFormSetValues } from 'react-hook-form';
-import { agencyAddressInput } from '../schema/agencySchema';
+import { agencyAddressInput } from '../../agency/schemas/agencySchema';
 
 interface AddressComboboxProps {
     options?: readonly GeoapifyFormattedAutocompleteJSON[];

@@ -10,7 +10,7 @@ import {
     agencyContactInput,
     agencyContactSchema,
     AgencyFormValues,
-} from '../schema/agencySchema';
+} from '../schemas/agencySchema';
 
 interface agencyContactFormProps {
     defaultValues: agencyContactInput;

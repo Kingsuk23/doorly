@@ -12,7 +12,7 @@ import SelectField from '@/components/shared/SelectField';
 import { agentPosition } from '@/features/search/constants/agentOwner';
 import AgencyCombobox from '@/features/agent/components/AgencyCombobox';
 import AgencyModal from '@/features/agency/components/AgencyModal';
-import { getFileKey } from '@/lib/uploadThingUtils';
+import { getFileKey } from '@/lib/uploadthing/uploadThingUtils';
 import { deleteUpload } from '@/features/agency/actions/deleteUpload';
 
 interface AgentApplyFormProps {

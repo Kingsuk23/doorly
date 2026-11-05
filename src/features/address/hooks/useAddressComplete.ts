@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchAddressSuggestion } from '../api/fetchAddressSuggestions';
+import { fetchAddressSuggestion } from '../services/fetchAddressSuggestions';
 
 export const useAddressComplete = (text: string) => {
     return useQuery({

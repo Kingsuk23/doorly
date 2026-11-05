@@ -10,9 +10,9 @@ import {
     agencyAddressInput,
     agencyAddressSchema,
     AgencyFormValues,
-} from '../schema/agencySchema';
+} from '../schemas/agencySchema';
 import { useAddressComplete } from '@/features/address/hooks/useAddressComplete';
-import AddressCombobox from './AddressCombobox';
+import AddressCombobox from '../../address/components/AddressCombobox';
 import { useState } from 'react';
 
 interface agencyAddressFormProps {

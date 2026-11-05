@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { AgencyFormValues, emptyAgencyForm } from '../schema/agencySchema';
+import { AgencyFormValues, emptyAgencyForm } from '../schemas/agencySchema';
 
 export const steps = ['basic', 'contact', 'address', 'logo'] as const;
 

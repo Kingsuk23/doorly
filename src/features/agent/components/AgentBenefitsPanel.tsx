@@ -1,5 +1,5 @@
 import Logo from '@/components/icons/brand/Logo';
-import { AGENT_ACCOUNT_BENEFITS } from '@/constants/agentAccountBenefits';
+import { AGENT_ACCOUNT_BENEFITS } from '@/features/agent/constants/agentAccountBenefits';
 import Link from 'next/link';
 
 const AgentBenefitsPanel = () => {

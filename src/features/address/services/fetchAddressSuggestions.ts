@@ -1,4 +1,4 @@
-import { GeoapifyFormattedAutocompleteJSON } from '../type/address';
+import { GeoapifyFormattedAutocompleteJSON } from '../types';
 
 export const fetchAddressSuggestion = async (
     text: string,
