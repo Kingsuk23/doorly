@@ -1,16 +1,11 @@
 import Link from 'next/link';
-import { LogOut, X } from 'lucide-react';
 
-import Logo from '@/components/icons/brand/Logo';
 import { Button } from '@/components/ui/button';
 import { authClient } from '@/lib/auth-client';
-import AuthModal from '../../../../features/auth/components/AuthModal';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { getInitials } from '@/lib/getInitials';
-import { AUTH_VISIBLE_LINKS } from '@/constants/navigation';
 import { Skeleton } from '@/components/ui/skeleton';
 import MobileUserHeader from './MobileUserHeader';
 import MobileMenuLinks from './MobileMenuLinks';
+import { useGetAgent } from '@/features/agent/queries/agentQueries';
 
 interface MobileUserMenuProps {
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,7 +13,17 @@ interface MobileUserMenuProps {
 
 const MobileUserMenu: React.FC<MobileUserMenuProps> = ({ setOpen }) => {
     const { data: session, isPending } = authClient.useSession();
+    const { data: agent, isLoading } = useGetAgent();
 
+    const renderButton = () => {
+        if (isLoading) return <Skeleton className="h-9 w-full" />;
+        if (agent) return;
+        return (
+            <Button variant="outline" asChild className="w-full">
+                <Link href="/join-agent">Join as agent</Link>
+            </Button>
+        );
+    };
     return (
         <>
             <MobileUserHeader
@@ -28,14 +33,12 @@ const MobileUserMenu: React.FC<MobileUserMenuProps> = ({ setOpen }) => {
             />
 
             <div className="flex flex-col gap-4 my-6">
+                {renderButton()}
                 <MobileMenuLinks
                     isPending={isPending}
                     session={session}
                     onClose={() => setOpen(false)}
                 />
-                <Button variant="outline" asChild className="w-full">
-                    <Link href="/join-agent">Join as agent</Link>
-                </Button>
             </div>
         </>
     );

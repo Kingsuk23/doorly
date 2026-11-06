@@ -11,14 +11,15 @@ import {
     PopoverTrigger,
 } from '@/components/ui/popover';
 import { Input } from '../../../components/ui/input';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface ComboboxOption {
-    label: string;
-    value: string;
+    name: string;
+    id: string;
 }
 
 interface AgencyComboboxProps {
-    options: readonly ComboboxOption[];
+    agencies: readonly ComboboxOption[] | undefined;
     value?: string;
     onValueChange?: (value: string) => void;
     placeholder?: string;
@@ -27,10 +28,12 @@ interface AgencyComboboxProps {
     className?: string;
     disabled?: boolean;
     id?: string;
+    isLoading?: boolean;
+    isError?: boolean;
 }
 
 const AgencyCombobox = ({
-    options,
+    agencies,
     value,
     onValueChange,
     placeholder = 'Select...',
@@ -39,17 +42,21 @@ const AgencyCombobox = ({
     className,
     disabled,
     id,
+    isError,
+    isLoading,
 }: AgencyComboboxProps) => {
     const [open, setOpen] = useState(false);
     const [query, setQuery] = useState('');
     const [activeIndex, setActiveIndex] = useState(0);
 
-    const selected = options.find((o) => o.value === value);
+    const options = agencies ?? [];
+
+    const selected = options.find((o) => o.id === value);
 
     const filtered = useMemo(() => {
         const q = query.trim().toLowerCase();
         return q
-            ? options.filter((o) => o.label.toLowerCase().includes(q))
+            ? options.filter((o) => o.name.toLowerCase().includes(q))
             : options;
     }, [options, query]);
 
@@ -62,7 +69,7 @@ const AgencyCombobox = ({
     };
 
     const select = (option: ComboboxOption) => {
-        onValueChange?.(option.value);
+        onValueChange?.(option.id);
         setOpen(false);
     };
 
@@ -78,6 +85,57 @@ const AgencyCombobox = ({
             const option = filtered[activeIndex];
             if (option) select(option);
         }
+    };
+
+    const renderBody = () => {
+        if (isError) {
+            return (
+                <li className="py-4 text-center text-sm text-destructive">
+                    Something went wrong. Please try again.
+                </li>
+            );
+        }
+
+        if (isLoading) {
+            return Array.from({ length: 5 }).map((_, i) => (
+                <li key={i} className="px-2 py-1.5">
+                    <Skeleton className="h-4 w-full" />
+                </li>
+            ));
+        }
+
+        if (options.length === 0) {
+            return (
+                <li className="py-4 text-center text-sm text-muted-foreground">
+                    {query.trim().length < 3
+                        ? 'Type at least 3 characters'
+                        : emptyText}
+                </li>
+            );
+        }
+
+        return filtered.map((option, index) => (
+            <li
+                key={option.id}
+                role="option"
+                aria-selected={option.id === value}
+                onClick={() => select(option)}
+                onMouseEnter={() => setActiveIndex(index)}
+                className={cn(
+                    'flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-sm',
+                    index === activeIndex && 'bg-accent text-accent-foreground',
+                )}
+            >
+                <Check
+                    className={cn(
+                        'size-4',
+                        option.id === value ? 'opacity-100' : 'opacity-0',
+                    )}
+                />
+
+                {option.name}
+            </li>
+        ));
     };
 
     return (
@@ -96,7 +154,7 @@ const AgencyCombobox = ({
                     )}
                 >
                     <span className={cn(!selected && 'text-muted-foreground')}>
-                        {selected?.label ?? placeholder}
+                        {selected?.name ?? placeholder}
                     </span>
                     <ChevronsUpDown className="size-4 shrink-0 opacity-50" />
                 </Button>
@@ -118,37 +176,7 @@ const AgencyCombobox = ({
                 />
 
                 <ul role="listbox" className="max-h-60 overflow-y-auto p-1">
-                    {filtered.length === 0 && (
-                        <li className="py-4 text-center text-sm text-muted-foreground">
-                            {emptyText}
-                        </li>
-                    )}
-
-                    {filtered.map((option, index) => (
-                        <li
-                            key={option.value}
-                            role="option"
-                            aria-selected={option.value === value}
-                            onClick={() => select(option)}
-                            onMouseEnter={() => setActiveIndex(index)}
-                            className={cn(
-                                'flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-sm',
-                                index === activeIndex &&
-                                    'bg-accent text-accent-foreground',
-                            )}
-                        >
-                            <Check
-                                className={cn(
-                                    'size-4',
-                                    option.value === value
-                                        ? 'opacity-100'
-                                        : 'opacity-0',
-                                )}
-                            />
-
-                            {option.label}
-                        </li>
-                    ))}
+                    {renderBody()}
                 </ul>
             </PopoverContent>
         </Popover>

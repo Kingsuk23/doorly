@@ -21,13 +21,13 @@ const steps = ['basic_c', 'contact_c', 'address_c', 'logo_c'];
 interface agencyModalProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
-    setImageUrlAgency: React.Dispatch<React.SetStateAction<string | null>>;
+    onAgencyCreated: (id: string) => void;
 }
 
 const AgencyModal: React.FC<agencyModalProps> = ({
     onOpenChange,
     open,
-    setImageUrlAgency,
+    onAgencyCreated,
 }) => {
     const {
         step,
@@ -38,9 +38,8 @@ const AgencyModal: React.FC<agencyModalProps> = ({
         reset,
         coordinates,
         setCoordinates,
+        setImageUrlAgency,
     } = useAgencyWizard();
-
-    console.log(values);
 
     return (
         <Dialog
@@ -94,6 +93,7 @@ const AgencyModal: React.FC<agencyModalProps> = ({
                         values={values}
                         reset={reset}
                         onClose={onOpenChange}
+                        onAgencyCreated={onAgencyCreated}
                     />
                 )}
                 <div className="w-full flex gap-1.5 h-1">

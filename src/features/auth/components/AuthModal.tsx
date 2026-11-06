@@ -42,6 +42,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onAbort, className, size }) => {
     const setView = useAuthModal((state) => state.setView);
     const open = useAuthModal((state) => state.open);
     const close = useAuthModal((state) => state.close);
+    const url = useAuthModal((state) => state.url);
 
     const { title, description } = VIEW_TEXT[view];
 
@@ -78,7 +79,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ onAbort, className, size }) => {
 
                     {view === 'sign-up' && (
                         <SignUpForm
-                            redirectUrl="/"
+                            redirectUrl={url}
                             onSwitchToSignin={() => setView('sign-in')}
                             onClose={close}
                             visibleSignin

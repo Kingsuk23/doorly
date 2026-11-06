@@ -22,6 +22,7 @@ interface agencyAddressFormProps {
     reset: () => void;
     onClose: (open: boolean) => void;
     setImageUrlAgency: React.Dispatch<React.SetStateAction<string | null>>;
+    onAgencyCreated: (id: string) => void;
 }
 
 const AgencyProfileImage: React.FC<agencyAddressFormProps> = ({
@@ -31,13 +32,13 @@ const AgencyProfileImage: React.FC<agencyAddressFormProps> = ({
     reset,
     onClose,
     setImageUrlAgency,
+    onAgencyCreated,
 }) => {
-    const onDone = () => {
+    const { mutate, isPending } = useAddAgency((id) => {
+        onAgencyCreated(id);
         onClose(false);
         reset();
-    };
-
-    const { mutate, isPending } = useAddAgency(onDone);
+    });
 
     const {
         handleSubmit,

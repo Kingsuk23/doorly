@@ -16,9 +16,12 @@ import { authClient } from '@/lib/auth-client';
 import UserMenuSkeleton from './skeleton/UserMenuSkeleton';
 import { getInitials } from '@/lib/getInitials';
 import { AUTH_VISIBLE_LINKS } from '@/constants/navigation';
+import { useGetAgent } from '@/features/agent/queries/agentQueries';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const UserMenu = () => {
     const { data: session, isPending } = authClient.useSession();
+    const { data: agent, isLoading } = useGetAgent();
 
     if (isPending) {
         return <UserMenuSkeleton />;
@@ -53,6 +56,15 @@ const UserMenu = () => {
                         </Link>
                     </DropdownMenuItem>
                 ))}
+                {isLoading ? (
+                    <Skeleton className="h-4 w-20" />
+                ) : (
+                    <DropdownMenuItem className={agent ? 'block' : 'hidden'}>
+                        <Link href="/agent-profile" className="cursor-pointer">
+                            Agent profile
+                        </Link>
+                    </DropdownMenuItem>
+                )}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => authClient.signOut()}>
                     Sign out

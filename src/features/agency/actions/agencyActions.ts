@@ -11,6 +11,7 @@ import {
     findOrCreateState,
 } from '@/features/address/actions/addressActions';
 import { textSlugify } from '@/lib/slugify';
+import { asc, desc } from 'drizzle-orm';
 
 export const addAgency = async (inputs: AgencyFormValues) => {
     const {
@@ -94,4 +95,16 @@ export const addAgency = async (inputs: AgencyFormValues) => {
         .returning({ id: agency.id });
 
     return agencyId.id;
+};
+
+export const getAllAgency = async () => {
+    const results = await db
+        .select({
+            name: agency.name,
+            id: agency.id,
+        })
+        .from(agency)
+        .orderBy(desc(agency.createdAt));
+
+    return results;
 };

@@ -1,5 +1,5 @@
 import AgentBenefitsPanel from '@/features/agent/components/AgentBenefitsPanel';
-import AgentLoginPanel from '@/features/agent/components/AgentLoginPanel';
+import AgentCreationPanel from '@/features/agent/components/AgentCreationPanel';
 
 const JoinAgent = () => {
     return (
@@ -8,7 +8,7 @@ const JoinAgent = () => {
                 <AgentBenefitsPanel />
             </div>
             <div className="order-1 flex items-center justify-center p-6 md:order-2 w-full min-h-screen">
-                <AgentLoginPanel />
+                <AgentCreationPanel />
             </div>
         </div>
     );

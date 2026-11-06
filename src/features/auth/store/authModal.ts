@@ -8,11 +8,14 @@ interface AuthModalProps {
     setView: (view: AuthView) => void;
     open: (view?: AuthView) => void;
     close: () => void;
+    url: string;
+    setRedirectUrl: (url?: string) => void;
 }
 
 export const useAuthModal = create<AuthModalProps>((set) => ({
     view: 'sign-in',
     isOpen: false,
+    url: '/',
 
     setView: (view) => set({ view }),
 
@@ -27,4 +30,5 @@ export const useAuthModal = create<AuthModalProps>((set) => ({
             isOpen: false,
             view: 'sign-in',
         }),
+    setRedirectUrl: (url = '/') => set({ url }),
 }));

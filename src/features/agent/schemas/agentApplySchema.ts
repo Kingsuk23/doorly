@@ -1,9 +1,8 @@
 import { agencyRole } from '@/db/schema/agent';
 import { z } from 'zod';
 
-export const applyAgentSchema = z.object({
+export const applyAgentBasicSchema = z.object({
     license: z.string().min(3, 'License number is required'),
-    imageUrl: z.string().url('Upload your license document'),
     phone: z.string().min(7, 'Enter a valid phone number'),
     email: z.string().email('Enter a valid email'),
     bio: z.string().max(1000).optional(),
@@ -12,4 +11,22 @@ export const applyAgentSchema = z.object({
     agencyRole: z.enum(agencyRole.enumValues).default('agent'),
 });
 
-export type ApplyAgentInput = z.infer<typeof applyAgentSchema>;
+export const applyAgentImageSchema = z.object({
+    imageUrl: z.string().url('Upload your profile image'),
+});
+
+export type ApplyAgentBasicInput = z.infer<typeof applyAgentBasicSchema>;
+export type ApplyAgentImageInput = z.infer<typeof applyAgentImageSchema>;
+
+export type AgentFormValues = ApplyAgentBasicInput & ApplyAgentImageInput;
+
+export const emptyAgentForm: AgentFormValues = {
+    agency: '',
+    agencyRole: 'agent',
+    email: '',
+    imageUrl: '',
+    license: '',
+    phone: '',
+    bio: '',
+    website: '',
+};

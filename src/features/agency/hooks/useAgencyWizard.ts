@@ -10,6 +10,9 @@ export const useAgencyWizard = () => {
         lat: number | undefined;
         lon: number | undefined;
     }>({ lat: undefined, lon: undefined });
+    const [imageUrlAgency, setImageUrlAgency] = useState<string | null>(null);
+
+    const [agencyModalOpen, setAgencyModalOpen] = useState(false);
 
     const next = (data: Partial<AgencyFormValues>) => {
         setValues((prev) => ({ ...prev, ...data }));
@@ -34,5 +37,9 @@ export const useAgencyWizard = () => {
         coordinates,
         setCoordinates,
         setValues,
+        imageUrlAgency,
+        setImageUrlAgency,
+        agencyModalOpen,
+        setAgencyModalOpen,
     };
 };
