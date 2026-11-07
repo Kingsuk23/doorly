@@ -18,6 +18,7 @@ const MobileUserMenu: React.FC<MobileUserMenuProps> = ({ setOpen }) => {
     const renderButton = () => {
         if (isLoading) return <Skeleton className="h-9 w-full" />;
         if (agent) return;
+
         return (
             <Button variant="outline" asChild className="w-full">
                 <Link href="/join-agent">Join as agent</Link>

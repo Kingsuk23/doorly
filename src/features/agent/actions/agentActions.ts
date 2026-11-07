@@ -9,7 +9,7 @@ import { eq } from 'drizzle-orm';
 
 export const addAgent = async (raw: AgentFormValues) => {
     const session = await auth.api.getSession({ headers: await headers() });
-    if (!session) throw new Error('Unauthorized');
+    if (!session) return null;
 
     try {
         const [created] = await db
@@ -40,7 +40,7 @@ export const addAgent = async (raw: AgentFormValues) => {
 
 export const getAgent = async () => {
     const session = await auth.api.getSession({ headers: await headers() });
-    if (!session) throw new Error('Unauthorized');
+    if (!session) return null;
 
     const [found] = await db
         .select({ id: agent.id })

@@ -27,13 +27,11 @@ const DesktopNav = () => {
                 {isLoading ? (
                     <Skeleton className="h-9 w-30" />
                 ) : (
-                    <Button
-                        variant="outline"
-                        asChild
-                        className={agent && 'hidden'}
-                    >
-                        <Link href="/join-agent">Join as agent</Link>
-                    </Button>
+                    !agent && (
+                        <Button variant="outline" asChild>
+                            <Link href="/join-agent">Join as agent</Link>
+                        </Button>
+                    )
                 )}
                 <UserMenu />
             </div>

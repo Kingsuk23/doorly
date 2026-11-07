@@ -25,11 +25,13 @@ export const agency = pgTable(
         logoUrl: text('logo_url').notNull(),
 
         isVerified: boolean('is_verified').notNull().default(false),
-        verifiedBy: uuid('verified_by').references(() => user.id),
+        verifiedBy: uuid('verified_by').references(() => user.id, {
+            onDelete: 'set null',
+        }),
         verifiedAt: timestamp('verified_at', { withTimezone: true }),
 
         addressId: uuid('address')
-            .references(() => address.id)
+            .references(() => address.id, { onDelete: 'cascade' })
             .notNull(),
 
         createdAt: timestamp('created_at', { withTimezone: true })
