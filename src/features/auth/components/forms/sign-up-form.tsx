@@ -25,7 +25,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
     className,
     onEmailSent,
 }) => {
-    const [show, setShow] = useState<boolean>(false);
+    const [show, setShow] = useState(false);
 
     const {
         register,
@@ -99,8 +99,9 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
                                 {...register('password')}
                             />
 
-                            <button
-                                className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer"
+                            <Button
+                                variant="ghost"
+                                className="p-0"
                                 type="button"
                                 onClick={() => setShow((prev) => !prev)}
                             >
@@ -109,7 +110,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
                                 ) : (
                                     <Eye size={20} />
                                 )}
-                            </button>
+                            </Button>
                         </div>
 
                         {errors.password && (
@@ -129,15 +130,16 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
                     </Button>
                 </div>
 
-                <div className="flex items-center gap-0.5">
+                <div className="flex items-center">
                     <p className="text-sm">Already have an account?</p>
-                    <button
+                    <Button
                         type="button"
-                        className="underline text-sm cursor-pointer"
+                        variant="link"
+                        className="p-0 font-semibold text-sm"
                         onClick={() => setView('sign-in')}
                     >
                         Sign in
-                    </button>
+                    </Button>
                 </div>
             </div>
         </form>

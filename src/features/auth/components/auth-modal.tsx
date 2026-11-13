@@ -13,6 +13,7 @@ import { useAuthModalState } from '../hooks/use-auth-modal-state';
 import SignUpForm from './forms/sign-up-form';
 import EmailSendMessage from './email-send-message';
 import { authClient } from '@/lib/auth/auth-client';
+import SignInForm from './forms/sign-in-form';
 interface AuthModalProps {
     size?:
         | 'default'
@@ -59,7 +60,8 @@ const AuthModal = ({ className, size }: AuthModalProps) => {
                         </DialogTitle>
                         <DialogDescription>{description}</DialogDescription>
                     </DialogHeader>
-                    {view === 'sign-in' && (
+                    {view === 'sign-in' && <SignInForm setView={setView} />}
+                    {view === 'sign-up' && (
                         <SignUpForm
                             redirectUrl="/"
                             setView={setView}

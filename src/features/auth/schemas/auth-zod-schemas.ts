@@ -25,4 +25,15 @@ export const signupSchema = z.object({
         ),
 });
 
+export const signinSchema = z.object({
+    email: z.email({ message: 'Invalid email' }),
+    password: z.string(),
+});
+
+export const forgotPasswordSchema = z.object({
+    email: z.email({ message: 'Invalid email' }),
+});
+
 export type signupInput = z.infer<typeof signupSchema>;
+export type signinInput = z.infer<typeof signinSchema>;
+export type forgotPasswordInput = z.infer<typeof forgotPasswordSchema>;
