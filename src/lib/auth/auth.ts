@@ -4,7 +4,8 @@ import { admin } from 'better-auth/plugins';
 
 import { db } from '@/db';
 import { schemas } from '@/db/schemas';
-import { sendVerificationEmail } from './send-verification-email';
+import { sendVerificationEmail } from '../emails/send-verification-email';
+import { resetPasswordEmailSender } from '../emails/reset-password-email-sender';
 
 export const auth = betterAuth({
     database: drizzleAdapter(db, {
@@ -17,6 +18,13 @@ export const auth = betterAuth({
         requireEmailVerification: true,
         resetPasswordTokenExpiresIn: 60 * 10,
         revokeSessionsOnPasswordReset: true,
+        sendResetPassword: async ({ user, url }) => {
+            await resetPasswordEmailSender({
+                resetUrl: url,
+                to: user.email,
+                name: user.name,
+            });
+        },
     },
     emailVerification: {
         sendVerificationEmail: async ({ user, url }) => {

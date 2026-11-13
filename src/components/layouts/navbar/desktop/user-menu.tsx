@@ -19,8 +19,10 @@ import { authClient } from '@/lib/auth/auth-client';
 import { getInitials } from '@/lib/get-initials';
 import { AUTH_VISIBLE_LINKS } from '../constants/nav-links';
 import UserMenuSkeleton from '../skeletons/user-menu-skeleton';
+import { useRouter } from 'next/navigation';
 
 const UserMenu = () => {
+    const router = useRouter();
     const [open, setOpen] = useState(false);
 
     const { data: session, isPending } = authClient.useSession();
@@ -72,7 +74,17 @@ const UserMenu = () => {
 
                 <DropdownMenuItem
                     className="cursor-pointer"
-                    onClick={() => authClient.signOut()}
+                    onClick={() =>
+                        authClient.signOut({
+                            fetchOptions: {
+                                onSuccess: () => {
+                                    setOpen(false);
+                                    router.replace('/');
+                                    router.refresh();
+                                },
+                            },
+                        })
+                    }
                 >
                     Sign out
                 </DropdownMenuItem>

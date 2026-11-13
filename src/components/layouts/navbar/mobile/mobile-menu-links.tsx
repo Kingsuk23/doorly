@@ -7,6 +7,7 @@ import AuthModal from '@/features/auth/components/auth-modal';
 import { authClient } from '@/lib/auth/auth-client';
 import { Session } from '@/features/auth/types';
 import MobileMenuLinksSkeleton from '../skeletons/mobile-menu-link-skeleton';
+import { useRouter } from 'next/navigation';
 
 interface MobileMenuLinksProps {
     isPending: boolean;
@@ -19,6 +20,7 @@ const MobileMenuLinks = ({
     isPending,
     session,
 }: MobileMenuLinksProps) => {
+    const router = useRouter();
     if (isPending) {
         return <MobileMenuLinksSkeleton />;
     }
@@ -43,7 +45,15 @@ const MobileMenuLinks = ({
             <button
                 className="w-full bg-muted-foreground/10 rounded-md p-4 flex flex-col items-start gap-2"
                 onClick={() => {
-                    authClient.signOut();
+                    authClient.signOut({
+                        fetchOptions: {
+                            onSuccess: () => {
+                                onClose();
+                                router.replace('/');
+                                router.refresh();
+                            },
+                        },
+                    });
                 }}
             >
                 <LogOut />
