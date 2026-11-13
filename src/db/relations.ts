@@ -1,10 +1,8 @@
 import { defineRelations } from 'drizzle-orm';
 
-import { user } from './schemas/user-db-schema';
-import { session } from './schemas/session-db-schema';
-import { account } from './schemas/account-db-schema';
+import { schemas } from './schemas';
 
-export const relations = defineRelations({ user, session, account }, (r) => ({
+export const relations = defineRelations(schemas, (r) => ({
     user: {
         sessions: r.many.session({
             from: r.user.id,
