@@ -14,6 +14,7 @@ import SignUpForm from './forms/sign-up-form';
 import EmailSendMessage from './email-send-message';
 import { authClient } from '@/lib/auth/auth-client';
 import SignInForm from './forms/sign-in-form';
+import ForgotPasswordForm from './forms/forgot-password-form';
 interface AuthModalProps {
     size?:
         | 'default'
@@ -67,6 +68,9 @@ const AuthModal = ({ className, size }: AuthModalProps) => {
                             setView={setView}
                             onEmailSent={setEmail}
                         />
+                    )}
+                    {view === 'forgot' && (
+                        <ForgotPasswordForm onClose={close} setView={setView} />
                     )}
                     {view === 'verify-email' && (
                         <EmailSendMessage onClose={close} email={email} />

@@ -101,8 +101,8 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
 
                             <Button
                                 variant="ghost"
-                                className="p-0"
                                 type="button"
+                                className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer p-0"
                                 onClick={() => setShow((prev) => !prev)}
                             >
                                 {show ? (
@@ -130,12 +130,12 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
                     </Button>
                 </div>
 
-                <div className="flex items-center">
-                    <p className="text-sm">Already have an account?</p>
+                <div className="flex items-center text-sm">
+                    <p>Already have an account?</p>
                     <Button
                         type="button"
                         variant="link"
-                        className="p-0 font-semibold text-sm"
+                        className="p-0"
                         onClick={() => setView('sign-in')}
                     >
                         Sign in

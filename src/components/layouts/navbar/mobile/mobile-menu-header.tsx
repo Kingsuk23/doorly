@@ -6,7 +6,6 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getInitials } from '@/lib/get-initials';
-import { useState } from 'react';
 import { Session } from '@/features/auth/types';
 
 interface MobileMenuHeaderProps {
@@ -20,8 +19,6 @@ const MobileMenuHeader = ({
     onClose,
     session,
 }: MobileMenuHeaderProps) => {
-    const [] = useState(false);
-
     return (
         <div className="flex justify-between items-center px-3">
             {isPending ? (

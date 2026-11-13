@@ -6,6 +6,7 @@ import { AUTH_VISIBLE_LINKS } from '../constants/nav-links';
 import AuthModal from '@/features/auth/components/auth-modal';
 import { authClient } from '@/lib/auth/auth-client';
 import { Session } from '@/features/auth/types';
+import MobileMenuLinksSkeleton from '../skeletons/mobile-menu-link-skeleton';
 
 interface MobileMenuLinksProps {
     isPending: boolean;
@@ -19,7 +20,7 @@ const MobileMenuLinks = ({
     session,
 }: MobileMenuLinksProps) => {
     if (isPending) {
-        return;
+        return <MobileMenuLinksSkeleton />;
     }
 
     if (!session) {

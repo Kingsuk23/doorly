@@ -9,7 +9,6 @@ import { Button } from '@/components/ui/button';
 import { AuthView } from '../../types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signinInput, signinSchema } from '../../schemas/auth-zod-schemas';
-import { toast } from '@/components/ui/toast';
 
 interface LoginFormProps {
     setView: (view: AuthView) => void;
@@ -21,6 +20,7 @@ const SignInForm: React.FC<LoginFormProps> = ({ setView }) => {
     const {
         register,
         handleSubmit,
+        setError,
         formState: { errors, isSubmitting },
     } = useForm({
         resolver: zodResolver(signinSchema),
@@ -34,9 +34,8 @@ const SignInForm: React.FC<LoginFormProps> = ({ setView }) => {
         });
 
         if (error) {
-            toast.add({
-                type: 'error',
-                description: error.message ?? 'Invalid credentials',
+            setError('root', {
+                message: error.message ?? 'Invalid credentials',
             });
             return;
         }
@@ -73,7 +72,7 @@ const SignInForm: React.FC<LoginFormProps> = ({ setView }) => {
                             <Button
                                 variant="ghost"
                                 type="button"
-                                className="p-0"
+                                className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer p-0"
                                 onClick={() => setShow((prev) => !prev)}
                             >
                                 {show ? (
@@ -86,16 +85,20 @@ const SignInForm: React.FC<LoginFormProps> = ({ setView }) => {
                         <Button
                             variant="link"
                             type="button"
-                            className="h-auto self-start p-0"
+                            className="h-auto self-start p-0 text-sm"
                             onClick={() => setView('forgot')}
                         >
                             Forgotten your password?
                         </Button>
                     </div>
-
+                    {errors.root && (
+                        <div className="bg-destructive/10 rounded-md h-8 flex items-center text-destructive px-2">
+                            {errors.root.message}
+                        </div>
+                    )}
                     <Button
                         type="submit"
-                        className="w-full"
+                        className="w-full h-11"
                         size="lg"
                         disabled={isSubmitting}
                     >
@@ -103,12 +106,12 @@ const SignInForm: React.FC<LoginFormProps> = ({ setView }) => {
                     </Button>
                 </div>
 
-                <div className="flex items-center">
-                    <p className="text-sm">New to Doorly?</p>
+                <div className="flex items-center text-sm">
+                    <p>New to Doorly?</p>
                     <Button
                         type="button"
                         variant="link"
-                        className="p-0 font-semibold text-sm"
+                        className="p-0 font-medium "
                         onClick={() => setView('sign-up')}
                     >
                         Join for free

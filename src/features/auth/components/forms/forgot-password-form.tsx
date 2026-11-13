@@ -10,12 +10,17 @@ import {
     forgotPasswordInput,
     forgotPasswordSchema,
 } from '../../schemas/auth-zod-schemas';
+import { AuthView } from '../../types';
 
 interface ForgotPasswordFormProps {
     onClose?: () => void;
+    setView: (view: AuthView) => void;
 }
 
-const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({ onClose }) => {
+const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
+    onClose,
+    setView,
+}) => {
     const {
         register,
         handleSubmit,
@@ -68,6 +73,14 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({ onClose }) => {
                         disabled={isSubmitting}
                     >
                         Send a password reset email
+                    </Button>
+                    <Button
+                        type="button"
+                        variant="outline"
+                        className="w-full h-11"
+                        onClick={() => setView('sign-in')}
+                    >
+                        Back
                     </Button>
                 </div>
             </div>
