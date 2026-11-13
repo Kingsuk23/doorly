@@ -8,9 +8,11 @@ import {
     DialogTitle,
 } from '@/components/ui/dialog';
 import AuthLegalLinks from './auth-legal-links';
-import { AUTH_VIEW_TEXT } from '../constants/auth';
+import { getAuthViewText } from '../constants/auth';
 import { useAuthModalState } from '../hooks/use-auth-modal-state';
-
+import SignUpForm from './forms/sign-up-form';
+import EmailSendMessage from './email-send-message';
+import { authClient } from '@/lib/auth/auth-client';
 interface AuthModalProps {
     size?:
         | 'default'
@@ -25,9 +27,15 @@ interface AuthModalProps {
 }
 
 const AuthModal = ({ className, size }: AuthModalProps) => {
-    const { close, isOpen, open, view } = useAuthModalState();
+    const { close, isOpen, open, view, setView, email, setEmail } =
+        useAuthModalState();
+    const { data: session } = authClient.useSession();
 
-    const { title, description } = AUTH_VIEW_TEXT[view];
+    if (session) {
+        close();
+    }
+
+    const { title, description } = getAuthViewText(view, email);
 
     return (
         <>
@@ -51,6 +59,16 @@ const AuthModal = ({ className, size }: AuthModalProps) => {
                         </DialogTitle>
                         <DialogDescription>{description}</DialogDescription>
                     </DialogHeader>
+                    {view === 'sign-in' && (
+                        <SignUpForm
+                            redirectUrl="/"
+                            setView={setView}
+                            onEmailSent={setEmail}
+                        />
+                    )}
+                    {view === 'verify-email' && (
+                        <EmailSendMessage onClose={close} email={email} />
+                    )}
 
                     <AuthLegalLinks />
                 </DialogContent>

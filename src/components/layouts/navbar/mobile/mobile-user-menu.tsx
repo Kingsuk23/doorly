@@ -6,7 +6,7 @@ interface MobileUserMenuProps {
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const MobileUserMenu: React.FC<MobileUserMenuProps> = ({ setOpen }) => {
+const MobileUserMenu = ({ setOpen }: MobileUserMenuProps) => {
     const { data: session, isPending } = authClient.useSession();
 
     return (
