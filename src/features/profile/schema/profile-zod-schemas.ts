@@ -24,4 +24,9 @@ export const updatePasswordSchema = z.object({
         ),
 });
 
+export const changeEmailSchema = z.object({
+    email: z.email(),
+});
+
 export type updatePasswordInput = z.infer<typeof updatePasswordSchema>;
+export type changeEmailInput = z.infer<typeof changeEmailSchema>;

@@ -1,5 +1,6 @@
-import { resend } from '../resend-config';
+import { render } from 'react-email';
 import EmailVerification from '@/components/email/auth/email-verification';
+import { transporter } from '../nodemailer';
 
 type SendVerificationEmailParams = {
     to: string;
@@ -12,11 +13,13 @@ export const sendVerificationEmail = async ({
     name,
     verifyUrl,
 }: SendVerificationEmailParams) => {
-    const { error } = await resend.emails.send({
-        from: 'doorly <onboarding@resend.dev>',
+    const html = await render(EmailVerification({ verifyUrl, name }));
+
+    const { error } = await transporter.sendMail({
+        from: 'doorly <noreply@doorly.com>',
         to,
         subject: 'Verify your email',
-        react: EmailVerification({ verifyUrl, name }),
+        html,
     });
 
     if (error) {

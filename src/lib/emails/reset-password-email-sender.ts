@@ -1,5 +1,6 @@
 import ResetPasswordEmail from '@/components/email/auth/reset-password-email';
-import { resend } from '../resend-config';
+import { transporter } from '../nodemailer';
+import { render } from 'react-email';
 
 type resetPasswordEmailSenderParams = {
     to: string;
@@ -14,11 +15,15 @@ export const resetPasswordEmailSender = async ({
     resetUrl,
     expiresInMinutes,
 }: resetPasswordEmailSenderParams) => {
-    const { error } = await resend.emails.send({
-        from: 'doorly <onboarding@resend.dev>',
+    const html = await render(
+        ResetPasswordEmail({ resetUrl, name, expiresInMinutes }),
+    );
+
+    const { error } = await transporter.sendMail({
+        from: 'doorly <noreply@doorly.com>',
         to,
-        subject: 'Verify your email',
-        react: ResetPasswordEmail({ resetUrl, name, expiresInMinutes }),
+        subject: 'Reset password',
+        html,
     });
 
     if (error) {

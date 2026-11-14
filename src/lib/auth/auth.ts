@@ -12,6 +12,11 @@ export const auth = betterAuth({
         provider: 'pg',
         schema: schemas,
     }),
+    user: {
+        changeEmail: {
+            enabled: true,
+        },
+    },
 
     emailAndPassword: {
         enabled: true,

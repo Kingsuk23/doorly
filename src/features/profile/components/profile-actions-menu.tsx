@@ -13,10 +13,12 @@ import {
 } from '@/components/ui/dropdown-menu';
 import UpdateModal from './modals/update-modal';
 import PasswordUpdateForm from './forms/password-update-form';
+import ChangeEmailForm from './forms/change-email-form';
 
 const ProfileActionsMenu = () => {
     const [openPasswordUpdateModal, setOpenPasswordUpdateModal] =
         useState(false);
+    const [openChangeEmailModal, setOpenChangeEmailModal] = useState(false);
 
     return (
         <>
@@ -33,7 +35,9 @@ const ProfileActionsMenu = () => {
                         <UserPen />
                         Change profile picture & name
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem
+                        onClick={() => setOpenChangeEmailModal(true)}
+                    >
                         <Mail />
                         Change email
                     </DropdownMenuItem>
@@ -61,6 +65,18 @@ const ProfileActionsMenu = () => {
                 >
                     <PasswordUpdateForm
                         onClose={() => setOpenPasswordUpdateModal(false)}
+                    />
+                </UpdateModal>
+            )}
+            {openChangeEmailModal && (
+                <UpdateModal
+                    description="Enter the new email address you want to use for your account."
+                    title="Change your email"
+                    onOpenChange={setOpenChangeEmailModal}
+                    open={openChangeEmailModal}
+                >
+                    <ChangeEmailForm
+                        onClose={() => setOpenChangeEmailModal(false)}
                     />
                 </UpdateModal>
             )}
