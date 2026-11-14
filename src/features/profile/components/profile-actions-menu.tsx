@@ -15,12 +15,26 @@ import UpdateModal from './modals/update-modal';
 import PasswordUpdateForm from './forms/password-update-form';
 import ChangeEmailForm from './forms/change-email-form';
 import AccountDeleteForm from './forms/account-delete-form';
+import UserInfoUpdateForm from './forms/user-info-update-form';
 
-const ProfileActionsMenu = () => {
+interface ProfileActionsMenuProps {
+    currentImage?: string | null | undefined;
+    fileId?: string | null | undefined;
+    currentName: string;
+}
+
+const ProfileActionsMenu = ({
+    currentName,
+    currentImage,
+    fileId,
+}: ProfileActionsMenuProps) => {
     const [openPasswordUpdateModal, setOpenPasswordUpdateModal] =
         useState(false);
     const [openChangeEmailModal, setOpenChangeEmailModal] = useState(false);
     const [openAccountDeleteModal, setOpenAccountDeleteModal] = useState(false);
+    const [openUserBasicInfoUpdateModal, setOpenUserBasicInfoUpdateModal] =
+        useState(false);
+
     return (
         <>
             <DropdownMenu>
@@ -32,7 +46,9 @@ const ProfileActionsMenu = () => {
                 </DropdownMenuTrigger>
 
                 <DropdownMenuContent align="end" className="w-fit">
-                    <DropdownMenuItem>
+                    <DropdownMenuItem
+                        onClick={() => setOpenUserBasicInfoUpdateModal(true)}
+                    >
                         <UserPen />
                         Change profile picture & name
                     </DropdownMenuItem>
@@ -93,6 +109,21 @@ const ProfileActionsMenu = () => {
                 >
                     <AccountDeleteForm
                         onClose={() => setOpenAccountDeleteModal(false)}
+                    />
+                </UpdateModal>
+            )}
+            {openUserBasicInfoUpdateModal && (
+                <UpdateModal
+                    description="Change your name or profile picture."
+                    title="Edit your profile"
+                    onOpenChange={setOpenUserBasicInfoUpdateModal}
+                    open={openUserBasicInfoUpdateModal}
+                >
+                    <UserInfoUpdateForm
+                        onClose={() => setOpenUserBasicInfoUpdateModal(false)}
+                        currentName={currentName}
+                        currentImage={currentImage}
+                        fileId={fileId}
                     />
                 </UpdateModal>
             )}

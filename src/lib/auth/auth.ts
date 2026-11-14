@@ -19,6 +19,9 @@ export const auth = betterAuth({
         deleteUser: {
             enabled: true,
         },
+        additionalFields: {
+            imageId: { type: 'string', required: false },
+        },
     },
 
     emailAndPassword: {

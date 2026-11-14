@@ -32,8 +32,17 @@ export const passwordVerificationSchema = z.object({
     password: z.string(),
 });
 
+export const userBasicInfoSchema = z.object({
+    avatar: z
+        .object({ url: z.string().url(), fileId: z.string() })
+        .nullable()
+        .optional(),
+    name: z.string().optional(),
+});
+
 export type updatePasswordInput = z.infer<typeof updatePasswordSchema>;
 export type changeEmailInput = z.infer<typeof changeEmailSchema>;
 export type passwordVerificationInput = z.infer<
     typeof passwordVerificationSchema
 >;
+export type userBasicInfoInput = z.infer<typeof userBasicInfoSchema>;

@@ -11,8 +11,9 @@ interface ProfileHeaderCardProps {
     email: string;
     emailVerified: boolean;
     name: string;
-    image: string | null | undefined;
+    image?: string | null | undefined;
     stats: Stat[];
+    imageId?: string | null | undefined;
 }
 
 const ProfileHeaderCard = ({
@@ -22,12 +23,17 @@ const ProfileHeaderCard = ({
     name,
     image,
     stats,
+    imageId,
 }: ProfileHeaderCardProps) => {
     return (
         <div className="relative mt-4 overflow-hidden rounded-2xl border bg-card shadow-sm">
             <div className=" h-20 bg-linear-to-r from-blue-500/20 via-indigo-500/15 to-transparent" />
 
-            <ProfileActionsMenu />
+            <ProfileActionsMenu
+                currentName={name}
+                currentImage={image}
+                fileId={imageId}
+            />
 
             <div className="px-6 pb-6">
                 <div className="-mt-6.5 flex items-center justify-between gap-4">

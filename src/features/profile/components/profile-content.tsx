@@ -10,7 +10,8 @@ const ProfileContent = async () => {
 
     if (!session) redirect('/');
 
-    const { name, email, image, emailVerified, createdAt } = session.user;
+    const { name, email, image, emailVerified, createdAt, imageId } =
+        session.user;
     const stats = [
         { label: 'Properties', value: 0 },
         { label: 'Listed', value: 0 },
@@ -24,6 +25,7 @@ const ProfileContent = async () => {
                 email={email}
                 emailVerified={emailVerified}
                 image={image}
+                imageId={imageId}
                 memberSince={new Intl.DateTimeFormat('en-US', {
                     month: 'long',
                     year: 'numeric',

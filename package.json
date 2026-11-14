@@ -12,6 +12,8 @@
     "dependencies": {
         "@base-ui/react": "^1.9.0",
         "@hookform/resolvers": "^7.0.6",
+        "@imagekit/next": "^2.1.6",
+        "@tanstack/react-query": "^5.107.1",
         "better-auth": "^1.7.21",
         "class-variance-authority": "^0.7.1",
         "cn": "^0.5.2",
@@ -23,6 +25,7 @@
         "pg": "^8.23.1",
         "react": "19.3.0",
         "react-dom": "19.3.0",
+        "react-dropzone": "^20.2.0",
         "react-email": "^6.11.11",
         "react-hook-form": "^7.92.0",
         "shadcn": "^4.23.0",
