@@ -8,6 +8,8 @@ import { authClient } from '@/lib/auth/auth-client';
 import { Session } from '@/features/auth/types';
 import MobileMenuLinksSkeleton from '../skeletons/mobile-menu-link-skeleton';
 import { useRouter } from 'next/navigation';
+import { useAuthModalState } from '@/features/auth/hooks/use-auth-modal-state';
+import { Button } from '@/components/ui/button';
 
 interface MobileMenuLinksProps {
     isPending: boolean;
@@ -21,12 +23,27 @@ const MobileMenuLinks = ({
     session,
 }: MobileMenuLinksProps) => {
     const router = useRouter();
+    const { open: DialogOpen, isOpen: isDialogOPen } = useAuthModalState();
+
     if (isPending) {
         return <MobileMenuLinksSkeleton />;
     }
 
     if (!session) {
-        return <AuthModal className="w-full" size="lg" />;
+        return (
+            <>
+                <Button
+                    onClick={() => {
+                        DialogOpen();
+                    }}
+                    className="w-full"
+                >
+                    Join/Sign in
+                </Button>
+
+                {isDialogOPen && <AuthModal />}
+            </>
+        );
     }
     return (
         <div className="grid grid-cols-2 gap-4 w-full px-3">

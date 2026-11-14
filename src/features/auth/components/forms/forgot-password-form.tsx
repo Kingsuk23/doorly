@@ -26,7 +26,10 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
         handleSubmit,
         reset,
         formState: { errors, isSubmitting },
-    } = useForm({ resolver: zodResolver(forgotPasswordSchema) });
+    } = useForm({
+        resolver: zodResolver(forgotPasswordSchema),
+        mode: 'onChange',
+    });
 
     const onSubmit = async (data: forgotPasswordInput) => {
         const { error } = await authClient.requestPasswordReset({
@@ -52,38 +55,37 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
     };
 
     return (
-        <form className="mt-2" onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex flex-col gap-4">
-                <div className="flex flex-col gap-4">
-                    <div className="flex flex-col gap-2">
-                        <Label htmlFor="email" className="sr-only">
-                            Email
-                        </Label>
-                        <Input
-                            id="email"
-                            placeholder="Email address"
-                            aria-invalid={errors.email ? 'true' : 'false'}
-                            {...register('email')}
-                        />
-                    </div>
-
-                    <Button
-                        type="submit"
-                        className="w-full h-11"
-                        disabled={isSubmitting}
-                    >
-                        Send a password reset email
-                    </Button>
-                    <Button
-                        type="button"
-                        variant="outline"
-                        className="w-full h-11"
-                        onClick={() => setView('sign-in')}
-                    >
-                        Back
-                    </Button>
-                </div>
+        <form
+            className="mt-2 flex flex-col gap-4"
+            onSubmit={handleSubmit(onSubmit)}
+        >
+            <div className="flex flex-col gap-2">
+                <Label htmlFor="email" className="sr-only">
+                    Email
+                </Label>
+                <Input
+                    id="email"
+                    placeholder="Email address"
+                    aria-invalid={errors.email ? 'true' : 'false'}
+                    {...register('email')}
+                />
             </div>
+
+            <Button
+                type="submit"
+                className="w-full h-11"
+                disabled={isSubmitting}
+            >
+                Send a password reset email
+            </Button>
+            <Button
+                type="button"
+                variant="outline"
+                className="w-full h-11"
+                onClick={() => setView('sign-in')}
+            >
+                Back
+            </Button>
         </form>
     );
 };

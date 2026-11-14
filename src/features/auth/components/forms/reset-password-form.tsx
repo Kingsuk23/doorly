@@ -31,7 +31,10 @@ const ResetPasswordForm: React.FC<ResetPasswordProps> = ({ token, email }) => {
         handleSubmit,
         reset,
         formState: { errors, isSubmitting },
-    } = useForm({ resolver: zodResolver(resetPasswordSchema) });
+    } = useForm({
+        resolver: zodResolver(resetPasswordSchema),
+        mode: 'onChange',
+    });
 
     const onSubmit = async (data: resetPasswordInput) => {
         if (!token) {
@@ -77,54 +80,47 @@ const ResetPasswordForm: React.FC<ResetPasswordProps> = ({ token, email }) => {
     };
 
     return (
-        <form className="mt-2 max-w-md" onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex flex-col gap-4">
-                <div className="flex flex-col gap-4">
-                    <div className="flex flex-col gap-2">
-                        <Label htmlFor="password" className="sr-only">
-                            Password
-                        </Label>
-                        <div className="relative w-full">
-                            <Input
-                                type={show ? 'text' : 'password'}
-                                placeholder="Password"
-                                aria-invalid={
-                                    errors.password ? 'true' : 'false'
-                                }
-                                {...register('password')}
-                            />
-                            <Button
-                                variant="ghost"
-                                type="button"
-                                className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer p-0"
-                                onClick={() => setShow((prev) => !prev)}
-                            >
-                                {show ? (
-                                    <EyeClosed size={20} />
-                                ) : (
-                                    <Eye size={20} />
-                                )}
-                            </Button>
-                        </div>
-                        <p className="text-muted-foreground text-sm">
-                            Use 8 or more letters, numbers and symbols
-                        </p>
-                        {errors.password && (
-                            <p className="text-destructive text-sm">
-                                {errors.password.message}
-                            </p>
-                        )}
-                    </div>
-
+        <form
+            className="mt-2 max-w-md flex flex-col gap-4"
+            onSubmit={handleSubmit(onSubmit)}
+        >
+            <div className="flex flex-col gap-2">
+                <Label htmlFor="password" className="sr-only">
+                    Password
+                </Label>
+                <div className="relative w-full">
+                    <Input
+                        type={show ? 'text' : 'password'}
+                        placeholder="Password"
+                        aria-invalid={errors.password ? 'true' : 'false'}
+                        {...register('password')}
+                    />
                     <Button
-                        type="submit"
-                        className="w-full h-11"
-                        disabled={isSubmitting}
+                        variant="ghost"
+                        type="button"
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer p-0"
+                        onClick={() => setShow((prev) => !prev)}
                     >
-                        Reset Password
+                        {show ? <EyeClosed size={20} /> : <Eye size={20} />}
                     </Button>
                 </div>
+                <p className="text-muted-foreground text-sm">
+                    Use 8 or more letters, numbers and symbols
+                </p>
+                {errors.password && (
+                    <p className="text-destructive text-sm">
+                        {errors.password.message}
+                    </p>
+                )}
             </div>
+
+            <Button
+                type="submit"
+                className="w-full h-11"
+                disabled={isSubmitting}
+            >
+                Reset Password
+            </Button>
         </form>
     );
 };

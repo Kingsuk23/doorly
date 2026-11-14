@@ -1,5 +1,4 @@
 import LogoIcon from '@/components/icons/brand/logo-icon';
-import { Button } from '@/components/ui/button';
 import {
     Dialog,
     DialogContent,
@@ -15,21 +14,9 @@ import EmailSendMessage from './email-send-message';
 import { authClient } from '@/lib/auth/auth-client';
 import SignInForm from './forms/sign-in-form';
 import ForgotPasswordForm from './forms/forgot-password-form';
-interface AuthModalProps {
-    size?:
-        | 'default'
-        | 'xs'
-        | 'sm'
-        | 'lg'
-        | 'icon'
-        | 'icon-xs'
-        | 'icon-sm'
-        | 'icon-lg';
-    className?: string;
-}
 
-const AuthModal = ({ className, size }: AuthModalProps) => {
-    const { close, isOpen, open, view, setView, email, setEmail } =
+const AuthModal = () => {
+    const { close, isOpen, view, setView, email, setEmail } =
         useAuthModalState();
     const { data: session } = authClient.useSession();
 
@@ -40,46 +27,35 @@ const AuthModal = ({ className, size }: AuthModalProps) => {
     const { title, description } = getAuthViewText(view, email);
 
     return (
-        <>
-            <Button
-                onClick={() => {
-                    open();
-                }}
-                className={className}
-                size={size}
-            >
-                Join/Sign in
-            </Button>
-            <Dialog open={isOpen} onOpenChange={(open) => !open && close()}>
-                <DialogContent>
-                    <DialogHeader>
-                        <div className="rounded-lg bg-muted size-14 flex justify-center items-center">
-                            <LogoIcon width={32} height={32} />
-                        </div>
-                        <DialogTitle className="mt-2 text-2xl font-bold">
-                            {title}
-                        </DialogTitle>
-                        <DialogDescription>{description}</DialogDescription>
-                    </DialogHeader>
-                    {view === 'sign-in' && <SignInForm setView={setView} />}
-                    {view === 'sign-up' && (
-                        <SignUpForm
-                            redirectUrl="/"
-                            setView={setView}
-                            onEmailSent={setEmail}
-                        />
-                    )}
-                    {view === 'forgot' && (
-                        <ForgotPasswordForm onClose={close} setView={setView} />
-                    )}
-                    {view === 'verify-email' && (
-                        <EmailSendMessage onClose={close} email={email} />
-                    )}
+        <Dialog open={isOpen} onOpenChange={(open) => !open && close()}>
+            <DialogContent>
+                <DialogHeader>
+                    <div className="rounded-lg bg-muted size-14 flex justify-center items-center">
+                        <LogoIcon width={32} height={32} />
+                    </div>
+                    <DialogTitle className="mt-2 text-2xl font-bold">
+                        {title}
+                    </DialogTitle>
+                    <DialogDescription>{description}</DialogDescription>
+                </DialogHeader>
+                {view === 'sign-in' && <SignInForm setView={setView} />}
+                {view === 'sign-up' && (
+                    <SignUpForm
+                        redirectUrl="/"
+                        setView={setView}
+                        onEmailSent={setEmail}
+                    />
+                )}
+                {view === 'forgot' && (
+                    <ForgotPasswordForm onClose={close} setView={setView} />
+                )}
+                {view === 'verify-email' && (
+                    <EmailSendMessage onClose={close} email={email} />
+                )}
 
-                    <AuthLegalLinks />
-                </DialogContent>
-            </Dialog>
-        </>
+                <AuthLegalLinks />
+            </DialogContent>
+        </Dialog>
     );
 };
 

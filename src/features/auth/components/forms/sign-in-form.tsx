@@ -24,6 +24,7 @@ const SignInForm: React.FC<LoginFormProps> = ({ setView }) => {
         formState: { errors, isSubmitting },
     } = useForm({
         resolver: zodResolver(signinSchema),
+        mode: 'onChange',
     });
 
     const onSubmit = async (data: signinInput) => {
@@ -42,81 +43,74 @@ const SignInForm: React.FC<LoginFormProps> = ({ setView }) => {
     };
 
     return (
-        <form className="mt-2" onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex flex-col gap-4">
-                <div className="flex flex-col gap-4">
-                    <div className="flex flex-col gap-2">
-                        <Label htmlFor="email" className="sr-only">
-                            Email
-                        </Label>
-                        <Input
-                            placeholder="Email address"
-                            aria-invalid={errors.email ? 'true' : 'false'}
-                            {...register('email')}
-                        />
-                    </div>
-                    <div className="flex flex-col gap-2">
-                        <Label htmlFor="password" className="sr-only">
-                            Password
-                        </Label>
-                        <div className="relative w-full">
-                            <Input
-                                type={show ? 'text' : 'password'}
-                                placeholder="Password"
-                                aria-invalid={
-                                    errors.password ? 'true' : 'false'
-                                }
-                                {...register('password')}
-                            />
+        <form
+            className="mt-2 flex flex-col gap-4"
+            onSubmit={handleSubmit(onSubmit)}
+        >
+            <div className="flex flex-col gap-2">
+                <Label htmlFor="email" className="sr-only">
+                    Email
+                </Label>
+                <Input
+                    placeholder="Email address"
+                    aria-invalid={errors.email ? 'true' : 'false'}
+                    {...register('email')}
+                />
+            </div>
+            <div className="flex flex-col gap-2">
+                <Label htmlFor="password" className="sr-only">
+                    Password
+                </Label>
+                <div className="relative w-full">
+                    <Input
+                        type={show ? 'text' : 'password'}
+                        placeholder="Password"
+                        aria-invalid={errors.password ? 'true' : 'false'}
+                        {...register('password')}
+                    />
 
-                            <Button
-                                variant="ghost"
-                                type="button"
-                                className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer p-0"
-                                onClick={() => setShow((prev) => !prev)}
-                            >
-                                {show ? (
-                                    <EyeClosed size={20} />
-                                ) : (
-                                    <Eye size={20} />
-                                )}
-                            </Button>
-                        </div>
-                        <Button
-                            variant="link"
-                            type="button"
-                            className="h-auto self-start p-0 text-sm"
-                            onClick={() => setView('forgot')}
-                        >
-                            Forgotten your password?
-                        </Button>
-                    </div>
-                    {errors.root && (
-                        <div className="bg-destructive/10 rounded-md h-8 flex items-center text-destructive px-2">
-                            {errors.root.message}
-                        </div>
-                    )}
                     <Button
-                        type="submit"
-                        className="w-full h-11"
-                        size="lg"
-                        disabled={isSubmitting}
-                    >
-                        Sign in
-                    </Button>
-                </div>
-
-                <div className="flex items-center text-sm">
-                    <p>New to Doorly?</p>
-                    <Button
+                        variant="ghost"
                         type="button"
-                        variant="link"
-                        className="p-0 font-medium "
-                        onClick={() => setView('sign-up')}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer p-0"
+                        onClick={() => setShow((prev) => !prev)}
                     >
-                        Join for free
+                        {show ? <EyeClosed size={20} /> : <Eye size={20} />}
                     </Button>
                 </div>
+                <Button
+                    variant="link"
+                    type="button"
+                    className="h-auto self-start p-0 text-sm"
+                    onClick={() => setView('forgot')}
+                >
+                    Forgotten your password?
+                </Button>
+            </div>
+            {errors.root && (
+                <div className="bg-destructive/10 rounded-md h-8 flex items-center text-destructive px-2">
+                    {errors.root.message}
+                </div>
+            )}
+            <Button
+                type="submit"
+                className="w-full h-11"
+                size="lg"
+                disabled={isSubmitting}
+            >
+                Sign in
+            </Button>
+
+            <div className="flex items-center text-sm">
+                <p>New to Doorly?</p>
+                <Button
+                    type="button"
+                    variant="link"
+                    className="p-0 font-medium "
+                    onClick={() => setView('sign-up')}
+                >
+                    Join for free
+                </Button>
             </div>
         </form>
     );

@@ -4,6 +4,7 @@ import { getInitials } from '@/lib/get-initials';
 import { BadgeCheck, CalendarDays, Mail, Plus } from 'lucide-react';
 import { Stat } from '../types';
 import ProfileStats from './profile-stats';
+import ProfileActionsMenu from './profile-actions-menu';
 
 interface ProfileHeaderCardProps {
     memberSince: string;
@@ -25,6 +26,8 @@ const ProfileHeaderCard = ({
     return (
         <div className="relative mt-4 overflow-hidden rounded-2xl border bg-card shadow-sm">
             <div className=" h-20 bg-linear-to-r from-blue-500/20 via-indigo-500/15 to-transparent" />
+
+            <ProfileActionsMenu />
 
             <div className="px-6 pb-6">
                 <div className="-mt-6.5 flex items-center justify-between gap-4">

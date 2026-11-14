@@ -20,10 +20,12 @@ import { getInitials } from '@/lib/get-initials';
 import { AUTH_VISIBLE_LINKS } from '../constants/nav-links';
 import UserMenuSkeleton from '../skeletons/user-menu-skeleton';
 import { useRouter } from 'next/navigation';
+import { useAuthModalState } from '@/features/auth/hooks/use-auth-modal-state';
 
 const UserMenu = () => {
     const router = useRouter();
-    const [open, setOpen] = useState(false);
+    const [openDropdown, setOpenDropDown] = useState(false);
+    const { open: DialogOpen, isOpen: isDialogOPen } = useAuthModalState();
 
     const { data: session, isPending } = authClient.useSession();
 
@@ -31,12 +33,26 @@ const UserMenu = () => {
         return <UserMenuSkeleton />;
     }
 
-    if (!session) return <AuthModal />;
+    if (!session) {
+        return (
+            <>
+                <Button
+                    onClick={() => {
+                        DialogOpen();
+                    }}
+                >
+                    Join/Sign in
+                </Button>
+
+                {isDialogOPen && <AuthModal />}
+            </>
+        );
+    }
 
     const { name, email, image } = session.user;
 
     return (
-        <DropdownMenu open={open} onOpenChange={setOpen}>
+        <DropdownMenu open={openDropdown} onOpenChange={setOpenDropDown}>
             <DropdownMenuTrigger render={<Button variant="ghost" />}>
                 <span className="text-base">{name}</span>
                 <Avatar>
@@ -64,7 +80,7 @@ const UserMenu = () => {
                         key={label}
                         render={<Link href={href} />}
                         className="cursor-pointer"
-                        onClick={() => setOpen(false)}
+                        onClick={() => setOpenDropDown(false)}
                     >
                         {label}
                     </DropdownMenuItem>
@@ -78,7 +94,7 @@ const UserMenu = () => {
                         authClient.signOut({
                             fetchOptions: {
                                 onSuccess: () => {
-                                    setOpen(false);
+                                    setOpenDropDown(false);
                                     router.replace('/');
                                     router.refresh();
                                 },
