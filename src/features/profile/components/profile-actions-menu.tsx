@@ -14,12 +14,13 @@ import {
 import UpdateModal from './modals/update-modal';
 import PasswordUpdateForm from './forms/password-update-form';
 import ChangeEmailForm from './forms/change-email-form';
+import AccountDeleteForm from './forms/account-delete-form';
 
 const ProfileActionsMenu = () => {
     const [openPasswordUpdateModal, setOpenPasswordUpdateModal] =
         useState(false);
     const [openChangeEmailModal, setOpenChangeEmailModal] = useState(false);
-
+    const [openAccountDeleteModal, setOpenAccountDeleteModal] = useState(false);
     return (
         <>
             <DropdownMenu>
@@ -50,7 +51,10 @@ const ProfileActionsMenu = () => {
 
                     <DropdownMenuSeparator />
 
-                    <DropdownMenuItem variant="destructive">
+                    <DropdownMenuItem
+                        variant="destructive"
+                        onClick={() => setOpenAccountDeleteModal(true)}
+                    >
                         <Trash2 />
                         Delete profile
                     </DropdownMenuItem>
@@ -77,6 +81,18 @@ const ProfileActionsMenu = () => {
                 >
                     <ChangeEmailForm
                         onClose={() => setOpenChangeEmailModal(false)}
+                    />
+                </UpdateModal>
+            )}
+            {openAccountDeleteModal && (
+                <UpdateModal
+                    description="This permanently deletes your account and data. This cannot be undone."
+                    title="Delete your account"
+                    onOpenChange={setOpenAccountDeleteModal}
+                    open={openAccountDeleteModal}
+                >
+                    <AccountDeleteForm
+                        onClose={() => setOpenAccountDeleteModal(false)}
                     />
                 </UpdateModal>
             )}

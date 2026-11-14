@@ -30,6 +30,8 @@ const ChangeEmailForm = ({ onClose }: { onClose: () => void }) => {
             setError('root', {
                 message: error.message ?? 'Failed to change email',
             });
+
+            return;
         }
 
         toast.add({
@@ -46,7 +48,7 @@ const ChangeEmailForm = ({ onClose }: { onClose: () => void }) => {
         >
             <div className="flex flex-col gap-2">
                 <Label htmlFor="Email" className="sr-only">
-                    Old password
+                    Email
                 </Label>
 
                 <Input

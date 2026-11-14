@@ -28,5 +28,12 @@ export const changeEmailSchema = z.object({
     email: z.email(),
 });
 
+export const passwordVerificationSchema = z.object({
+    password: z.string(),
+});
+
 export type updatePasswordInput = z.infer<typeof updatePasswordSchema>;
 export type changeEmailInput = z.infer<typeof changeEmailSchema>;
+export type passwordVerificationInput = z.infer<
+    typeof passwordVerificationSchema
+>;
