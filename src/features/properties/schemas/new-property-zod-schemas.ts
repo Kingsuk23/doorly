@@ -24,5 +24,13 @@ export const sizeAndLayoutSchema = z.object({
     lot_size: z.string().optional(),
 });
 
+export const parkingAndSystemSchema = z.object({
+    cooling_type: z.string().optional(),
+    heating_type: z.string().optional(),
+    garage_spaces: z.number().optional(),
+    parking_spaces: z.number().optional(),
+});
+
 export type typeAndLocationInput = z.infer<typeof typeAndLocationSchema>;
 export type sizeAndLayoutInput = z.infer<typeof sizeAndLayoutSchema>;
+export type parkingAndSystemInput = z.infer<typeof parkingAndSystemSchema>;

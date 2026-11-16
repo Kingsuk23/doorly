@@ -16,6 +16,8 @@ import { auth } from '@/lib/auth/auth';
 import { and, eq } from 'drizzle-orm';
 import { headers } from 'next/headers';
 import {
+    parkingAndSystemInput,
+    parkingAndSystemSchema,
     sizeAndLayoutInput,
     sizeAndLayoutSchema,
     typeAndLocationSchema,
@@ -333,6 +335,60 @@ export const updatePropertyLayout = async ({
                 yearBuilt: build_year,
                 livingAreaSqft: living_area,
                 lotSizeSqft: lot_size,
+            })
+            .where(eq(property.id, id))
+            .returning();
+
+        return ok(update);
+    } catch (error) {
+        return handleError(error);
+    }
+};
+
+export const updatePropertyParking = async ({
+    body,
+    id,
+}: {
+    id: string;
+    body: parkingAndSystemInput;
+}) => {
+    try {
+        if (!id) throw new AppError('BAD_REQUEST', 'Property id is required');
+
+        const session = await auth.api.getSession({
+            headers: await headers(),
+        });
+        if (!session) throw new AppError('UNAUTHORIZED', 'Please sign in');
+
+        const [ableToUpdate] = await db
+            .select({ id: propertyMember.id })
+            .from(propertyMember)
+            .where(
+                and(
+                    eq(propertyMember.userId, session.user.id),
+                    eq(propertyMember.propertyId, id),
+                    eq(propertyMember.role, 'owner'),
+                ),
+            )
+            .limit(1);
+
+        if (!ableToUpdate) {
+            throw new AppError(
+                'FORBIDDEN',
+                'You do not have permission to edit this property',
+            );
+        }
+
+        const { cooling_type, garage_spaces, heating_type, parking_spaces } =
+            parkingAndSystemSchema.parse(body);
+
+        const [update] = await db
+            .update(property)
+            .set({
+                coolingType: cooling_type,
+                heatingType: heating_type,
+                garageSpaces: garage_spaces,
+                parkingSpaces: parking_spaces,
             })
             .where(eq(property.id, id))
             .returning();

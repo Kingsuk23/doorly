@@ -9,17 +9,20 @@ import { Button } from '@/components/ui/button';
 import { useTransition } from 'react';
 import { Loader } from 'lucide-react';
 import {
+    parkingAndSystemInput,
     sizeAndLayoutInput,
     typeAndLocationInput,
 } from '../schemas/new-property-zod-schemas';
 import {
     updatePropertyLayout,
     updatePropertyLocation,
+    updatePropertyParking,
 } from '../actions/property-actions';
 import { toast } from '@/components/ui/toast';
 import { markStepComplete } from '../actions/property-step-progress-active';
 import { useQueryClient } from '@tanstack/react-query';
 import SizeAndLayoutForm from './forms/size_and_layout_form';
+import ParkingAndSystemForm from './forms/parking-and-system-form';
 
 interface PropertyWizardProps {
     propertyId: string;
@@ -98,6 +101,11 @@ const PropertyWizard = ({ propertyId }: PropertyWizardProps) => {
         saveAndContinue(() =>
             updatePropertyLayout({ id: propertyId, body: values }),
         );
+
+    const handleParkingSubmit = (values: parkingAndSystemInput) =>
+        saveAndContinue(() =>
+            updatePropertyParking({ id: propertyId, body: values }),
+        );
     return (
         <div className="grid gap-8 p-4 md:grid-cols-[240px_1fr] md:gap-12 md:p-8">
             <WizardStepper currentIndex={stepIndex} onStepClick={goTo} />
@@ -125,6 +133,13 @@ const PropertyWizard = ({ propertyId }: PropertyWizardProps) => {
                             formId={step.id}
                             id={propertyId}
                             onSubmit={handleLayoutSubmit}
+                        />
+                    )}
+                    {step.id === 'parking_systems_c' && (
+                        <ParkingAndSystemForm
+                            formId={step.id}
+                            id={propertyId}
+                            onSubmit={handleParkingSubmit}
                         />
                     )}
                 </div>

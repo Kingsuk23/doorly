@@ -14,6 +14,7 @@
         "@hookform/resolvers": "^7.0.6",
         "@imagekit/next": "^2.1.6",
         "@tanstack/react-query": "^5.107.1",
+        "@tanstack/react-virtual": "^3.14.26",
         "better-auth": "^1.7.21",
         "class-variance-authority": "^0.7.1",
         "cn": "^0.5.2",
