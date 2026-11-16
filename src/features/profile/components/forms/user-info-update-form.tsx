@@ -152,7 +152,7 @@ const UserInfoUpdateForm = ({
 
             <Button
                 type="submit"
-                className="w-full h-11"
+                className="w-full h-10"
                 size="lg"
                 disabled={isSubmitting}
             >

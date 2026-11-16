@@ -32,7 +32,7 @@ const NotFound = () => {
 
                 <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
                     <Button
-                        className="h-11"
+                        className="h-10"
                         nativeButton={false}
                         render={<Link href="/" />}
                     >
@@ -42,7 +42,7 @@ const NotFound = () => {
 
                     <Button
                         variant="secondary"
-                        className="h-11"
+                        className="h-10"
                         nativeButton={false}
                         render={<a href="mailto:support@doorly.com" />}
                     >

@@ -116,7 +116,7 @@ const ResetPasswordForm: React.FC<ResetPasswordProps> = ({ token, email }) => {
 
             <Button
                 type="submit"
-                className="w-full h-11"
+                className="w-full h-10"
                 disabled={isSubmitting}
             >
                 Reset Password

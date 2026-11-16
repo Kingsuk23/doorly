@@ -80,7 +80,7 @@ const AccountDeleteForm = ({ onClose }: { onClose: () => void }) => {
             )}
             <Button
                 type="submit"
-                className="w-full h-11"
+                className="w-full h-10"
                 variant="destructive"
                 disabled={isSubmitting}
             >

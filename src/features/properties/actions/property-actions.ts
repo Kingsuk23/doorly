@@ -15,7 +15,11 @@ import { AppError, ok } from '@/lib/api/result';
 import { auth } from '@/lib/auth/auth';
 import { and, eq } from 'drizzle-orm';
 import { headers } from 'next/headers';
-import { typeAndLocationSchema } from '../schemas/new-property-zod-schemas';
+import {
+    sizeAndLayoutInput,
+    sizeAndLayoutSchema,
+    typeAndLocationSchema,
+} from '../schemas/new-property-zod-schemas';
 import { typeAndLocationUpdateType } from '../types';
 import { textSlugify } from '@/lib/slugify';
 import { propertyStepProgress } from '@/db/schemas/property-step-progress-db-schema';
@@ -270,6 +274,68 @@ export const updatePropertyLocation = async ({
 
             return updatedProperty;
         });
+
+        return ok(update);
+    } catch (error) {
+        return handleError(error);
+    }
+};
+
+export const updatePropertyLayout = async ({
+    body,
+    id,
+}: {
+    id: string;
+    body: sizeAndLayoutInput;
+}) => {
+    try {
+        if (!id) throw new AppError('BAD_REQUEST', 'Property id is required');
+
+        const session = await auth.api.getSession({
+            headers: await headers(),
+        });
+        if (!session) throw new AppError('UNAUTHORIZED', 'Please sign in');
+
+        const [ableToUpdate] = await db
+            .select({ id: propertyMember.id })
+            .from(propertyMember)
+            .where(
+                and(
+                    eq(propertyMember.userId, session.user.id),
+                    eq(propertyMember.propertyId, id),
+                    eq(propertyMember.role, 'owner'),
+                ),
+            )
+            .limit(1);
+
+        if (!ableToUpdate) {
+            throw new AppError(
+                'FORBIDDEN',
+                'You do not have permission to edit this property',
+            );
+        }
+
+        const {
+            bathrooms,
+            bedrooms,
+            build_year,
+            living_area,
+            floors,
+            lot_size,
+        } = sizeAndLayoutSchema.parse(body);
+
+        const [update] = await db
+            .update(property)
+            .set({
+                bathrooms: String(bathrooms),
+                bedrooms,
+                floors,
+                yearBuilt: build_year,
+                livingAreaSqft: living_area,
+                lotSizeSqft: lot_size,
+            })
+            .where(eq(property.id, id))
+            .returning();
 
         return ok(update);
     } catch (error) {

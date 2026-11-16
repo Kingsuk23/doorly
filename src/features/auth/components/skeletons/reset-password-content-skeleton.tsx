@@ -9,7 +9,7 @@ const ResetPasswordContentSkeleton = () => {
             <div className="mt-4 flex flex-col gap-4">
                 <Skeleton className="h-10 w-full" />
                 <Skeleton className="h-10 w-full" />
-                <Skeleton className="h-11 w-full" />
+                <Skeleton className="h-10 w-full" />
             </div>
         </main>
     );

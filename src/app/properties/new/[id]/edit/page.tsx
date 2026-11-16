@@ -1,5 +1,5 @@
 import NewPropertiesContent from '@/features/properties/components/new-properties-content';
-import WizardStepperSkeleton from '@/features/properties/components/skeleton/WizardStepperSkeleton';
+import WizardStepperSkeleton from '@/features/properties/components/skeleton/wizard-stepper-skeleton';
 import { Suspense } from 'react';
 
 const NewProperties = ({ params }: PageProps<'/properties/new/[id]/edit'>) => {

@@ -8,16 +8,25 @@ import WizardStepper from './wizard-stepper';
 import { Button } from '@/components/ui/button';
 import { useTransition } from 'react';
 import { Loader } from 'lucide-react';
-import { typeAndLocationInput } from '../schemas/new-property-zod-schemas';
-import { updatePropertyLocation } from '../actions/property-actions';
+import {
+    sizeAndLayoutInput,
+    typeAndLocationInput,
+} from '../schemas/new-property-zod-schemas';
+import {
+    updatePropertyLayout,
+    updatePropertyLocation,
+} from '../actions/property-actions';
 import { toast } from '@/components/ui/toast';
 import { markStepComplete } from '../actions/property-step-progress-active';
+import { useQueryClient } from '@tanstack/react-query';
+import SizeAndLayoutForm from './forms/size_and_layout_form';
 
 interface PropertyWizardProps {
     propertyId: string;
 }
 
 const PropertyWizard = ({ propertyId }: PropertyWizardProps) => {
+    const queryClient = useQueryClient();
     const router = useRouter();
     const searchParams = useSearchParams();
     const [isPending, startTransition] = useTransition();
@@ -39,13 +48,14 @@ const PropertyWizard = ({ propertyId }: PropertyWizardProps) => {
     const goNext = () => goTo(stepIndex + 1);
     const goBack = () => goTo(stepIndex - 1);
 
-    const handleSubmit = (values: typeAndLocationInput) => {
+    const saveAndContinue = (
+        save: () => Promise<
+            { success: true } | { success: false; error: { message: string } }
+        >,
+    ) => {
         startTransition(async () => {
             try {
-                const res = await updatePropertyLocation({
-                    id: propertyId,
-                    body: values,
-                });
+                const res = await save();
                 if (!res.success) {
                     toast.add({
                         type: 'error',
@@ -65,6 +75,11 @@ const PropertyWizard = ({ propertyId }: PropertyWizardProps) => {
                     });
                     return;
                 }
+
+                await queryClient.invalidateQueries({
+                    queryKey: ['get_property_by_member', propertyId],
+                });
+                goNext();
             } catch {
                 toast.add({
                     type: 'error',
@@ -72,9 +87,17 @@ const PropertyWizard = ({ propertyId }: PropertyWizardProps) => {
                 });
             }
         });
-        goNext();
     };
 
+    const handleSubmit = (values: typeAndLocationInput) =>
+        saveAndContinue(() =>
+            updatePropertyLocation({ id: propertyId, body: values }),
+        );
+
+    const handleLayoutSubmit = (values: sizeAndLayoutInput) =>
+        saveAndContinue(() =>
+            updatePropertyLayout({ id: propertyId, body: values }),
+        );
     return (
         <div className="grid gap-8 p-4 md:grid-cols-[240px_1fr] md:gap-12 md:p-8">
             <WizardStepper currentIndex={stepIndex} onStepClick={goTo} />
@@ -97,13 +120,20 @@ const PropertyWizard = ({ propertyId }: PropertyWizardProps) => {
                             onSubmit={handleSubmit}
                         />
                     )}
+                    {step.id === 'layout_c' && (
+                        <SizeAndLayoutForm
+                            formId={step.id}
+                            id={propertyId}
+                            onSubmit={handleLayoutSubmit}
+                        />
+                    )}
                 </div>
 
                 <div className="mt-10 flex items-center justify-between">
                     <Button
                         variant="outline"
                         onClick={goBack}
-                        disabled={isFirst}
+                        disabled={isFirst || isPending}
                     >
                         Back
                     </Button>

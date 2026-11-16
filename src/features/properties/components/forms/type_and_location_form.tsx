@@ -34,9 +34,10 @@ import {
 import { Input } from '@/components/ui/input';
 import { useQuery } from '@tanstack/react-query';
 import { getProperty } from '../../actions/property-actions';
-import TypeAndLocationFormSkeleton from '../skeleton/TypeAndLocationFormSkeleton';
+import TypeAndLocationFormSkeleton from '../skeleton/form-skeleton';
 import { getPropertyType } from '../../actions/property-type-actions';
 import React from 'react';
+import { useGetPropertyById } from '../../queries/use-property';
 
 interface TypeAndLocationFormProps {
     formId: string;
@@ -49,11 +50,7 @@ const TypeAndLocationForm = ({
     id,
     onSubmit,
 }: TypeAndLocationFormProps) => {
-    const { data: propertyData, isPending } = useQuery({
-        queryKey: ['get_property_by_member', id],
-        queryFn: () => getProperty(id),
-        enabled: !!id,
-    });
+    const { data: propertyData, isPending } = useGetPropertyById(id);
 
     const { data: propertyTypesData, isPending: isLoading } = useQuery({
         queryKey: ['get_property_type'],
@@ -102,6 +99,7 @@ const TypeAndLocationForm = ({
                   state_code: property.state?.code ?? '',
                   latitude: property.address?.latitude ?? undefined,
                   longitude: property.address?.longitude ?? undefined,
+                  parcel_number: property.property?.parcelNumber ?? '',
               }
             : undefined,
     });
@@ -217,7 +215,7 @@ const TypeAndLocationForm = ({
                                 id="street_address_1"
                                 placeholder="Street address"
                                 aria-invalid={!!errors.street_address_1}
-                                className="w-full h-11"
+                                className="w-full h-10"
                                 showTrigger={false}
                             />
                             <ComboboxContent>

@@ -43,7 +43,7 @@ const EmailSendMessage = ({ onClose, email }: EmailSendMessageProps) => {
 
     return (
         <div className=" flex flex-col gap-4">
-            <Button className="w-full h-11" onClick={onClose}>
+            <Button className="w-full h-10" onClick={onClose}>
                 Close
             </Button>
             <div className="flex items-center">

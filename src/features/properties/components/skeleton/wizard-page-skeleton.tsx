@@ -1,6 +1,6 @@
 import { Skeleton } from '@/components/ui/skeleton';
-import WizardStepperSkeleton from './WizardStepperSkeleton';
-import TypeAndLocationFormSkeleton from './TypeAndLocationFormSkeleton';
+import WizardStepperSkeleton from './wizard-stepper-skeleton';
+import TypeAndLocationFormSkeleton from './form-skeleton';
 
 const WizardPageSkeleton = () => (
     <div

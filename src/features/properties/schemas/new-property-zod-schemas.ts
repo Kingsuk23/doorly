@@ -15,4 +15,14 @@ export const typeAndLocationSchema = z.object({
     longitude: z.number().min(-180).max(180).optional(),
 });
 
+export const sizeAndLayoutSchema = z.object({
+    bedrooms: z.number(),
+    bathrooms: z.number(),
+    build_year: z.number(),
+    floors: z.number().optional(),
+    living_area: z.string(),
+    lot_size: z.string().optional(),
+});
+
 export type typeAndLocationInput = z.infer<typeof typeAndLocationSchema>;
+export type sizeAndLayoutInput = z.infer<typeof sizeAndLayoutSchema>;

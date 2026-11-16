@@ -73,7 +73,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
 
             <Button
                 type="submit"
-                className="w-full h-11"
+                className="w-full h-10"
                 disabled={isSubmitting}
             >
                 Send a password reset email
@@ -81,7 +81,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
             <Button
                 type="button"
                 variant="outline"
-                className="w-full h-11"
+                className="w-full h-10"
                 onClick={() => setView('sign-in')}
             >
                 Back
