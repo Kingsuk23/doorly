@@ -16,6 +16,8 @@ import { auth } from '@/lib/auth/auth';
 import { and, eq } from 'drizzle-orm';
 import { headers } from 'next/headers';
 import {
+    ownershipAndLegalInput,
+    ownershipAndLegalSchema,
     parkingAndSystemInput,
     parkingAndSystemSchema,
     sizeAndLayoutInput,
@@ -389,6 +391,59 @@ export const updatePropertyParking = async ({
                 heatingType: heating_type,
                 garageSpaces: garage_spaces,
                 parkingSpaces: parking_spaces,
+            })
+            .where(eq(property.id, id))
+            .returning();
+
+        return ok(update);
+    } catch (error) {
+        return handleError(error);
+    }
+};
+
+export const updatePropertyLegals = async ({
+    body,
+    id,
+}: {
+    id: string;
+    body: ownershipAndLegalInput;
+}) => {
+    try {
+        if (!id) throw new AppError('BAD_REQUEST', 'Property id is required');
+
+        const session = await auth.api.getSession({
+            headers: await headers(),
+        });
+        if (!session) throw new AppError('UNAUTHORIZED', 'Please sign in');
+
+        const [ableToUpdate] = await db
+            .select({ id: propertyMember.id })
+            .from(propertyMember)
+            .where(
+                and(
+                    eq(propertyMember.userId, session.user.id),
+                    eq(propertyMember.propertyId, id),
+                    eq(propertyMember.role, 'owner'),
+                ),
+            )
+            .limit(1);
+
+        if (!ableToUpdate) {
+            throw new AppError(
+                'FORBIDDEN',
+                'You do not have permission to edit this property',
+            );
+        }
+
+        const { hoa_name, owner_name, zoning } =
+            ownershipAndLegalSchema.parse(body);
+
+        const [update] = await db
+            .update(property)
+            .set({
+                hoaName: hoa_name,
+                ownerName: owner_name,
+                zoning: zoning,
             })
             .where(eq(property.id, id))
             .returning();

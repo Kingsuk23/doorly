@@ -31,6 +31,13 @@ export const parkingAndSystemSchema = z.object({
     parking_spaces: z.number().optional(),
 });
 
+export const ownershipAndLegalSchema = z.object({
+    owner_name: z.string().optional(),
+    hoa_name: z.string().optional(),
+    zoning: z.string().optional(),
+});
+
 export type typeAndLocationInput = z.infer<typeof typeAndLocationSchema>;
 export type sizeAndLayoutInput = z.infer<typeof sizeAndLayoutSchema>;
 export type parkingAndSystemInput = z.infer<typeof parkingAndSystemSchema>;
+export type ownershipAndLegalInput = z.infer<typeof ownershipAndLegalSchema>;

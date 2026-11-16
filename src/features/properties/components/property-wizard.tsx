@@ -9,12 +9,14 @@ import { Button } from '@/components/ui/button';
 import { useTransition } from 'react';
 import { Loader } from 'lucide-react';
 import {
+    ownershipAndLegalInput,
     parkingAndSystemInput,
     sizeAndLayoutInput,
     typeAndLocationInput,
 } from '../schemas/new-property-zod-schemas';
 import {
     updatePropertyLayout,
+    updatePropertyLegals,
     updatePropertyLocation,
     updatePropertyParking,
 } from '../actions/property-actions';
@@ -23,6 +25,7 @@ import { markStepComplete } from '../actions/property-step-progress-active';
 import { useQueryClient } from '@tanstack/react-query';
 import SizeAndLayoutForm from './forms/size_and_layout_form';
 import ParkingAndSystemForm from './forms/parking-and-system-form';
+import OwnerAndLegalForm from './forms/owner-and-legal-form';
 
 interface PropertyWizardProps {
     propertyId: string;
@@ -106,6 +109,11 @@ const PropertyWizard = ({ propertyId }: PropertyWizardProps) => {
         saveAndContinue(() =>
             updatePropertyParking({ id: propertyId, body: values }),
         );
+
+    const handleLegalSubmit = (values: ownershipAndLegalInput) =>
+        saveAndContinue(() =>
+            updatePropertyLegals({ id: propertyId, body: values }),
+        );
     return (
         <div className="grid gap-8 p-4 md:grid-cols-[240px_1fr] md:gap-12 md:p-8">
             <WizardStepper currentIndex={stepIndex} onStepClick={goTo} />
@@ -140,6 +148,13 @@ const PropertyWizard = ({ propertyId }: PropertyWizardProps) => {
                             formId={step.id}
                             id={propertyId}
                             onSubmit={handleParkingSubmit}
+                        />
+                    )}
+                    {step.id === 'ownership_legal_c' && (
+                        <OwnerAndLegalForm
+                            formId={step.id}
+                            id={propertyId}
+                            onSubmit={handleLegalSubmit}
                         />
                     )}
                 </div>
