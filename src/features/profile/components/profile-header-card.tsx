@@ -1,3 +1,5 @@
+'use client';
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { getInitials } from '@/lib/get-initials';
@@ -5,6 +7,9 @@ import { BadgeCheck, CalendarDays, Mail, Plus } from 'lucide-react';
 import { Stat } from '../types';
 import ProfileStats from './profile-stats';
 import ProfileActionsMenu from './profile-actions-menu';
+import { useRouter } from 'next/navigation';
+import { createPropertyDraft } from '@/features/properties/actions/property-actions';
+import { toast } from '@/components/ui/toast';
 
 interface ProfileHeaderCardProps {
     memberSince: string;
@@ -25,6 +30,18 @@ const ProfileHeaderCard = ({
     stats,
     imageId,
 }: ProfileHeaderCardProps) => {
+    const router = useRouter();
+
+    const handleCreateProperty = async () => {
+        const res = await createPropertyDraft();
+        if (!res.success) {
+            toast.add({ type: 'error', description: res.error.message });
+            return;
+        }
+
+        router.push(`/properties/new/${res.data.id}/edit?step=location_c`);
+    };
+
     return (
         <div className="relative mt-4 overflow-hidden rounded-2xl border bg-card shadow-sm">
             <div className=" h-20 bg-linear-to-r from-blue-500/20 via-indigo-500/15 to-transparent" />
@@ -44,7 +61,7 @@ const ProfileHeaderCard = ({
                         </AvatarFallback>
                     </Avatar>
 
-                    <Button>
+                    <Button onClick={handleCreateProperty}>
                         <Plus className="size-4" />
                         <span className="hidden sm:inline">Add property</span>
                     </Button>

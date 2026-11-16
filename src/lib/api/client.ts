@@ -8,7 +8,6 @@ export async function fetchApi<T>(
 
     try {
         res = await fetch(url, init);
-        console.log(res);
     } catch (error) {
         if (error instanceof DOMException && error.name === 'AbortError') {
             throw error;

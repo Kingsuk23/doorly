@@ -8,6 +8,12 @@ export default defineConfig({
         './src/db/schemas/account-db-schema.ts',
         './src/db/schemas/session-db-schema.ts',
         './src/db/schemas/verification-db-schema.ts',
+        './src/db/schemas/property-type-db-schema.ts',
+        './src/db/schemas/property-step-progress-db-schema.ts',
+        './src/db/schemas/property-member-db-schema.ts',
+        './src/db/schemas/property-db-schema.ts',
+        './src/db/schemas/address-db-schema.ts',
+        './src/db/schemas/location-db-schema.ts',
     ],
     dialect: 'postgresql',
     dbCredentials: {
