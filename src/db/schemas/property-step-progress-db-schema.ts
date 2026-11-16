@@ -7,6 +7,7 @@ export const propertyStepsEnum = pgEnum('property_steps_enum', [
     'parking_systems_c',
     'ownership_legal_c',
     'description_c',
+    'review_publish_c',
 ]);
 
 export const propertyStepProgress = pgTable(

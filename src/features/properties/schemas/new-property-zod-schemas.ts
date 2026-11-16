@@ -37,7 +37,12 @@ export const ownershipAndLegalSchema = z.object({
     zoning: z.string().optional(),
 });
 
+export const descriptionSchema = z.object({
+    description: z.string().optional(),
+});
+
 export type typeAndLocationInput = z.infer<typeof typeAndLocationSchema>;
 export type sizeAndLayoutInput = z.infer<typeof sizeAndLayoutSchema>;
 export type parkingAndSystemInput = z.infer<typeof parkingAndSystemSchema>;
 export type ownershipAndLegalInput = z.infer<typeof ownershipAndLegalSchema>;
+export type descriptionInput = z.infer<typeof descriptionSchema>;

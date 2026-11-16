@@ -16,6 +16,8 @@ import { auth } from '@/lib/auth/auth';
 import { and, eq } from 'drizzle-orm';
 import { headers } from 'next/headers';
 import {
+    descriptionInput,
+    descriptionSchema,
     ownershipAndLegalInput,
     ownershipAndLegalSchema,
     parkingAndSystemInput,
@@ -26,7 +28,7 @@ import {
 } from '../schemas/new-property-zod-schemas';
 import { typeAndLocationUpdateType } from '../types';
 import { textSlugify } from '@/lib/slugify';
-import { propertyStepProgress } from '@/db/schemas/property-step-progress-db-schema';
+import { propertyType } from '@/db/schemas/property-type-db-schema';
 
 export const createPropertyDraft = async () => {
     try {
@@ -62,7 +64,15 @@ export const getProperty = async (id: string) => {
         if (!session) throw new AppError('UNAUTHORIZED', 'Please sign in');
 
         const [foundProperty] = await db
-            .select({ property, address, city, state, country, postalCode })
+            .select({
+                property,
+                address,
+                city,
+                state,
+                country,
+                postalCode,
+                propertyType,
+            })
             .from(property)
             .innerJoin(
                 propertyMember,
@@ -76,6 +86,10 @@ export const getProperty = async (id: string) => {
             .leftJoin(state, eq(state.id, city.stateId))
             .leftJoin(country, eq(country.id, state.countryId))
             .leftJoin(postalCode, eq(postalCode.id, address.postalCodeId))
+            .leftJoin(
+                propertyType,
+                eq(propertyType.id, property.propertyTypeId),
+            )
             .where(eq(property.id, id))
             .limit(1);
 
@@ -444,6 +458,106 @@ export const updatePropertyLegals = async ({
                 hoaName: hoa_name,
                 ownerName: owner_name,
                 zoning: zoning,
+            })
+            .where(eq(property.id, id))
+            .returning();
+
+        return ok(update);
+    } catch (error) {
+        return handleError(error);
+    }
+};
+
+export const updatePropertyDescription = async ({
+    body,
+    id,
+}: {
+    id: string;
+    body: descriptionInput;
+}) => {
+    try {
+        if (!id) throw new AppError('BAD_REQUEST', 'Property id is required');
+
+        const session = await auth.api.getSession({
+            headers: await headers(),
+        });
+        if (!session) throw new AppError('UNAUTHORIZED', 'Please sign in');
+
+        const [ableToUpdate] = await db
+            .select({ id: propertyMember.id })
+            .from(propertyMember)
+            .where(
+                and(
+                    eq(propertyMember.userId, session.user.id),
+                    eq(propertyMember.propertyId, id),
+                    eq(propertyMember.role, 'owner'),
+                ),
+            )
+            .limit(1);
+
+        if (!ableToUpdate) {
+            throw new AppError(
+                'FORBIDDEN',
+                'You do not have permission to edit this property',
+            );
+        }
+
+        const { description } = descriptionSchema.parse(body);
+
+        const [update] = await db
+            .update(property)
+            .set({
+                description,
+            })
+            .where(eq(property.id, id))
+            .returning();
+
+        return ok(update);
+    } catch (error) {
+        return handleError(error);
+    }
+};
+
+export const updatePropertyReleaseStatus = async ({
+    body,
+    id,
+}: {
+    id: string;
+    body: { releaseStatus: 'draft' | 'hidden' | 'publish' };
+}) => {
+    try {
+        if (!id) throw new AppError('BAD_REQUEST', 'Property id is required');
+
+        const session = await auth.api.getSession({
+            headers: await headers(),
+        });
+        if (!session) throw new AppError('UNAUTHORIZED', 'Please sign in');
+
+        const [ableToUpdate] = await db
+            .select({ id: propertyMember.id })
+            .from(propertyMember)
+            .where(
+                and(
+                    eq(propertyMember.userId, session.user.id),
+                    eq(propertyMember.propertyId, id),
+                    eq(propertyMember.role, 'owner'),
+                ),
+            )
+            .limit(1);
+
+        if (!ableToUpdate) {
+            throw new AppError(
+                'FORBIDDEN',
+                'You do not have permission to edit this property',
+            );
+        }
+
+        const { releaseStatus } = body;
+
+        const [update] = await db
+            .update(property)
+            .set({
+                releaseStatus,
             })
             .where(eq(property.id, id))
             .returning();
