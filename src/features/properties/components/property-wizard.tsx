@@ -24,7 +24,7 @@ import {
     updatePropertyReleaseStatus,
 } from '../actions/property-actions';
 import { toast } from '@/components/ui/toast';
-import { markStepComplete } from '../actions/property-step-progress-active';
+import { updateStep } from '../actions/property-step-progress-active';
 import { useQueryClient } from '@tanstack/react-query';
 import SizeAndLayoutForm from './forms/size_and_layout_form';
 import ParkingAndSystemForm from './forms/parking-and-system-form';
@@ -75,7 +75,7 @@ const PropertyWizard = ({ propertyId }: PropertyWizardProps) => {
                     return;
                 }
 
-                const stepRes = await markStepComplete(
+                const stepRes = await updateStep(
                     propertyId,
                     step.id as StepIdType,
                 );
@@ -115,7 +115,7 @@ const PropertyWizard = ({ propertyId }: PropertyWizardProps) => {
                     return;
                 }
 
-                const stepRes = await markStepComplete(
+                const stepRes = await updateStep(
                     propertyId,
                     step.id as StepIdType,
                 );

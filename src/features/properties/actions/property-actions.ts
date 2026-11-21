@@ -13,7 +13,7 @@ import { propertyMember } from '@/db/schemas/property-member-db-schema';
 import { handleError } from '@/lib/api/response';
 import { AppError, ok } from '@/lib/api/result';
 import { auth } from '@/lib/auth/auth';
-import { and, eq } from 'drizzle-orm';
+import { and, count, eq } from 'drizzle-orm';
 import { headers } from 'next/headers';
 import {
     descriptionInput,
@@ -29,6 +29,8 @@ import {
 import { typeAndLocationUpdateType } from '../types';
 import { textSlugify } from '@/lib/slugify';
 import { propertyType } from '@/db/schemas/property-type-db-schema';
+import { requireSession } from '@/lib/auth/require-session';
+import { propertyStepProgress } from '@/db/schemas/property-step-progress-db-schema';
 
 export const createPropertyDraft = async () => {
     try {
@@ -109,11 +111,7 @@ export const updatePropertyLocation = async ({
 }: typeAndLocationUpdateType) => {
     try {
         if (!id) throw new AppError('BAD_REQUEST', 'Property id is required');
-
-        const session = await auth.api.getSession({
-            headers: await headers(),
-        });
-        if (!session) throw new AppError('UNAUTHORIZED', 'Please sign in');
+        const session = await requireSession();
 
         const [ableToUpdate] = await db
             .select({ id: propertyMember.id })
@@ -309,10 +307,7 @@ export const updatePropertyLayout = async ({
     try {
         if (!id) throw new AppError('BAD_REQUEST', 'Property id is required');
 
-        const session = await auth.api.getSession({
-            headers: await headers(),
-        });
-        if (!session) throw new AppError('UNAUTHORIZED', 'Please sign in');
+        const session = await requireSession();
 
         const [ableToUpdate] = await db
             .select({ id: propertyMember.id })
@@ -371,10 +366,7 @@ export const updatePropertyParking = async ({
     try {
         if (!id) throw new AppError('BAD_REQUEST', 'Property id is required');
 
-        const session = await auth.api.getSession({
-            headers: await headers(),
-        });
-        if (!session) throw new AppError('UNAUTHORIZED', 'Please sign in');
+        const session = await requireSession();
 
         const [ableToUpdate] = await db
             .select({ id: propertyMember.id })
@@ -425,10 +417,7 @@ export const updatePropertyLegals = async ({
     try {
         if (!id) throw new AppError('BAD_REQUEST', 'Property id is required');
 
-        const session = await auth.api.getSession({
-            headers: await headers(),
-        });
-        if (!session) throw new AppError('UNAUTHORIZED', 'Please sign in');
+        const session = await requireSession();
 
         const [ableToUpdate] = await db
             .select({ id: propertyMember.id })
@@ -478,10 +467,7 @@ export const updatePropertyDescription = async ({
     try {
         if (!id) throw new AppError('BAD_REQUEST', 'Property id is required');
 
-        const session = await auth.api.getSession({
-            headers: await headers(),
-        });
-        if (!session) throw new AppError('UNAUTHORIZED', 'Please sign in');
+        const session = await requireSession();
 
         const [ableToUpdate] = await db
             .select({ id: propertyMember.id })
@@ -528,10 +514,7 @@ export const updatePropertyReleaseStatus = async ({
     try {
         if (!id) throw new AppError('BAD_REQUEST', 'Property id is required');
 
-        const session = await auth.api.getSession({
-            headers: await headers(),
-        });
-        if (!session) throw new AppError('UNAUTHORIZED', 'Please sign in');
+        const session = await requireSession();
 
         const [ableToUpdate] = await db
             .select({ id: propertyMember.id })
@@ -572,10 +555,7 @@ export const deleteProperty = async (id: string) => {
     try {
         if (!id) throw new AppError('BAD_REQUEST', 'Property id is required');
 
-        const session = await auth.api.getSession({
-            headers: await headers(),
-        });
-        if (!session) throw new AppError('UNAUTHORIZED', 'Please sign in');
+        const session = await requireSession();
 
         const [ableToDelete] = await db
             .select({ id: propertyMember.id })
@@ -602,6 +582,71 @@ export const deleteProperty = async (id: string) => {
             .returning({ id: property.id });
 
         return ok(deleted);
+    } catch (error) {
+        return handleError(error);
+    }
+};
+
+export const getPropertyCount = async () => {
+    try {
+        const session = await requireSession();
+
+        const [row] = await db
+            .select({ value: count() })
+            .from(propertyMember)
+            .innerJoin(property, eq(property.id, propertyMember.propertyId))
+            .where(
+                and(
+                    eq(propertyMember.userId, session.user.id),
+                    eq(propertyMember.role, 'owner'),
+                ),
+            )
+            .limit(1);
+
+        return ok(row.value);
+    } catch (error) {
+        return handleError(error);
+    }
+};
+
+export const getPropertiesByUser = async () => {
+    try {
+        const session = await requireSession();
+
+        const properties = await db
+            .select({
+                id: property.id,
+                property_type: propertyType.name,
+                status: property.releaseStatus,
+
+                bedrooms: property.bedrooms,
+
+                bathrooms: property.bathrooms,
+                garage: property.garageSpaces,
+                area_size: property.livingAreaSqft,
+                created_at: property.createdAt,
+                build_year: property.yearBuilt,
+                stepId: propertyStepProgress.stepId,
+            })
+            .from(property)
+            .innerJoin(
+                propertyMember,
+                and(
+                    eq(propertyMember.propertyId, property.id),
+                    eq(propertyMember.userId, session.user.id),
+                    eq(propertyMember.role, 'owner'),
+                ),
+            )
+            .leftJoin(
+                propertyType,
+                eq(propertyType.id, property.propertyTypeId),
+            )
+            .leftJoin(
+                propertyStepProgress,
+                eq(propertyStepProgress.propertyId, property.id),
+            );
+
+        return ok(properties);
     } catch (error) {
         return handleError(error);
     }
