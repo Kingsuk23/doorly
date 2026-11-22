@@ -16,6 +16,10 @@ export const relations = defineRelations(schemas, (r) => ({
             from: r.user.id,
             to: r.propertyMember.userId,
         }),
+        agent: r.one.agent({
+            from: r.user.id,
+            to: r.agent.userId,
+        }),
     },
     session: {
         user: r.one.user({
@@ -138,6 +142,24 @@ export const relations = defineRelations(schemas, (r) => ({
         property: r.one.property({
             from: r.address.id,
             to: r.property.addressId,
+        }),
+    },
+
+    agent: {
+        user: r.one.user({
+            from: r.agent.userId,
+            to: r.user.id,
+        }),
+        broker: r.one.broker({
+            from: r.agent.brokerId,
+            to: r.broker.id,
+        }),
+    },
+
+    broker: {
+        agent: r.many.agent({
+            from: r.broker.id,
+            to: r.agent.brokerId,
         }),
     },
 }));

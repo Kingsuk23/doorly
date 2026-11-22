@@ -19,8 +19,6 @@ import {
     type propertiesDataTableFeaturesType,
     propertiesDataTableFeatures,
 } from '../../services/properties-data-table-features';
-import { Button } from '@/components/ui/button';
-import { cn } from 'cn';
 import Pagination from '@/features/pagination/components/pagination';
 import { useState } from 'react';
 

@@ -33,10 +33,8 @@ import {
 } from '@/features/properties/schemas/new-property-zod-schemas';
 import { Input } from '@/components/ui/input';
 import { useQuery } from '@tanstack/react-query';
-import { getProperty } from '../../actions/property-actions';
 import TypeAndLocationFormSkeleton from '../skeleton/form-skeleton';
 import { getPropertyType } from '../../actions/property-type-actions';
-import React from 'react';
 import { useGetPropertyById } from '../../queries/use-property';
 
 interface TypeAndLocationFormProps {

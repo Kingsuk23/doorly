@@ -9,6 +9,7 @@ export const useAuthModalState = () => {
     const open = useAuthModal((state) => state.open);
     const close = useAuthModal((state) => state.close);
     const url = useAuthModal((state) => state.url);
+    const setRedirectUrl = useAuthModal((state) => state.setRedirectUrl);
 
     return {
         isOpen,
@@ -19,5 +20,6 @@ export const useAuthModalState = () => {
         url,
         email,
         setEmail,
+        setRedirectUrl,
     };
 };

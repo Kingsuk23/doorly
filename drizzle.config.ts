@@ -14,6 +14,8 @@ export default defineConfig({
         './src/db/schemas/property-db-schema.ts',
         './src/db/schemas/address-db-schema.ts',
         './src/db/schemas/location-db-schema.ts',
+        './src/db/schemas/agent-db-schema.ts',
+        './src/db/schemas/broker-db-schema.ts',
     ],
     dialect: 'postgresql',
     dbCredentials: {

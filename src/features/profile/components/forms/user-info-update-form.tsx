@@ -15,8 +15,7 @@ import { useRouter } from 'next/navigation';
 import { deleteImageKitFile } from '@/features/dropzone/services/image-kit-delete-file';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { getInitials } from '@/lib/get-initials';
-import UploadButton from '@/features/dropzone/components/upload-button';
-import { PenIcon, Trash } from 'lucide-react';
+import { Trash } from 'lucide-react';
 
 interface UserInfoUpdateFormProps {
     onClose: () => void;
@@ -104,7 +103,7 @@ const UserInfoUpdateForm = ({
                                 <div className="flex flex-1 flex-col gap-2">
                                     <Dropzone
                                         label="avatar"
-                                        folder="/doorly/avatar"
+                                        folder="/doorly/avatar/profile"
                                         onUploaded={(media) =>
                                             field.onChange({
                                                 url: media.url,
@@ -119,11 +118,19 @@ const UserInfoUpdateForm = ({
                                             variant="destructive"
                                             size="sm"
                                             onClick={async () => {
-                                                await deleteImageKitFile(
-                                                    field.value
-                                                        ?.fileId as string,
-                                                );
-                                                field.onChange(null);
+                                                try {
+                                                    await deleteImageKitFile(
+                                                        field.value
+                                                            ?.fileId as string,
+                                                    );
+                                                    field.onChange(null);
+                                                } catch {
+                                                    toast.add({
+                                                        type: 'error',
+                                                        description:
+                                                            'Could not remove image',
+                                                    });
+                                                }
                                             }}
                                         >
                                             <Trash /> Remove

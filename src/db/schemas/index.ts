@@ -1,5 +1,7 @@
 import { account } from './account-db-schema';
 import { address } from './address-db-schema';
+import { agent } from './agent-db-schema';
+import { broker } from './broker-db-schema';
 import { city, country, postalCode, state } from './location-db-schema';
 import { property } from './property-db-schema';
 import { propertyMember } from './property-member-db-schema';
@@ -23,4 +25,6 @@ export const schemas = {
     state,
     city,
     postalCode,
+    broker,
+    agent,
 };
