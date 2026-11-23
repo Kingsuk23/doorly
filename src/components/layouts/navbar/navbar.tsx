@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import Logo from '../../icons/brand/logo';
-import DesktopNav from './desktop/desktop-nav';
-import MobileNav from './mobile/mobile-nav';
+import NavbarActionsSkeleton from './skeletons/navbar-actions-skeleton';
+import { Suspense } from 'react';
+import NavbarActions from './navbar-actions';
 
 const Navbar = () => {
     return (
@@ -13,8 +14,9 @@ const Navbar = () => {
                 <Link href="/" aria-label="Home" className="shrink-0">
                     <Logo height={42} />
                 </Link>
-                <DesktopNav />
-                <MobileNav />
+                <Suspense fallback={<NavbarActionsSkeleton />}>
+                    <NavbarActions />
+                </Suspense>
             </nav>
         </header>
     );

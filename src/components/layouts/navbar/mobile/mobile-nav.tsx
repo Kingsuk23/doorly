@@ -11,7 +11,11 @@ import MobileUserMenu from './mobile-user-menu';
 
 const MENU_ID = 'mobile-menu';
 
-const MobileMenu = () => {
+interface MobileNavProps {
+    agentId: string | null;
+}
+
+const MobileMenu = ({ agentId }: MobileNavProps) => {
     const [open, setOpen] = useState<boolean>(false);
 
     return (
@@ -38,7 +42,7 @@ const MobileMenu = () => {
                 )}
                 id={MENU_ID}
             >
-                <MobileUserMenu setOpen={setOpen} />
+                <MobileUserMenu setOpen={setOpen} agentId={agentId} />
                 <hr className="border-neutral-200" />
 
                 <ul className="flex flex-col mt-4">

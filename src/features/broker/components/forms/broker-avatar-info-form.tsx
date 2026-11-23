@@ -9,8 +9,7 @@ import {
 import { brokerFormValues } from '../../types';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { deleteImageKitFile } from '@/features/dropzone/services/image-kit-delete-file';
-import { ArrowLeft, Loader, Trash } from 'lucide-react';
+import { ArrowLeft, Loader } from 'lucide-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ListABroker } from '../../actions/broker-actions';
 import { toast } from '@/components/ui/toast';
@@ -107,35 +106,6 @@ const BrokerAvatarInfoForm = ({
                                         }}
                                         fileId={avatar.fileId ?? undefined}
                                     />
-
-                                    {avatar.url && (
-                                        <Button
-                                            type="button"
-                                            variant="destructive"
-                                            size="sm"
-                                            onClick={async () => {
-                                                try {
-                                                    if (avatar.fileId)
-                                                        await deleteImageKitFile(
-                                                            avatar.fileId,
-                                                        );
-                                                    field.onChange({
-                                                        url: '',
-                                                        fileId: '',
-                                                    });
-                                                    setAvatarId('');
-                                                } catch {
-                                                    toast.add({
-                                                        type: 'error',
-                                                        description:
-                                                            'Could not remove image',
-                                                    });
-                                                }
-                                            }}
-                                        >
-                                            <Trash /> Remove
-                                        </Button>
-                                    )}
                                 </div>
                             </div>
                         );

@@ -18,7 +18,7 @@ const AgentCreationPanel = () => {
             setRedirectUrl('/join-as-agent');
             open('sign-in');
         }
-    }, [isPending, session, open, setRedirectUrl]);
+    }, [session, open, setRedirectUrl]);
 
     if (isPending) {
         return <AgentApplyFormSkeleton />;

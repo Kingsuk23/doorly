@@ -22,10 +22,18 @@ import UserMenuSkeleton from '../skeletons/user-menu-skeleton';
 import { useRouter } from 'next/navigation';
 import { useAuthModalState } from '@/features/auth/hooks/use-auth-modal-state';
 
-const UserMenu = () => {
+interface UserMenuProps {
+    agentId: string | null;
+}
+
+const UserMenu = ({ agentId }: UserMenuProps) => {
     const router = useRouter();
     const [openDropdown, setOpenDropDown] = useState(false);
-    const { open: DialogOpen, isOpen: isDialogOPen } = useAuthModalState();
+    const {
+        open: DialogOpen,
+        isOpen: isDialogOPen,
+        close,
+    } = useAuthModalState();
 
     const { data: session, isPending } = authClient.useSession();
 
@@ -86,6 +94,15 @@ const UserMenu = () => {
                     </DropdownMenuItem>
                 ))}
 
+                {agentId && (
+                    <DropdownMenuItem
+                        render={<Link href="agent-profile" />}
+                        className="cursor-pointer"
+                        onClick={() => setOpenDropDown(false)}
+                    >
+                        Agent profile
+                    </DropdownMenuItem>
+                )}
                 <DropdownMenuSeparator />
 
                 <DropdownMenuItem
@@ -94,6 +111,7 @@ const UserMenu = () => {
                         authClient.signOut({
                             fetchOptions: {
                                 onSuccess: () => {
+                                    close();
                                     setOpenDropDown(false);
                                     router.replace('/');
                                     router.refresh();

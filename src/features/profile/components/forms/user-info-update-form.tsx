@@ -12,16 +12,15 @@ import {
 import { authClient } from '@/lib/auth/auth-client';
 import { toast } from '@/components/ui/toast';
 import { useRouter } from 'next/navigation';
-import { deleteImageKitFile } from '@/features/dropzone/services/image-kit-delete-file';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { getInitials } from '@/lib/get-initials';
-import { Trash } from 'lucide-react';
 
 interface UserInfoUpdateFormProps {
     onClose: () => void;
     currentImage?: string | null | undefined;
     currentName: string;
     fileId?: string | null | undefined;
+    setAvatarId: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const UserInfoUpdateForm = ({
@@ -29,6 +28,7 @@ const UserInfoUpdateForm = ({
     currentName,
     currentImage = '',
     fileId,
+    setAvatarId,
 }: UserInfoUpdateFormProps) => {
     const router = useRouter();
 
@@ -104,38 +104,14 @@ const UserInfoUpdateForm = ({
                                     <Dropzone
                                         label="avatar"
                                         folder="/doorly/avatar/profile"
-                                        onUploaded={(media) =>
+                                        onUploaded={(media) => {
                                             field.onChange({
                                                 url: media.url,
                                                 fileId: media.fileId,
-                                            })
-                                        }
+                                            });
+                                            setAvatarId(media.fileId);
+                                        }}
                                     />
-
-                                    {shownUrl && (
-                                        <Button
-                                            type="button"
-                                            variant="destructive"
-                                            size="sm"
-                                            onClick={async () => {
-                                                try {
-                                                    await deleteImageKitFile(
-                                                        field.value
-                                                            ?.fileId as string,
-                                                    );
-                                                    field.onChange(null);
-                                                } catch {
-                                                    toast.add({
-                                                        type: 'error',
-                                                        description:
-                                                            'Could not remove image',
-                                                    });
-                                                }
-                                            }}
-                                        >
-                                            <Trash /> Remove
-                                        </Button>
-                                    )}
                                 </div>
                             </div>
                         );

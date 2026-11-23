@@ -2,8 +2,13 @@ import Link from 'next/link';
 
 import { NAV_LINKS } from '../constants/nav-links';
 import UserMenu from './user-menu';
+import { Button } from '@/components/ui/button';
 
-const DesktopNav = () => {
+interface DesktopNavProps {
+    agentId: string | null;
+}
+
+const DesktopNav = ({ agentId }: DesktopNavProps) => {
     return (
         <div className="hidden md:flex items-center gap-8 justify-between">
             <ul className="flex items-center gap-6">
@@ -19,7 +24,18 @@ const DesktopNav = () => {
                 ))}
             </ul>
 
-            <UserMenu />
+            <div className="flex items-center gap-4">
+                {!agentId && (
+                    <Button
+                        nativeButton={false}
+                        variant="outline"
+                        render={<Link href="/join-as-agent" />}
+                    >
+                        Join as agent
+                    </Button>
+                )}
+                <UserMenu agentId={agentId} />
+            </div>
         </div>
     );
 };

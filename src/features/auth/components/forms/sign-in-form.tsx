@@ -9,12 +9,15 @@ import { Button } from '@/components/ui/button';
 import { AuthView } from '../../types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signinInput, signinSchema } from '../../schemas/auth-zod-schemas';
+import { useRouter } from 'next/navigation';
 
 interface LoginFormProps {
     setView: (view: AuthView) => void;
+    close: () => void;
 }
 
-const SignInForm: React.FC<LoginFormProps> = ({ setView }) => {
+const SignInForm: React.FC<LoginFormProps> = ({ setView, close }) => {
+    const router = useRouter();
     const [show, setShow] = useState(false);
 
     const {
@@ -31,7 +34,6 @@ const SignInForm: React.FC<LoginFormProps> = ({ setView }) => {
         const { error } = await authClient.signIn.email({
             email: data.email,
             password: data.password,
-            callbackURL: '/',
         });
 
         if (error) {
@@ -40,6 +42,8 @@ const SignInForm: React.FC<LoginFormProps> = ({ setView }) => {
             });
             return;
         }
+        close();
+        router.refresh();
     };
 
     return (

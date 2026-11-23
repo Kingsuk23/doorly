@@ -16,6 +16,8 @@ import PasswordUpdateForm from './forms/password-update-form';
 import ChangeEmailForm from './forms/change-email-form';
 import AccountDeleteForm from './forms/account-delete-form';
 import UserInfoUpdateForm from './forms/user-info-update-form';
+import { deleteImageKitFile } from '@/features/dropzone/services/image-kit-delete-file';
+import { toast } from '@/components/ui/toast';
 
 interface ProfileActionsMenuProps {
     currentImage?: string | null | undefined;
@@ -34,7 +36,27 @@ const ProfileActionsMenu = ({
     const [openAccountDeleteModal, setOpenAccountDeleteModal] = useState(false);
     const [openUserBasicInfoUpdateModal, setOpenUserBasicInfoUpdateModal] =
         useState(false);
+    const [avatarId, setAvatarId] = useState(fileId ?? '');
 
+    const handleCloseBasicInfoModal = async (nextOpen: boolean) => {
+        setOpenUserBasicInfoUpdateModal(nextOpen);
+        if (nextOpen) return;
+
+        const savedId = fileId ?? '';
+
+        if (avatarId && avatarId !== savedId) {
+            try {
+                await deleteImageKitFile(avatarId);
+            } catch {
+                toast.add({
+                    type: 'error',
+                    description: 'Could not remove image',
+                });
+            }
+        }
+
+        setAvatarId(savedId);
+    };
     return (
         <>
             <DropdownMenu>
@@ -116,7 +138,7 @@ const ProfileActionsMenu = ({
                 <UpdateModal
                     description="Change your name or profile picture."
                     title="Edit your profile"
-                    onOpenChange={setOpenUserBasicInfoUpdateModal}
+                    onOpenChange={handleCloseBasicInfoModal}
                     open={openUserBasicInfoUpdateModal}
                 >
                     <UserInfoUpdateForm
@@ -124,6 +146,7 @@ const ProfileActionsMenu = ({
                         currentName={currentName}
                         currentImage={currentImage}
                         fileId={fileId}
+                        setAvatarId={setAvatarId}
                     />
                 </UpdateModal>
             )}

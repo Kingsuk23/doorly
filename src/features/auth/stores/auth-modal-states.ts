@@ -21,11 +21,13 @@ export const useAuthModal = create<AuthModalProps>((set) => ({
     email: '',
     setView: (view) => set({ view }),
 
-    open: (view = 'sign-in') =>
+    open: (view = 'sign-in') => {
+        console.trace('auth modal opened', view);
         set({
             isOpen: true,
             view,
-        }),
+        });
+    },
     setEmail: (email) => set({ email }),
     close: () =>
         set({

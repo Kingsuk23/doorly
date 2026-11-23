@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { LogOut } from 'lucide-react';
+import { LogOut, User2Icon } from 'lucide-react';
 
 import { AUTH_VISIBLE_LINKS } from '../constants/nav-links';
 import AuthModal from '@/features/auth/components/auth-modal';
@@ -15,15 +15,21 @@ interface MobileMenuLinksProps {
     isPending: boolean;
     onClose: () => void;
     session: Session | null;
+    agentId: string | null;
 }
 
 const MobileMenuLinks = ({
     onClose,
     isPending,
     session,
+    agentId,
 }: MobileMenuLinksProps) => {
     const router = useRouter();
-    const { open: DialogOpen, isOpen: isDialogOPen } = useAuthModalState();
+    const {
+        open: DialogOpen,
+        isOpen: isDialogOPen,
+        close,
+    } = useAuthModalState();
 
     if (isPending) {
         return <MobileMenuLinksSkeleton />;
@@ -58,13 +64,23 @@ const MobileMenuLinks = ({
                     {label}
                 </Link>
             ))}
-
+            {agentId && (
+                <Link
+                    href="/agent-profile"
+                    className="w-full bg-muted-foreground/10 rounded-md p-4 flex flex-col gap-2"
+                    onClick={onClose}
+                >
+                    <User2Icon />
+                    Agent profile
+                </Link>
+            )}
             <button
                 className="w-full bg-muted-foreground/10 rounded-md p-4 flex flex-col items-start gap-2"
                 onClick={() => {
                     authClient.signOut({
                         fetchOptions: {
                             onSuccess: () => {
+                                close();
                                 onClose();
                                 router.replace('/');
                                 router.refresh();

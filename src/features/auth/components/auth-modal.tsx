@@ -14,15 +14,16 @@ import EmailSendMessage from './email-send-message';
 import { authClient } from '@/lib/auth/auth-client';
 import SignInForm from './forms/sign-in-form';
 import ForgotPasswordForm from './forms/forgot-password-form';
+import { useEffect } from 'react';
 
 const AuthModal = () => {
     const { close, isOpen, view, setView, email, setEmail } =
         useAuthModalState();
     const { data: session } = authClient.useSession();
 
-    if (session) {
-        close();
-    }
+    useEffect(() => {
+        if (session) close();
+    }, [session, close]);
 
     const { title, description } = getAuthViewText(view, email);
 
@@ -38,7 +39,9 @@ const AuthModal = () => {
                     </DialogTitle>
                     <DialogDescription>{description}</DialogDescription>
                 </DialogHeader>
-                {view === 'sign-in' && <SignInForm setView={setView} />}
+                {view === 'sign-in' && (
+                    <SignInForm setView={setView} close={close} />
+                )}
                 {view === 'sign-up' && (
                     <SignUpForm
                         redirectUrl="/"
