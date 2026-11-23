@@ -20,6 +20,10 @@ export const relations = defineRelations(schemas, (r) => ({
             from: r.user.id,
             to: r.agent.userId,
         }),
+        sentInvites: r.many.propertyAgentInvite({
+            from: r.user.id,
+            to: r.propertyAgentInvite.ownerId,
+        }),
     },
     session: {
         user: r.one.user({
@@ -53,6 +57,11 @@ export const relations = defineRelations(schemas, (r) => ({
         propertyStepProgress: r.one.propertyStepProgress({
             from: r.property.id,
             to: r.propertyStepProgress.propertyId,
+        }),
+
+        invites: r.many.propertyAgentInvite({
+            from: r.property.id,
+            to: r.propertyAgentInvite.propertyId,
         }),
     },
 
@@ -154,12 +163,34 @@ export const relations = defineRelations(schemas, (r) => ({
             from: r.agent.brokerId,
             to: r.broker.id,
         }),
+        invites: r.many.propertyAgentInvite({
+            from: r.agent.id,
+            to: r.propertyAgentInvite.agentId,
+        }),
     },
 
     broker: {
         agent: r.many.agent({
             from: r.broker.id,
             to: r.agent.brokerId,
+        }),
+    },
+
+    propertyAgentInvite: {
+        property: r.one.property({
+            from: r.propertyAgentInvite.propertyId,
+            to: r.property.id,
+            optional: false,
+        }),
+        owner: r.one.user({
+            from: r.propertyAgentInvite.ownerId,
+            to: r.user.id,
+            optional: false,
+        }),
+        agent: r.one.agent({
+            from: r.propertyAgentInvite.agentId,
+            to: r.agent.id,
+            optional: false,
         }),
     },
 }));

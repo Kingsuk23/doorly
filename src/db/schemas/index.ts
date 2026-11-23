@@ -3,6 +3,7 @@ import { address } from './address-db-schema';
 import { agent } from './agent-db-schema';
 import { broker } from './broker-db-schema';
 import { city, country, postalCode, state } from './location-db-schema';
+import { propertyAgentInvite } from './property-agent-invite-db-schema';
 import { property } from './property-db-schema';
 import { propertyMember } from './property-member-db-schema';
 import { propertyStepProgress } from './property-step-progress-db-schema';
@@ -27,4 +28,5 @@ export const schemas = {
     postalCode,
     broker,
     agent,
+    propertyAgentInvite,
 };
