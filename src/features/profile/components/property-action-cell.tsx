@@ -12,7 +12,7 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { Loader, MoreHorizontal, Pen, Trash } from 'lucide-react';
+import { Loader, MoreHorizontal, Pen, Trash, UserCog } from 'lucide-react';
 import Link from 'next/link';
 import {
     Dialog,
@@ -23,8 +23,9 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@/components/ui/dialog';
+import AgentInviteModal from '@/features/invities/components/agent-invite-modal';
 
-interface PropertyDeleteActionSellProps {
+interface PropertyActionSellProps {
     id: string;
     stepId:
         | 'location_c'
@@ -34,14 +35,17 @@ interface PropertyDeleteActionSellProps {
         | 'description_c'
         | 'review_publish_c'
         | null;
+    status: 'hidden' | 'draft' | 'publish';
 }
 
-const PropertyDeleteActionSell = ({
+const PropertyActionCell = ({
     id,
     stepId,
-}: PropertyDeleteActionSellProps) => {
+    status,
+}: PropertyActionSellProps) => {
     const router = useRouter();
     const [open, setOpen] = useState(false);
+    const [openInviteModal, setOpenInviteModal] = useState(false);
     const [isPending, startTransition] = useTransition();
 
     const handleDelete = () => {
@@ -67,8 +71,15 @@ const PropertyDeleteActionSell = ({
                     <span className="sr-only">Open menu</span>
                     <MoreHorizontal className="h-4 w-4" />
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
+                <DropdownMenuContent align="end" className="w-fit">
                     <DropdownMenuGroup>
+                        {status === 'publish' && (
+                            <DropdownMenuItem
+                                onClick={() => setOpenInviteModal(true)}
+                            >
+                                <UserCog /> Manage agent
+                            </DropdownMenuItem>
+                        )}
                         <DropdownMenuItem
                             render={
                                 <Link
@@ -114,8 +125,13 @@ const PropertyDeleteActionSell = ({
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
+            <AgentInviteModal
+                propertyId={id}
+                onOpenChange={setOpenInviteModal}
+                open={openInviteModal}
+            />
         </>
     );
 };
 
-export default PropertyDeleteActionSell;
+export default PropertyActionCell;

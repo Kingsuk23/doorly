@@ -1,6 +1,5 @@
 import { db } from '@/db';
 import { agent } from '@/db/schemas/agent-db-schema';
-import { ok } from '@/lib/api/result';
 import { requireSession } from '@/lib/auth/require-session';
 import { pusher } from '@/lib/pusher/pusher';
 import { eq } from 'drizzle-orm';
@@ -27,8 +26,8 @@ export async function POST(req: NextRequest) {
         if (!myAgent || channel !== `private-agent-${myAgent.id}`) {
             return new Response('Forbidden', { status: 403 });
         }
-
-        return ok(pusher.authorizeChannel(socketId, channel));
+        const authResponse = pusher.authorizeChannel(socketId, channel);
+        return Response.json(authResponse);
     } catch {
         return new Response('Unauthorized', { status: 401 });
     }

@@ -24,7 +24,7 @@ export const sendAgentInviteEmail = inngest.createFunction(
                             },
                         },
                     },
-                    agent: { with: { user: true } },
+                    agentUser: true,
                     owner: true,
                 },
             });
@@ -32,7 +32,7 @@ export const sendAgentInviteEmail = inngest.createFunction(
 
         if (!invite || invite.status !== 'pending') return;
 
-        const agentEmail = invite.agent.user?.email;
+        const agentEmail = invite.agentUser?.email;
         if (!agentEmail) return;
 
         const address = invite.property.address;
@@ -56,7 +56,7 @@ export const sendAgentInviteEmail = inngest.createFunction(
         await step.run('send-email', () =>
             agentInviteEmailSender({
                 to: agentEmail,
-                agentName: invite.agent.user?.name,
+                agentName: invite.agentUser?.name,
                 ownerName: invite.owner.name,
                 propertyLabel,
                 propertyAddress,

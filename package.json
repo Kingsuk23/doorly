@@ -7,10 +7,13 @@
         "build": "next build",
         "start": "next start",
         "lint": "eslint",
-        "email:dev": "email dev --dir src/components/email --port 3001"
+        "email:dev": "email dev --dir src/components/email --port 3001",
+        "dev:inngest": "inngest-cli dev -u http://localhost:3000/api/inngest",
+        "dev:all": "concurrently -n next,inngest \"npm run dev\" \"npm run dev:inngest\""
     },
     "dependencies": {
         "@base-ui/react": "^1.9.0",
+        "@faker-js/faker": "^10.6.0",
         "@hookform/resolvers": "^7.0.6",
         "@imagekit/next": "^2.1.6",
         "@tanstack/react-query": "^5.107.1",
@@ -48,6 +51,7 @@
         "@types/pg": "^8.23.1",
         "@types/react": "^19",
         "@types/react-dom": "^19",
+        "concurrently": "^10.0.7",
         "drizzle-kit": "1.0.0-rc.5",
         "eslint": "^9",
         "eslint-config-next": "16.4.6",

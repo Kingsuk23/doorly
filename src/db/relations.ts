@@ -23,6 +23,12 @@ export const relations = defineRelations(schemas, (r) => ({
         sentInvites: r.many.propertyAgentInvite({
             from: r.user.id,
             to: r.propertyAgentInvite.ownerId,
+            alias: 'invite_owner',
+        }),
+        receivedInvites: r.many.propertyAgentInvite({
+            from: r.user.id,
+            to: r.propertyAgentInvite.agentUserId,
+            alias: 'invite_agent',
         }),
     },
     session: {
@@ -163,10 +169,6 @@ export const relations = defineRelations(schemas, (r) => ({
             from: r.agent.brokerId,
             to: r.broker.id,
         }),
-        invites: r.many.propertyAgentInvite({
-            from: r.agent.id,
-            to: r.propertyAgentInvite.agentId,
-        }),
     },
 
     broker: {
@@ -185,12 +187,20 @@ export const relations = defineRelations(schemas, (r) => ({
         owner: r.one.user({
             from: r.propertyAgentInvite.ownerId,
             to: r.user.id,
+            alias: 'invite_owner',
             optional: false,
         }),
-        agent: r.one.agent({
-            from: r.propertyAgentInvite.agentId,
-            to: r.agent.id,
+
+        agentUser: r.one.user({
+            from: r.propertyAgentInvite.agentUserId,
+            to: r.user.id,
+            alias: 'invite_agent',
             optional: false,
+        }),
+
+        agent: r.one.agent({
+            from: r.propertyAgentInvite.agentUserId,
+            to: r.agent.userId,
         }),
     },
 }));

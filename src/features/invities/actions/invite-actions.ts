@@ -1,10 +1,13 @@
+'use server';
+
 import { db } from '@/db';
 import { agent } from '@/db/schemas/agent-db-schema';
 import { propertyAgentInvite } from '@/db/schemas/property-agent-invite-db-schema';
+import { propertyMember } from '@/db/schemas/property-member-db-schema';
 import { handleError } from '@/lib/api/response';
 import { AppError, ok } from '@/lib/api/result';
 import { requireSession } from '@/lib/auth/require-session';
-import { inngest } from '@/lib/inngest/inngest-client';
+import { inngest, invitePush } from '@/lib/inngest/inngest-client';
 import { pusher } from '@/lib/pusher/pusher';
 import { eq } from 'drizzle-orm';
 
@@ -13,7 +16,7 @@ export const getMyInvites = async () => {
         const session = await requireSession();
 
         const [myAgent] = await db
-            .select({ id: agent.id })
+            .select({ userId: agent.userId })
             .from(agent)
             .where(eq(agent.userId, session.user.id))
             .limit(1);
@@ -21,7 +24,7 @@ export const getMyInvites = async () => {
         if (!myAgent) return ok([]);
 
         const invites = await db.query.propertyAgentInvite.findMany({
-            where: { agentId: myAgent.id, status: 'pending' },
+            where: { agentUserId: myAgent.userId, status: 'pending' },
             with: { property: true, owner: true },
             orderBy: { createdAt: 'desc' },
         });
@@ -51,20 +54,33 @@ export const createInvite = async ({
             );
         }
 
-        const [invite] = await db
-            .insert(propertyAgentInvite)
-            .values({
-                agentId,
-                ownerId: session.user.id,
-                propertyId,
-                message,
-            })
-            .returning({ id: propertyAgentInvite.id });
+        const [invite] = await db.transaction(async (tx) => {
+            const pushInvite = await tx
+                .insert(propertyAgentInvite)
+                .values({
+                    agentUserId: agentId,
+                    ownerId: session.user.id,
+                    propertyId,
+                    message,
+                })
+                .returning({ id: propertyAgentInvite.id })
+                .onConflictDoNothing();
 
-        await inngest.send({
-            name: 'invite/created',
-            data: { inviteId: invite.id },
+            await tx.insert(propertyMember).values({
+                propertyId,
+                role: 'agent',
+                status: 'pending',
+                userId: agentId,
+            });
+
+            return pushInvite;
         });
+
+        await inngest.send(
+            invitePush.create({
+                inviteId: invite.id,
+            }),
+        );
 
         await pusher.trigger(`private-user-${agentId}`, 'invite:new', {
             inviteId: invite.id,

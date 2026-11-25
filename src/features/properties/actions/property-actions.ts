@@ -13,7 +13,7 @@ import { propertyMember } from '@/db/schemas/property-member-db-schema';
 import { handleError } from '@/lib/api/response';
 import { AppError, ok } from '@/lib/api/result';
 import { auth } from '@/lib/auth/auth';
-import { and, count, eq } from 'drizzle-orm';
+import { and, count, eq, inArray, ne } from 'drizzle-orm';
 import { headers } from 'next/headers';
 import {
     descriptionInput,
@@ -31,6 +31,7 @@ import { textSlugify } from '@/lib/slugify';
 import { propertyType } from '@/db/schemas/property-type-db-schema';
 import { requireSession } from '@/lib/auth/require-session';
 import { propertyStepProgress } from '@/db/schemas/property-step-progress-db-schema';
+import { user } from '@/db/schemas/user-db-schema';
 
 export const createPropertyDraft = async () => {
     try {
@@ -646,7 +647,43 @@ export const getPropertiesByUser = async () => {
                 eq(propertyStepProgress.propertyId, property.id),
             );
 
-        return ok(properties);
+        if (properties.length === 0) return ok([]);
+
+        const agentRows = await db
+            .select({
+                propertyId: propertyMember.propertyId,
+                userId: user.id,
+                name: user.name,
+                image: user.image,
+                status: propertyMember.status,
+            })
+            .from(propertyMember)
+            .innerJoin(user, eq(user.id, propertyMember.userId))
+            .where(
+                and(
+                    inArray(
+                        propertyMember.propertyId,
+                        properties.map((p) => p.id),
+                    ),
+                    eq(propertyMember.role, 'agent'),
+                    ne(propertyMember.status, 'revoked'),
+                ),
+            );
+
+        const agentsByProperty = new Map<string, typeof agentRows>();
+        for (const a of agentRows) {
+            if (!a.propertyId) continue;
+            const list = agentsByProperty.get(a.propertyId) ?? [];
+            list.push(a);
+            agentsByProperty.set(a.propertyId, list);
+        }
+
+        const result = properties.map((p) => ({
+            ...p,
+            agents: agentsByProperty.get(p.id) ?? [],
+        }));
+
+        return ok(result);
     } catch (error) {
         return handleError(error);
     }

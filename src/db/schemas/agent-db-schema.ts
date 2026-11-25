@@ -54,5 +54,3 @@ export const agent = pgTable(
             .where(sql`${table.brokerRole} = 'owner'`),
     ],
 );
-
-export type Agent = typeof agent.$inferSelect;

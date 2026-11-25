@@ -1,5 +1,13 @@
 export type Stat = { label: string; value: string | number };
 
+export type AgentData = {
+    propertyId: string | null;
+    userId: string;
+    name: string;
+    image: string | null;
+    status: 'pending' | 'approved' | 'revoked';
+};
+
 export type PropertyRow = {
     id: string;
     property_type: string | null;
@@ -18,4 +26,5 @@ export type PropertyRow = {
         | 'description_c'
         | 'review_publish_c'
         | null;
+    agents: AgentData[];
 };

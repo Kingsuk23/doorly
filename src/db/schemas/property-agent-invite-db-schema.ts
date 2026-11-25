@@ -10,7 +10,6 @@ import {
 import { sql } from 'drizzle-orm';
 import { property } from './property-db-schema';
 import { user } from './user-db-schema';
-import { agent } from './agent-db-schema';
 
 export const inviteStatus = pgEnum('invite_status', [
     'pending',
@@ -33,9 +32,9 @@ export const propertyAgentInvite = pgTable(
             .notNull()
             .references(() => user.id, { onDelete: 'cascade' }),
 
-        agentId: uuid('agent_id')
+        agentUserId: uuid('agent_user_id')
             .notNull()
-            .references(() => agent.id, { onDelete: 'cascade' }),
+            .references(() => user.id, { onDelete: 'cascade' }),
 
         status: inviteStatus('status').notNull().default('pending'),
         message: text('message'),
@@ -52,9 +51,9 @@ export const propertyAgentInvite = pgTable(
     },
     (t) => [
         uniqueIndex('uniq_pending_invite')
-            .on(t.propertyId, t.agentId)
+            .on(t.propertyId, t.agentUserId)
             .where(sql`${t.status} = 'pending'`),
-        index('invite_agent_status_idx').on(t.agentId, t.status),
+        index('invite_agent_status_idx').on(t.agentUserId, t.status),
         index('invite_owner_idx').on(t.ownerId),
     ],
 );
