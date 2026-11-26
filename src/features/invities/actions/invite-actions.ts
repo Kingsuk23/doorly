@@ -2,6 +2,7 @@
 
 import { db } from '@/db';
 import { agent } from '@/db/schemas/agent-db-schema';
+import { listing } from '@/db/schemas/listing-db-schema';
 import { propertyAgentInvite } from '@/db/schemas/property-agent-invite-db-schema';
 import { propertyMember } from '@/db/schemas/property-member-db-schema';
 import { handleError } from '@/lib/api/response';
@@ -174,6 +175,17 @@ export const acceptInvite = async ({ propertyId }: { propertyId: string }) => {
     try {
         const session = await requireSession();
 
+        const foundAgent = await db.query.agent.findFirst({
+            where: { userId: session.user.id },
+        });
+
+        if (!foundAgent) {
+            throw new AppError(
+                'NOT_FOUND',
+                'Agent profile not found for this account.',
+            );
+        }
+
         if (!propertyId) {
             throw new AppError('BAD_REQUEST', 'propertyId are required');
         }
@@ -226,13 +238,16 @@ export const acceptInvite = async ({ propertyId }: { propertyId: string }) => {
                         eq(propertyMember.status, 'pending'),
                     ),
                 );
-
+            await db.insert(listing).values({
+                agentId: foundAgent.id,
+                propertyId,
+            });
             return inviteData;
         });
 
         if (!invite) throw new AppError('NOT_FOUND', 'Invite not found');
 
-        const results = await Promise.allSettled([
+        await Promise.allSettled([
             pusher.trigger(
                 `private-user-${invite.ownerId}`,
                 'invite:accepted',
@@ -249,10 +264,7 @@ export const acceptInvite = async ({ propertyId }: { propertyId: string }) => {
                 },
             ),
         ]);
-        results.forEach((r, i) => {
-            if (r.status === 'rejected')
-                console.error(`push task ${i} failed:`, r.reason);
-        });
+
         return ok(invite);
     } catch (error) {
         return handleError(error);

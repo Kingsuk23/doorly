@@ -37,25 +37,6 @@ const AgentInboxModal = ({ userId }: AgentInboxModalProps) => {
 
     const inboxData = inbox?.success ? inbox.data : [];
 
-    useEffect(() => {
-        if (!userId) return;
-
-        const channelName = `private-user-${userId}`;
-        const channel = pusherClient.subscribe(channelName);
-
-        const refresh = () =>
-            queryClient.invalidateQueries({ queryKey: ['my_invites'] });
-
-        channel.bind('invite:new', refresh);
-        channel.bind('invite:removed', refresh);
-
-        return () => {
-            channel.unbind('invite:new', refresh);
-            channel.unbind('invite:removed', refresh);
-            pusherClient.unsubscribe(channelName);
-        };
-    }, [userId, queryClient]);
-
     return (
         <Dialog>
             <DialogTrigger render={<Button variant="outline" />}>

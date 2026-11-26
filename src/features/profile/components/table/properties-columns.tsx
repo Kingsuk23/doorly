@@ -9,7 +9,7 @@ import PropertyActionSell from '../property-action-cell';
 import { cn } from 'cn';
 import { Button } from '@/components/ui/button';
 import { ArrowUpDown } from 'lucide-react';
-import ColumnFilterHeader from './column-filter-header';
+import ColumnFilterHeader from '../../../../components/shared/column-filter-header';
 import { statusOptions } from '../../constants/status-options';
 import { multiTableSelectFilter } from '@/lib/multi-table-select-filter';
 import { PropertyTypeOptions } from '../../constants/property-type-options';

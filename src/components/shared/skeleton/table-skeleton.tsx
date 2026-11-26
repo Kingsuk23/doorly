@@ -21,7 +21,7 @@ const headers = [
     'Actions',
 ];
 
-const PropertiesTableSkeleton = ({ rows = 5 }: { rows?: number }) => {
+const TableSkeleton = ({ rows = 5 }: { rows?: number }) => {
     return (
         <div className="rounded-md border mt-10">
             <Table>
@@ -54,4 +54,4 @@ const PropertiesTableSkeleton = ({ rows = 5 }: { rows?: number }) => {
     );
 };
 
-export default PropertiesTableSkeleton;
+export default TableSkeleton;

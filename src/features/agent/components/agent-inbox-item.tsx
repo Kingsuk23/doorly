@@ -10,6 +10,7 @@ import {
     useAcceptRequest,
     useDeclineRequest,
 } from '@/features/invities/queries/use-invite';
+import { useRouter } from 'next/navigation';
 
 interface AgentInboxItemProps {
     id: string;
@@ -43,6 +44,8 @@ const AgentInboxItem = ({
     expireDate,
     propertyId,
 }: AgentInboxItemProps) => {
+    const router = useRouter();
+
     const { mutate: declineRequest, isPending: isDeclining } =
         useDeclineRequest(propertyId);
     const { mutate: acceptRequest, isPending: isAccepting } =
@@ -52,6 +55,11 @@ const AgentInboxItem = ({
     const today = new Date();
 
     const daysLeft = differenceInCalendarDays(targetDate, today);
+
+    const handleAcceptRequest = () => {
+        acceptRequest();
+        router.refresh();
+    };
 
     return (
         <div className="rounded-lg border p-4 flex flex-col gap-3">
@@ -127,7 +135,7 @@ const AgentInboxItem = ({
                     <Button
                         size="sm"
                         disabled={isDeclining || isAccepting}
-                        onClick={() => acceptRequest()}
+                        onClick={handleAcceptRequest}
                     >
                         {isAccepting ? (
                             <Loader className="animate-spin" />

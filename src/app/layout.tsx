@@ -3,7 +3,8 @@ import { Geist } from 'next/font/google';
 
 import '../styles/globals.css';
 import { Toaster } from '@/components/ui/toast';
-import ReactQueryProvider from '@/providers/ReactQueryProvider';
+import ReactQueryProvider from '@/providers/react-query-provider';
+import { RealtimeProvider } from '@/providers/realtime-provider';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -53,7 +54,10 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
     return (
         <html lang="en" className={`${geistSans.variable} antialiased`}>
             <body className="min-h-screen overflow-x-hidden text-base">
-                <ReactQueryProvider>{children}</ReactQueryProvider> <Toaster />
+                <ReactQueryProvider>
+                    <RealtimeProvider>{children}</RealtimeProvider>
+                </ReactQueryProvider>
+                <Toaster />
             </body>
         </html>
     );

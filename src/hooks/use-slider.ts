@@ -1,15 +1,8 @@
-import {
-    useCallback,
-    useEffect,
-    useLayoutEffect,
-    useRef,
-    useState,
-} from 'react';
+import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 
 export const useSlider = (activeIndex: number) => {
-    const tabRef = useRef<HTMLDivElement | null>(null);
+    const [tabEl, setTabEl] = useState<HTMLDivElement | null>(null);
     const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
-
     const [indicator, setIndicator] = useState({ width: 0, left: 0 });
 
     const updateIndicator = useCallback(() => {
@@ -23,20 +16,18 @@ export const useSlider = (activeIndex: number) => {
     }, [activeIndex]);
 
     useLayoutEffect(() => {
+        if (!tabEl) return;
         updateIndicator();
-    }, [updateIndicator]);
 
-    useEffect(() => {
         const observer = new ResizeObserver(updateIndicator);
-        if (tabRef.current) observer.observe(tabRef.current);
-
+        observer.observe(tabEl);
         window.addEventListener('resize', updateIndicator);
 
         return () => {
             observer.disconnect();
             window.removeEventListener('resize', updateIndicator);
         };
-    }, [updateIndicator]);
+    }, [tabEl, updateIndicator]);
 
-    return { tabRef, buttonRefs, indicator };
+    return { tabRef: setTabEl, buttonRefs, indicator };
 };

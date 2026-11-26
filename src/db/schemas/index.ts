@@ -11,6 +11,7 @@ import { propertyType } from './property-type-db-schema';
 import { session } from './session-db-schema';
 import { user } from './user-db-schema';
 import { verification } from './verification-db-schema';
+import { listing } from './listing-db-schema';
 
 export const schemas = {
     user,
@@ -29,4 +30,5 @@ export const schemas = {
     broker,
     agent,
     propertyAgentInvite,
+    listing,
 };

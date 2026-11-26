@@ -69,6 +69,11 @@ export const relations = defineRelations(schemas, (r) => ({
             from: r.property.id,
             to: r.propertyAgentInvite.propertyId,
         }),
+
+        listing: r.one.listing({
+            from: r.property.id,
+            to: r.listing.propertyId,
+        }),
     },
 
     propertyType: {
@@ -169,6 +174,7 @@ export const relations = defineRelations(schemas, (r) => ({
             from: r.agent.brokerId,
             to: r.broker.id,
         }),
+        listing: r.one.listing({ from: r.agent.id, to: r.listing.agentId }),
     },
 
     broker: {
@@ -201,6 +207,18 @@ export const relations = defineRelations(schemas, (r) => ({
         agent: r.one.agent({
             from: r.propertyAgentInvite.agentUserId,
             to: r.agent.userId,
+        }),
+    },
+
+    listing: {
+        property: r.one.property({
+            from: r.listing.propertyId,
+            to: r.property.id,
+        }),
+
+        agent: r.one.agent({
+            from: r.listing.agentId,
+            to: r.agent.id,
         }),
     },
 }));

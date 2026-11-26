@@ -63,40 +63,6 @@ const AgentInviteModal = ({
         }
     }, [agentsRes]);
 
-    useEffect(() => {
-        const userId = session?.user.id;
-        if (!userId) return;
-
-        const channelName = `private-user-${userId}`;
-
-        const channel = pusherClient.subscribe(channelName);
-
-        const refreshAll = () => {
-            queryClient.invalidateQueries({ queryKey: inviteKeys.mine });
-            queryClient.invalidateQueries({
-                queryKey: inviteKeys.agentSearch(propertyId),
-            });
-            queryClient.invalidateQueries({
-                queryKey: inviteKeys.propertyAgents(propertyId),
-            });
-            router.refresh();
-        };
-
-        const events = [
-            'invite:new',
-            'invite:accepted',
-            'invite:declined',
-            'invite:removed',
-            'invite:approved',
-        ];
-        events.forEach((e) => channel.bind(e, refreshAll));
-
-        return () => {
-            events.forEach((e) => channel.unbind(e, refreshAll));
-            pusherClient.unsubscribe(channelName);
-        };
-    }, [propertyId, queryClient, router, session]);
-
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent>
@@ -136,6 +102,9 @@ const AgentInviteModal = ({
                                     isActive
                                         ? 'text-foreground'
                                         : 'text-muted-foreground hover:text-foreground',
+                                    isActive &&
+                                        indicator.width === 0 &&
+                                        'bg-background shadow-sm',
                                 )}
                             >
                                 {item}
