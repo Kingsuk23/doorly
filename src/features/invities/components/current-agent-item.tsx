@@ -2,6 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { getInitials } from '@/lib/get-initials';
+import { cn } from 'cn';
 
 type CurrentAgentItemProps = {
     memberId: string;
@@ -25,7 +26,7 @@ const CurrentAgentItem = ({
     agentUserId,
 }: CurrentAgentItemProps) => {
     return (
-        <div className="flex items-center gap-3 min-h-95 max-h-95 overflow-y-auto ">
+        <div className="flex gap-3 overflow-y-auto">
             <Avatar className="size-8">
                 <AvatarImage src={image ?? undefined} alt={name} />
                 <AvatarFallback>{getInitials(name)}</AvatarFallback>
@@ -36,6 +37,11 @@ const CurrentAgentItem = ({
                     <p className="text-sm truncate">{name}</p>
                     <Badge
                         variant={status === 'pending' ? 'outline' : 'secondary'}
+                        className={cn(
+                            status === 'pending'
+                                ? 'border-amber-500 text-amber-700'
+                                : 'bg-emerald-200 text-emerald-700',
+                        )}
                     >
                         {status === 'pending' ? 'Pending' : 'Approved'}
                     </Badge>

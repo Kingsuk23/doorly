@@ -8,6 +8,7 @@ import { handleError } from '@/lib/api/response';
 import { AppError, ok } from '@/lib/api/result';
 import { auth } from '@/lib/auth/auth';
 import { requireSession } from '@/lib/auth/require-session';
+import { pusher } from '@/lib/pusher/pusher';
 import { and, eq, ne } from 'drizzle-orm';
 import { headers } from 'next/headers';
 
@@ -106,7 +107,7 @@ export const removePropertyAgent = async (
             .limit(1);
         if (!membership) throw new Error('Not allowed');
 
-        await db.transaction(async (tx) => {
+        const invite = await db.transaction(async (tx) => {
             await tx
                 .delete(propertyMember)
                 .where(
@@ -117,7 +118,7 @@ export const removePropertyAgent = async (
                     ),
                 );
 
-            await tx
+            const [deleteInviteData] = await tx
                 .delete(propertyAgentInvite)
                 .where(
                     and(
@@ -125,9 +126,22 @@ export const removePropertyAgent = async (
                         eq(propertyAgentInvite.ownerId, session.user.id),
                         eq(propertyAgentInvite.propertyId, propertyId),
                     ),
-                );
+                )
+                .returning({
+                    agentUserid: propertyAgentInvite.agentUserId,
+                    id: propertyAgentInvite.id,
+                });
+
+            return deleteInviteData;
         });
 
+        await pusher.trigger(
+            `private-user-${invite.agentUserid}`,
+            'invite:remove',
+            {
+                inviteId: invite.id,
+            },
+        );
         return ok(true);
     } catch (error) {
         return handleError(error);

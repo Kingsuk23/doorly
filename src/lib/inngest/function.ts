@@ -1,5 +1,5 @@
 import { db } from '@/db';
-import { inngest } from './inngest-client';
+import { inngest, invitePush } from './inngest-client';
 import { agentInviteEmailSender } from '../emails/send-agent-invite-email';
 import { dateFormatter } from '../date-formatter';
 
@@ -7,10 +7,10 @@ export const sendAgentInviteEmail = inngest.createFunction(
     {
         id: 'send-agent-invite-email',
         retries: 3,
-        triggers: { event: 'invite/created' },
+        triggers: [invitePush],
     },
     async ({ event, step }) => {
-        const inviteId = event.data;
+        const { inviteId } = event.data;
 
         const invite = await step.run('load-invite', () => {
             return db.query.propertyAgentInvite.findFirst({
@@ -62,7 +62,7 @@ export const sendAgentInviteEmail = inngest.createFunction(
                 propertyAddress,
                 ownerMessage: invite.message ?? undefined,
                 expiryDate: dateFormatter.format(new Date(invite.expiresAt)),
-                logoUrl: `${process.env.APP_URL}/logo-email.png`,
+                logoUrl: `${invite.owner.image}`,
             }),
         );
     },

@@ -104,3 +104,28 @@
         @apply font-sans;
     }
 }
+
+.scroll-container {
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+    transition: scrollbar-color 0.3s ease;
+}
+
+.scroll-container:hover {
+    scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+}
+
+/* WebKit fallback */
+.scroll-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    border-radius: 9999px;
+}
+
+.scroll-container:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3);
+}

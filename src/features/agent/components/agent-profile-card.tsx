@@ -5,15 +5,14 @@ import {
     Hotel,
     Mail,
     Phone,
-    Inbox,
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { capitalizeFirstLetter } from '@/lib/capitalize-first-latter';
 import { dateFormatter } from '@/lib/date-formatter';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { getInitials } from '@/lib/get-initials';
 import InfoRow from './info-row';
 import AgentProfileActionMenu from './agent-profile-actions-menu';
+import AgentInboxModal from './agent-inbox-modal';
 
 interface AgentProfileCardProps {
     rawName: string;
@@ -29,6 +28,7 @@ interface AgentProfileCardProps {
     brokerName: string;
     agentId: string;
     avatarId: string | undefined | null;
+    id: string | undefined;
 }
 
 const AgentProfileCard = ({
@@ -45,6 +45,7 @@ const AgentProfileCard = ({
     brokerName,
     agentId,
     avatarId,
+    id,
 }: AgentProfileCardProps) => {
     const name = capitalizeFirstLetter(rawName);
 
@@ -71,9 +72,7 @@ const AgentProfileCard = ({
                             {getInitials(rawName)}
                         </AvatarFallback>
                     </Avatar>
-                    <Button>
-                        <Inbox /> Make a property listing request
-                    </Button>
+                    <AgentInboxModal userId={id} />
                 </div>
                 <div className="mt-4 flex flex-wrap items-center gap-2">
                     <h3 className="text-xl font-semibold tracking-tight">

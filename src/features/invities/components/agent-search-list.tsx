@@ -56,7 +56,7 @@ const AgentSearchList = ({ propertyId }: AgentSearchListProps) => {
                     onChange={(e) => setSearchInput(e.target.value)}
                 />
 
-                <div className="flex flex-col gap-3 mt-1 max-h-82 min-h-82">
+                <div className="flex flex-col gap-3 mt-1">
                     {isPending &&
                         Array.from({ length: 5 }).map((_, idx) => (
                             <AgentSearchItemSkeleton key={idx} />

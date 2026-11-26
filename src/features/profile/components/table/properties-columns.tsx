@@ -182,7 +182,10 @@ export const propertiesColumns = helper.columns([
                         </span>
                     )}
                     {agents.some((a) => a.status === 'pending') && (
-                        <Badge variant="outline" className="ml-2">
+                        <Badge
+                            variant="outline"
+                            className="ml-2 border-amber-500 text-amber-700"
+                        >
                             Pending
                         </Badge>
                     )}

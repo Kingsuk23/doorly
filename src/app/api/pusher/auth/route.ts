@@ -1,8 +1,5 @@
-import { db } from '@/db';
-import { agent } from '@/db/schemas/agent-db-schema';
 import { requireSession } from '@/lib/auth/require-session';
 import { pusher } from '@/lib/pusher/pusher';
-import { eq } from 'drizzle-orm';
 import { NextRequest } from 'next/server';
 
 export async function POST(req: NextRequest) {
@@ -17,13 +14,7 @@ export async function POST(req: NextRequest) {
             return new Response('Bad request', { status: 400 });
         }
 
-        const [myAgent] = await db
-            .select({ id: agent.id })
-            .from(agent)
-            .where(eq(agent.userId, session.user.id))
-            .limit(1);
-
-        if (!myAgent || channel !== `private-agent-${myAgent.id}`) {
+        if (channel !== `private-user-${session.user.id}`) {
             return new Response('Forbidden', { status: 403 });
         }
         const authResponse = pusher.authorizeChannel(socketId, channel);

@@ -18,6 +18,10 @@ import { cn } from 'cn';
 import { toast } from '@/components/ui/toast';
 import { Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { authClient } from '@/lib/auth/auth-client';
+import { pusherClient } from '@/lib/pusher/pusher-client';
+import { useQueryClient } from '@tanstack/react-query';
+import { inviteKeys } from '../queries/use-invite';
 
 interface AgentInviteModalProps {
     propertyId: string;
@@ -32,6 +36,8 @@ const AgentInviteModal = ({
     open,
     propertyId,
 }: AgentInviteModalProps) => {
+    const queryClient = useQueryClient();
+    const { data: session } = authClient.useSession();
     const router = useRouter();
     const [currentTabIndex, setCurrenTabIndex] = useState(0);
 
@@ -56,6 +62,40 @@ const AgentInviteModal = ({
             });
         }
     }, [agentsRes]);
+
+    useEffect(() => {
+        const userId = session?.user.id;
+        if (!userId) return;
+
+        const channelName = `private-user-${userId}`;
+
+        const channel = pusherClient.subscribe(channelName);
+
+        const refreshAll = () => {
+            queryClient.invalidateQueries({ queryKey: inviteKeys.mine });
+            queryClient.invalidateQueries({
+                queryKey: inviteKeys.agentSearch(propertyId),
+            });
+            queryClient.invalidateQueries({
+                queryKey: inviteKeys.propertyAgents(propertyId),
+            });
+            router.refresh();
+        };
+
+        const events = [
+            'invite:new',
+            'invite:accepted',
+            'invite:declined',
+            'invite:removed',
+            'invite:approved',
+        ];
+        events.forEach((e) => channel.bind(e, refreshAll));
+
+        return () => {
+            events.forEach((e) => channel.unbind(e, refreshAll));
+            pusherClient.unsubscribe(channelName);
+        };
+    }, [propertyId, queryClient, router, session]);
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
@@ -110,7 +150,7 @@ const AgentInviteModal = ({
                                 <AgentSearchItemSkeleton key={idx} />
                             ))}
                         {currentAgents && currentAgents.length === 0 && (
-                            <div className="flex flex-col items-center justify-center gap-1 py-10 text-center min-h-95 max-h-95">
+                            <div className="flex flex-col items-center justify-center gap-1 py-10 text-center">
                                 <div className="mb-2 flex size-10 items-center justify-center rounded-full bg-muted">
                                     <Users className="size-5 text-muted-foreground" />
                                 </div>

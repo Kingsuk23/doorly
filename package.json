@@ -8,7 +8,7 @@
         "start": "next start",
         "lint": "eslint",
         "email:dev": "email dev --dir src/components/email --port 3001",
-        "dev:inngest": "inngest-cli dev -u http://localhost:3000/api/inngest",
+        "dev:inngest": "npx inngest-cli dev -u http://localhost:3000/api/inngest",
         "dev:all": "concurrently -n next,inngest \"npm run dev\" \"npm run dev:inngest\""
     },
     "dependencies": {
@@ -22,6 +22,7 @@
         "better-auth": "^1.7.21",
         "class-variance-authority": "^0.7.1",
         "cn": "^0.5.2",
+        "date-fns": "^4.4.0",
         "dotenv": "^18.0.10",
         "drizzle-orm": "1.0.0-rc.5",
         "inngest": "^4.26.2",

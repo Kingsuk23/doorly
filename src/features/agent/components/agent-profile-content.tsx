@@ -33,6 +33,7 @@ const AgentProfileContent = async () => {
                 brokerName={broker?.name ?? ''}
                 agentId={agent?.id}
                 avatarId={user?.imageId}
+                id={user?.id}
             />
         </div>
     );
