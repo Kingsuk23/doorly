@@ -5,7 +5,7 @@ import {
     sizeAndLayoutSchema,
 } from '../../schemas/new-property-zod-schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
-import FieldRow from '../field-row';
+import FieldRow from '../../../../components/shared/field-row';
 import NumberStepper from '../number-stepper';
 import YearPicker from '../year-picker';
 import { Input } from '@/components/ui/input';

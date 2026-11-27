@@ -6,7 +6,7 @@ import {
 } from '../../schemas/new-property-zod-schemas';
 import FormSkeleton from '../skeleton/form-skeleton';
 import { zodResolver } from '@hookform/resolvers/zod';
-import FieldRow from '../field-row';
+import FieldRow from '../../../../components/shared/field-row';
 import { Input } from '@/components/ui/input';
 
 interface OwnerAndLegalFormProps {

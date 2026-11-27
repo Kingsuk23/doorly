@@ -2,13 +2,13 @@ import { useGetPropertyById } from '../queries/use-property';
 import { StepId } from '../constants/steps';
 import { AlertCircle } from 'lucide-react';
 import { capitalizeFirstLetter } from '@/lib/capitalize-first-latter';
-import ReviewSectionCard from './review-section-card';
-import ReviewRow from './review-row';
+import ReviewSectionCard from '../../../components/shared/review-section-card';
+import ReviewRow from '../../../components/shared/review-row';
 import { COOLING_OPTIONS, HEATING_OPTIONS } from '../constants/system-options';
 import { useState } from 'react';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
-import ReviewAndPublishSkeleton from './skeleton/review-and-publish-skeleton';
+import ReviewAndPublishSkeleton from '../../../components/shared/skeleton/review-and-publish-skeleton';
 
 interface ReviewAndPublishProps {
     formId: string;

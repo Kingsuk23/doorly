@@ -7,7 +7,7 @@ import { capitalizeFirstLetter } from '@/lib/capitalize-first-latter';
 import { Button } from '@/components/ui/button';
 import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
 import { multiTableSelectFilter } from '@/lib/multi-table-select-filter';
-import { ListingsDataTableFeaturesType } from '../services/listings-data-table-features';
+import { ListingsDataTableFeaturesType } from '../../services/listings-data-table-features';
 import ColumnFilterHeader from '@/components/shared/column-filter-header';
 import { listingTypes } from '../../constants/listing-types';
 import {
@@ -15,6 +15,7 @@ import {
     listingStatusStyles,
 } from '../../constants/listing-statuses';
 import { cn } from 'cn';
+import ListingActionCell from '../listing-actions-cell';
 
 const helper = createColumnHelper<ListingsDataTableFeaturesType, listingRow>();
 
@@ -120,6 +121,13 @@ export const listingColumns = helper.columns([
         },
         id: 'action',
 
-        cell: () => <MoreHorizontal className="h-4 w-4" />,
+        cell: ({ row }) => {
+            return (
+                <ListingActionCell
+                    id={row.original.id}
+                    stepId={row.original.listingStepProgress?.stepId}
+                />
+            );
+        },
     }),
 ]);

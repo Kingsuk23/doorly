@@ -6,7 +6,7 @@ import {
 import FormSkeleton from '../skeleton/form-skeleton';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useGetPropertyById } from '../../queries/use-property';
-import FieldRow from '../field-row';
+import FieldRow from '../../../../components/shared/field-row';
 import { Textarea } from '@/components/ui/textarea';
 
 interface DescriptionFormProps {
@@ -57,7 +57,11 @@ const DescriptionForm = ({ formId, id, onSubmit }: DescriptionFormProps) => {
         );
     }
     return (
-        <form id={formId} onSubmit={handleSubmit(onSubmit)}>
+        <form
+            id={formId}
+            className="flex flex-col gap-6"
+            onSubmit={handleSubmit(onSubmit)}
+        >
             <FieldRow
                 htmlFor="description"
                 label="Description"

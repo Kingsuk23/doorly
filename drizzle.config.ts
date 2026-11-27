@@ -18,6 +18,7 @@ export default defineConfig({
         './src/db/schemas/broker-db-schema.ts',
         './src/db/schemas/property-agent-invite-db-schema.ts',
         './src/db/schemas/listing-db-schema.ts',
+        './src/db/schemas/listing-step-progress-db-schema.ts',
     ],
     dialect: 'postgresql',
     dbCredentials: {

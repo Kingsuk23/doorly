@@ -12,6 +12,7 @@ import { session } from './session-db-schema';
 import { user } from './user-db-schema';
 import { verification } from './verification-db-schema';
 import { listing } from './listing-db-schema';
+import { listingStepProgress } from './listing-step-progress-db-schema';
 
 export const schemas = {
     user,
@@ -31,4 +32,5 @@ export const schemas = {
     agent,
     propertyAgentInvite,
     listing,
+    listingStepProgress,
 };

@@ -1,6 +1,6 @@
 import { Controller, useForm, useWatch } from 'react-hook-form';
 
-import FieldRow from '../field-row';
+import FieldRow from '../../../../components/shared/field-row';
 import {
     Select,
     SelectContent,

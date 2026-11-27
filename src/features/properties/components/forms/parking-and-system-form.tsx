@@ -6,7 +6,7 @@ import {
 } from '../../schemas/new-property-zod-schemas';
 import { useGetPropertyById } from '../../queries/use-property';
 import FormSkeleton from '../skeleton/form-skeleton';
-import FieldRow from '../field-row';
+import FieldRow from '../../../../components/shared/field-row';
 import NumberStepper from '../number-stepper';
 import {
     Select,

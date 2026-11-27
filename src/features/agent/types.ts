@@ -1,7 +1,8 @@
 import { listingType } from '@/db/schemas/listing-db-schema';
+import { listingStepProgressType } from '@/db/schemas/listing-step-progress-db-schema';
 
 export type listingRow = Omit<
-    listingType,
+    listingType & { listingStepProgress: listingStepProgressType | null },
     | 'agentId'
     | 'updatedAt'
     | 'currency'

@@ -21,7 +21,7 @@ import { useState } from 'react';
 import {
     ListingsDataTableFeaturesType,
     ListingsDataTableFeatures,
-} from '../services/listings-data-table-features';
+} from '../../services/listings-data-table-features';
 
 interface ListingDataTableProps<TData extends RowData> {
     columns: ColumnDef<ListingsDataTableFeaturesType, TData>[];

@@ -3,6 +3,7 @@
 import { db } from '@/db';
 import { agent } from '@/db/schemas/agent-db-schema';
 import { listing } from '@/db/schemas/listing-db-schema';
+import { listingStepProgress } from '@/db/schemas/listing-step-progress-db-schema';
 import { propertyAgentInvite } from '@/db/schemas/property-agent-invite-db-schema';
 import { propertyMember } from '@/db/schemas/property-member-db-schema';
 import { handleError } from '@/lib/api/response';
@@ -238,9 +239,17 @@ export const acceptInvite = async ({ propertyId }: { propertyId: string }) => {
                         eq(propertyMember.status, 'pending'),
                     ),
                 );
-            await db.insert(listing).values({
-                agentId: foundAgent.id,
-                propertyId,
+            const [createdListing] = await db
+                .insert(listing)
+                .values({
+                    agentId: foundAgent.id,
+                    propertyId,
+                })
+                .returning({ id: listing.id });
+
+            await db.insert(listingStepProgress).values({
+                listingId: createdListing.id,
+                stepId: 'basic_c',
             });
             return inviteData;
         });

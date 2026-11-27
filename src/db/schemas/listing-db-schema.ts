@@ -14,7 +14,7 @@ import { property } from './property-db-schema';
 import { agent } from './agent-db-schema';
 
 export const listingTypeEnum = pgEnum('listing_type', ['rent', 'sale']);
-export const listingStatus = pgEnum('listing_status', [
+export const listingStatusEnum = pgEnum('listing_status', [
     'draft',
     'active',
     'pending',
@@ -31,13 +31,14 @@ export const listing = pgTable(
 
         propertyId: uuid('property_id')
             .references(() => property.id, { onDelete: 'cascade' })
-            .notNull(),
+            .notNull()
+            .unique(),
         agentId: uuid('agent_id')
             .references(() => agent.id, { onDelete: 'cascade' })
             .notNull(),
 
         listing_type: listingTypeEnum('listing_type').default('sale').notNull(),
-        status: listingStatus('status').default('draft').notNull(),
+        status: listingStatusEnum('status').default('draft').notNull(),
 
         price: numeric('price', { precision: 12, scale: 2 }),
         currency: text('currency').default('USD'),

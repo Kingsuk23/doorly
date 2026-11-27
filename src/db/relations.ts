@@ -220,5 +220,17 @@ export const relations = defineRelations(schemas, (r) => ({
             from: r.listing.agentId,
             to: r.agent.id,
         }),
+
+        listingStepProgress: r.one.listingStepProgress({
+            from: r.listing.id,
+            to: r.listingStepProgress.listingId,
+        }),
+    },
+
+    listingStepProgress: {
+        listing: r.one.listing({
+            from: r.listingStepProgress.listingId,
+            to: r.listing.id,
+        }),
     },
 }));
