@@ -5,6 +5,7 @@ export const listingStepsEnum = pgEnum('listing_steps_enum', [
     'basic_c',
     'pricing_c',
     'schedule_c',
+    'media_c',
     'review_publish_c',
 ]);
 

@@ -1,34 +1,46 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/toast';
+import { deleteImageKitFile } from '@/features/dropzone/services/image-kit-delete-file';
+import { useImageKitUploads } from '@/features/dropzone/store/image-kit-upload';
+import { Loader } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { deleteListingById } from '../actions/listing-action';
+import { useTransition } from 'react';
 
-const ListingWizardHeader = ({ id }: { id: string }) => {
+const ListingWizardHeader = () => {
+    const [isPending, startTransition] = useTransition();
     const router = useRouter();
 
-    const handleDiscard = async () => {
-        const res = await deleteListingById(id);
+    const handleDiscard = () => {
+        startTransition(async () => {
+            try {
+                const { clear, fileIds } = useImageKitUploads.getState();
 
-        if (!res.success) {
-            toast.add({
-                type: 'error',
-                description: res.error.message,
-            });
-
-            return;
-        }
-
-        router.push('/agent-profile');
-        router.refresh();
+                await Promise.allSettled(
+                    fileIds.map((fileId) => deleteImageKitFile(fileId)),
+                );
+                clear();
+                router.push('/agent-profile');
+                router.refresh();
+            } catch {
+                toast.add({
+                    type: 'error',
+                    description: 'Something went wrong. Please try again.',
+                });
+            }
+        });
     };
 
     return (
         <header className="flex items-center justify-between border-b px-4 py-3 md:px-6">
             <h1 className="text-lg font-semibold">Modify listing</h1>
 
-            <Button variant="secondary" onClick={handleDiscard}>
-                Discard
+            <Button
+                variant="secondary"
+                onClick={handleDiscard}
+                disabled={isPending}
+            >
+                {isPending ? <Loader className="animate-spin" /> : 'Discard'}
             </Button>
         </header>
     );

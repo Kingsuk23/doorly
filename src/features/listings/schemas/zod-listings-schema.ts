@@ -34,6 +34,31 @@ export const publishSchema = z.object({
     status: z.enum(listingStatusEnum.enumValues).default('draft'),
 });
 
+export const mediaItemSchema = z.object({
+    id: z.string().optional(),
+    title: z.string().min(1, 'Title is required').max(100),
+    roomType: z.enum(['kitchen', 'bedroom', 'bathroom', 'exterior']),
+    mediaType: z.enum([
+        'photo',
+        'video',
+        'virtual_tour',
+        'floor_plan',
+        'drone',
+    ]),
+    isPrimary: z.boolean().default(false),
+    url: z.url(),
+    thumbnailUrl: z.url(),
+    width: z.number().int().positive(),
+    height: z.number().int().positive(),
+    fileSize: z.number().int().positive(),
+    mimeType: z.string().optional(),
+    fileId: z.string(),
+});
+
+export const mediaFormSchema = z.object({
+    items: z.array(mediaItemSchema).min(1, 'Add at least one file'),
+});
+
 export const listingFormSchema = z.object({
     ...basicsSchema.shape,
     ...pricingSchema.shape,
@@ -42,9 +67,12 @@ export const listingFormSchema = z.object({
 });
 
 export const partialListingFormSchema = listingFormSchema.partial();
+export const partialListingMediaSchema = mediaFormSchema.partial();
 
 export type partialListingFormInput = z.infer<typeof partialListingFormSchema>;
 export type basicsInput = z.infer<typeof basicsSchema>;
 export type pricingInput = z.infer<typeof pricingSchema>;
 export type scheduleInput = z.infer<typeof scheduleSchema>;
 export type publishInput = z.infer<typeof publishSchema>;
+export type mediaFormInput = z.infer<typeof mediaFormSchema>;
+export type partialMediaFormInput = z.infer<typeof partialListingMediaSchema>;

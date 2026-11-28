@@ -9,13 +9,18 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { handleImageKitUpload, UploadedMedia } from '@/lib/imge-kit-upload';
 import { toast } from '@/components/ui/toast';
 import { deleteImageKitFile } from '../services/image-kit-delete-file';
+import { useImageKitUploads } from '../store/image-kit-upload';
+import { fa } from '@faker-js/faker';
 
 interface DropzoneProps {
     label: string;
     className?: string;
     folder?: string;
     fileId?: string;
-    onUploaded?: (media: UploadedMedia) => void;
+    multiple?: boolean;
+    accept?: Record<string, string[]>;
+    hint?: string;
+    onUploaded?: (media: UploadedMedia, file: File) => void;
 }
 
 const Dropzone = ({
@@ -24,61 +29,93 @@ const Dropzone = ({
     onUploaded,
     label,
     fileId,
+    multiple = false,
+    accept,
+    hint = 'Drag a file here or',
 }: DropzoneProps) => {
-    const [isUploading, setIsUploading] = useState(false);
+    const setUploadState = useImageKitUploads((s) => s.setUploadState);
+    const addFileId = useImageKitUploads((s) => s.add);
+
+    const [uploading, setUploading] = useState(0);
     const abortRef = useRef<AbortController | null>(null);
 
-    useEffect(() => () => abortRef.current?.abort(), []);
+    const isUploading = uploading > 0;
+
+    useEffect(
+        () => () => {
+            abortRef.current?.abort();
+            setUploadState(false);
+        },
+        [setUploadState],
+    );
+
+    const uploadOne = useCallback(
+        async (file: File) => {
+            const auth = await getImageKitAuth();
+            if (!auth.success) {
+                toast.add({ type: 'error', description: auth.error.message });
+                return;
+            }
+            const result = await handleImageKitUpload({
+                file,
+                folder,
+                imageKitAuth: auth.data,
+                abort: abortRef.current!,
+            });
+
+            if (!result.success) {
+                if (result.error.message !== 'Upload cancelled') {
+                    toast.add({
+                        type: 'error',
+                        description: `${file.name}: ${result.error.message}`,
+                    });
+                }
+                return;
+            }
+
+            addFileId(result.data.fileId);
+            onUploaded?.(result.data, file);
+        },
+        [addFileId, folder, onUploaded],
+    );
 
     const handleDrop = useCallback(
         async (accepted: File[]) => {
-            const file = accepted[0];
-            if (!file) return;
-
-            setIsUploading(true);
+            if (!accepted.length) return;
 
             abortRef.current = new AbortController();
+
+            setUploading(accepted.length);
+            setUploadState(true);
             try {
-                if (fileId) {
-                    await deleteImageKitFile(fileId);
-                }
+                if (!multiple && fileId) await deleteImageKitFile(fileId);
 
-                const auth = await getImageKitAuth();
-                if (!auth.success) {
-                    toast.add({
-                        type: 'error',
-                        description: auth.error.message,
-                    });
-                    return;
-                }
-
-                const result = await handleImageKitUpload({
-                    file,
-                    folder,
-                    imageKitAuth: auth.data,
-                    abort: abortRef.current,
-                });
-                if (!result.success) {
-                    if (result.error.message !== 'Upload cancelled') {
-                        toast.add({
-                            type: 'error',
-                            description: result.error.message,
-                        });
+                const queue = [...accepted];
+                const worker = async () => {
+                    while (queue.length) {
+                        const file = queue.shift()!;
+                        try {
+                            await uploadOne(file);
+                        } finally {
+                            setUploading((n) => n - 1);
+                        }
                     }
-                    return;
-                }
-
-                onUploaded?.(result.data);
+                };
+                await Promise.all(
+                    Array.from({ length: Math.min(3, queue.length) }, worker),
+                );
             } finally {
-                setIsUploading(false);
+                setUploading(0);
+                setUploadState(false);
             }
         },
-        [fileId, folder, onUploaded],
+        [fileId, multiple, setUploadState, uploadOne],
     );
 
     const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
         onDrop: handleDrop,
-        multiple: false,
+        multiple,
+        accept,
         noClick: true,
         disabled: isUploading,
     });
@@ -103,11 +140,7 @@ const Dropzone = ({
                 </span>
             ) : (
                 <>
-                    <span>
-                        {isDragActive
-                            ? 'Drop the logo here'
-                            : 'Drag a logo here or'}
-                    </span>
+                    <span>{hint}</span>
                     <Button
                         type="button"
                         variant="outline"

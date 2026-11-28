@@ -16,6 +16,7 @@ import ListingBasicForm from './form/listing-basic-form';
 import { listingKey } from '../queries/listing-queries';
 import {
     basicsInput,
+    mediaFormInput,
     pricingInput,
     scheduleInput,
 } from '../schemas/zod-listings-schema';
@@ -23,12 +24,16 @@ import { updateListing } from '../actions/listing-action';
 import ListingPricingForm from './form/listing-pricing-form';
 import ListingScheduleForm from './form/listing-schedule-form';
 import ListingReviewAndPublish from './listing-review-and-publish';
+import ListingMediaForm from './form/listing-media-from';
+import { createOrUpdateListingMedia } from '../actions/listing-image-action';
+import { useImageKitUploads } from '@/features/dropzone/store/image-kit-upload';
 
 interface ListingWizardProps {
     listingId: string;
 }
 
 const ListingWizard = ({ listingId }: ListingWizardProps) => {
+    const fileUploads = useImageKitUploads((state) => state.uploadState);
     const queryClient = useQueryClient();
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -140,6 +145,34 @@ const ListingWizard = ({ listingId }: ListingWizardProps) => {
             }),
         );
 
+    const handleMediaSubmit = (values: mediaFormInput) => {
+        startTransition(async () => {
+            try {
+                const res = await createOrUpdateListingMedia({
+                    listingId,
+                    body: values,
+                    stepId: step.id as listingFormStepId,
+                });
+                if (!res.success) {
+                    toast.add({
+                        type: 'error',
+                        description: res.error.message,
+                    });
+                    return;
+                }
+
+                await queryClient.invalidateQueries({
+                    queryKey: listingKey.listingMedia(listingId),
+                });
+                goNext();
+            } catch {
+                toast.add({
+                    type: 'error',
+                    description: 'Something went wrong. Please try again.',
+                });
+            }
+        });
+    };
     return (
         <div className="grid gap-8 p-4 md:grid-cols-[240px_1fr] md:gap-12 md:p-8">
             <ListingWizardStepper currentIndex={stepIndex} onStepClick={goTo} />
@@ -190,17 +223,28 @@ const ListingWizard = ({ listingId }: ListingWizardProps) => {
                             onPublished={handlePublicSubmit}
                         />
                     )}
+                    {step.id === 'media_c' && (
+                        <ListingMediaForm
+                            formId={step.id}
+                            listingId={listingId}
+                            onSubmit={handleMediaSubmit}
+                        />
+                    )}
                 </div>
 
                 <div className="mt-10 flex items-center justify-between">
                     <Button
                         variant="outline"
                         onClick={goBack}
-                        disabled={isFirst || isPending}
+                        disabled={isFirst || isPending || fileUploads}
                     >
                         Back
                     </Button>
-                    <Button type="submit" form={step.id} disabled={isPending}>
+                    <Button
+                        type="submit"
+                        form={step.id}
+                        disabled={isPending || fileUploads}
+                    >
                         {isPending && <Loader className="animate-spin" />}
                         {isLast ? 'Publish property' : 'Next'}
                     </Button>

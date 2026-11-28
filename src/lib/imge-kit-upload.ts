@@ -12,9 +12,11 @@ import { ApiResponse, fail, ok } from './api/result';
 export type UploadedMedia = {
     url: string;
     fileId: string;
-    name: string;
-    width?: number;
-    height?: number;
+    thumbnailUrl: string;
+    width: number;
+    height: number;
+    size: number;
+    fileType?: string;
 };
 
 type imageKitUploadParams = {
@@ -53,9 +55,10 @@ export const handleImageKitUpload = async ({
         return ok({
             url: res.url,
             fileId: res.fileId,
-            name: res.name ?? file.name,
-            width: res.width,
-            height: res.height,
+            thumbnailUrl: res.thumbnailUrl ?? res.url,
+            width: res.width ?? 0,
+            height: res.height ?? 0,
+            size: res.size ?? file.size,
         });
     } catch (error) {
         if (error instanceof ImageKitAbortError) {

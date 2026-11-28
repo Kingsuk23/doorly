@@ -23,6 +23,15 @@ export const listingFormSteps = [
         description:
             'Choose when the listing goes live and when it expires. Both dates are optional.',
     },
+
+    {
+        id: 'media_c',
+        title: 'Media',
+        subtitle: 'Photos and videos',
+        heading: 'Show off the property',
+        description:
+            'Upload photos, videos, or floor plans. Add a title and room for each file, and choose one as the cover image.',
+    },
     {
         id: 'review_publish_c',
         title: 'Review & Publish',

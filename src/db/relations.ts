@@ -74,6 +74,11 @@ export const relations = defineRelations(schemas, (r) => ({
             from: r.property.id,
             to: r.listing.propertyId,
         }),
+
+        media: r.many.media({
+            from: r.property.id,
+            to: r.media.propertyId,
+        }),
     },
 
     propertyType: {
@@ -175,6 +180,10 @@ export const relations = defineRelations(schemas, (r) => ({
             to: r.broker.id,
         }),
         listing: r.one.listing({ from: r.agent.id, to: r.listing.agentId }),
+        media: r.one.media({
+            from: r.agent.id,
+            to: r.media.uploadedBy,
+        }),
     },
 
     broker: {
@@ -225,12 +234,31 @@ export const relations = defineRelations(schemas, (r) => ({
             from: r.listing.id,
             to: r.listingStepProgress.listingId,
         }),
+        media: r.many.media({
+            from: r.listing.id,
+            to: r.media.listingId,
+        }),
     },
 
     listingStepProgress: {
         listing: r.one.listing({
             from: r.listingStepProgress.listingId,
             to: r.listing.id,
+        }),
+    },
+
+    media: {
+        property: r.one.property({
+            from: r.media.propertyId,
+            to: r.property.id,
+        }),
+        listing: r.one.listing({
+            from: r.media.listingId,
+            to: r.listing.id,
+        }),
+        uploader: r.one.agent({
+            from: r.media.uploadedBy,
+            to: r.agent.id,
         }),
     },
 }));
